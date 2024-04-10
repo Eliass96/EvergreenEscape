@@ -188,8 +188,50 @@ exports.altaUsuario = async function (datosDeUsuario) {
 
 
 //LISTAR PUNTUACIONES POR PAIS ----------
+exports.listarPuntuacionesPorPais = async function (nacionalidad) {
+    try {
+        // Realizar una consulta a la base de datos para encontrar usuarios por país
+        const usuarios = await Usuario.find({ nacionalidad: nacionalidad });
+
+        if (usuarios.length === 0) {
+            throw new Error('No se encontraron usuarios para el país especificado');
+        }
+
+        let puntuaciones = [];
+
+        usuarios.forEach(usuario => {
+            puntuaciones = puntuaciones.concat(usuario.puntuaciones);
+        });
+
+        puntuaciones.sort((a, b) => b - a);
+        return puntuaciones.slice(0, 10);
+    } catch (error) {
+        throw new Error('Error al listar puntuaciones por país: ' + error.message);
+    }
+};
 
 //LISTAR PUNTUACIONES GLOBALES ----------
+exports.listarTodasLasPuntuaciones = async function () {
+    try {
+        const usuarios = await Usuario.find();
+
+        if (usuarios.length === 0) {
+            throw new Error('No se encontraron usuarios');
+        }
+
+        let puntuaciones = [];
+
+        usuarios.forEach(usuario => {
+            puntuaciones = puntuaciones.concat(usuario.puntuaciones);
+        });
+
+        puntuaciones.sort((a, b) => b - a);
+
+        return puntuaciones.slice(0, 10);
+    } catch (error) {
+        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+    }
+};
 
 //AÑADIR USUARIO
 

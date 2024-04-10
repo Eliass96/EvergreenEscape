@@ -34,6 +34,26 @@ app.get("/usuarios/:id", async function (req, resp) { // funciona
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
     }
 });
+
+app.get("/puntuaciones/pais/:id", async function (req, resp) {
+    try {
+        const pais = req.params.id;
+        puntuacionesPorPais = await db.listarPuntuacionesPorPais(pais);
+        resp.status(HTTP_OK).send(puntuacionesPorPais);
+    } catch (err) {
+        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+    }
+});
+
+app.get("/puntuaciones", async function (req, resp) {
+    try {
+        const todasLasPuntuaciones = await db.listarTodasLasPuntuaciones();
+        resp.status(HTTP_OK).send(todasLasPuntuaciones);
+    } catch (err) {
+        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+    }
+});
+
 //CREAR USUARIO
 app.post("/usuarios", async function (req, resp) { // funciona
     try {
