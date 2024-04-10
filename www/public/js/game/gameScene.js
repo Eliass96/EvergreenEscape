@@ -66,7 +66,7 @@ class gameScene extends Phaser.Scene {
         defeatSound = this.sound.add("muertesonido");
         fondoSound = this.sound.add("sonidofondo");
         orcoVerdeSound = this.sound.add("orcoverdesonido");
-        arcoSound= this.sound.add("arcosonido");
+        arcoSound = this.sound.add("arcosonido");
         fondoSound.play();
         fondoSound.volume = 0.2;
         fondoSound.loop = true;
@@ -279,21 +279,9 @@ class gameScene extends Phaser.Scene {
             });
             enemigos.forEach(function (orco) {
                 orco.x -= velocidad / 1.36; // Mover cada orco junto con el fondo
-                /*if (orco.x <= 1000) {
-                    orco.anims.play('ataqueOrcoRojo');
-                    orco.once('animationcomplete', () => {
-                        orco.anims.play('run');
-                    })
-                }*/
             });
             orcosVerdes.forEach(function (orco) {
                 orco.x -= velocidad / 1.36; // Mover cada orco junto con el fondo
-                /*if (orco.x <= 1000) {
-                    orco.anims.play('ataqueOrcoVerde');
-                    orco.once('animationcomplete', () => {
-                        orco.anims.play('run');
-                    })
-                }*/
             });
             piedras.forEach(function (piedra) {
                 piedra.x -= velocidad / 2; // Mover cada piedra junto con el fondo
@@ -323,7 +311,7 @@ async function sumarPuntos() {
     while (estaVivo) {
         await new Promise(resolve => setTimeout(resolve, 100));
         puntos += 1;
-        if (puntos % 100 === 0) velocidad += 0.75;
+        if (puntos % 100 === 0) velocidad += 1;
     }
 }
 
@@ -556,7 +544,8 @@ async function morir() {
     await new Promise(resolve => setTimeout(resolve, 400));
     jugador.anims.play('dead');
     jugador.once('animationcomplete', () => {
-        jugador.anims.stop(); dam.tfg.evergreenescape
+        jugador.anims.stop();
+        dam.tfg.evergreenescape
     })
     defeatSound.play();
     defeatSound.volume = 0.2;
