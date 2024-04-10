@@ -11,6 +11,7 @@ class gameScene extends Phaser.Scene {
         this.load.image("pincho", "../../assets/components/pinchos.png");
         this.load.image("botonPausa", "../../img/buttons/pause.png");
         botonPlay = document.getElementById('botonPlay');
+        botonPausa = document.getElementById('botonPausa');
 
         this.load.spritesheet("jugador", "../../assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
         this.load.spritesheet("muerteJugador", "../../assets/character/main/Dead.png", {
@@ -184,27 +185,20 @@ class gameScene extends Phaser.Scene {
         this.physics.add.collider(suelo, orcoVerde);
 
         // Botones
-        botonPausa = this.add.image(1850, 75, "botonPausa").setInteractive();
-        botonPausa.setScale(0.5);
-        botonPausa.setData('botonPausa', botonPausa);
-        botonPausa.data.values.class = 'botonPausa';
-        botonPausa.data.values.id = 'botonPausa';
-
-        botonPausa.on('pointerdown', function (pointer) {
-            if (botonPausa.data.values.class === 'botonPausa' && pointer.leftButtonDown()) {
-                $('#modalPause').modal('show');
-                canMove = false;
-                jugador.anims.stop();
-                enemigos.forEach(function (orco) {
-                    orco.anims.stop();
-                });
-                orcosVerdes.forEach(function (orco) {
-                    orco.anims.stop();
-                });
-                monedero.forEach(function (moneda) {
-                    moneda.anims.stop();
-                });
-            }
+        $('#botonPausa').show();
+        botonPausa.addEventListener('click', async function () {
+            $('#modalPause').modal('show');
+            canMove = false;
+            jugador.anims.stop();
+            enemigos.forEach(function (orco) {
+                orco.anims.stop();
+            });
+            orcosVerdes.forEach(function (orco) {
+                orco.anims.stop();
+            });
+            monedero.forEach(function (moneda) {
+                moneda.anims.stop();
+            });
         }, this);
 
         botonPlay.addEventListener('click', async function () {
