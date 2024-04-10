@@ -549,7 +549,6 @@ async function morir() {
     jugador.anims.play('dead');
     jugador.once('animationcomplete', () => {
         jugador.anims.stop();
-        dam.tfg.evergreenescape
     })
     defeatSound.play();
     defeatSound.volume = 0.2;
