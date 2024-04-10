@@ -311,7 +311,7 @@ async function sumarPuntos() {
     while (estaVivo) {
         await new Promise(resolve => setTimeout(resolve, 100));
         puntos += 1;
-        if (puntos % 100 === 0) velocidad += 1;
+        if (puntos % 100 === 0) velocidad += 0.85;
     }
 }
 
@@ -375,7 +375,7 @@ async function generarObstaculos() {
         }
 
         if (estaVivo && canMove) {
-            enemigoGenerado = Phaser.Math.RND.between(1, 4);
+            enemigoGenerado = Phaser.Math.RND.between(1, 2);
             if (enemigoGenerado === 1) {
                 let x = Phaser.Math.RND.between(game.config.width + 500, game.config.width + 800);
                 let y = Phaser.Math.RND.between(875, 875);
@@ -527,16 +527,20 @@ async function morir() {
     fondoSound.stop();
     jugador.anims.stop();
     enemigos.forEach(function (orco) {
-        orco.anims.play('ataqueOrcoRojo');
-        orco.once('animationcomplete', () => {
-            orco.anims.stop();
-        })
+        if (orco.x <= 600) {
+            orco.anims.play('ataqueOrcoRojo');
+            orco.once('animationcomplete', () => {
+                orco.anims.stop();
+            })
+        }
     });
     orcosVerdes.forEach(function (orco) {
-        orco.anims.play('ataqueOrcoVerde');
-        orco.once('animationcomplete', () => {
-            orco.anims.stop();
-        })
+        if (orco.x <= 600) {
+            orco.anims.play('ataqueOrcoVerde');
+            orco.once('animationcomplete', () => {
+                orco.anims.stop();
+            })
+        }
     });
     canMove = false;
     estaVivo = false;
