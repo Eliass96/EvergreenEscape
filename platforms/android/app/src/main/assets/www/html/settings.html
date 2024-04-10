@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVERGREEN ESCAPE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styleMainSettings.css">
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+</head>
+<body>
+<header class="container-fluid d-flex justify-content-center align-items-center pt-4">
+    <a href="../index.html">
+        <button class="animate__animated animate__pulse animate__infinite animate__slow button_back" id="but_back"><img
+                src="../img/buttons/prew.png" alt="boton_settings"
+                class="img_button_back"/>
+        </button>
+    </a>
+    <img src="../img/headers/AJUSTES.png" alt="boton_info" class="titulo_settings"/>
+</header>
+<main class="container d-flex flex-column justify-content-center">
+    <div class="container ajustes">
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center justify-content-start ps-5">
+                <p class="texto_ajustes">Volumen de Música</p>
+            </div>
+            <div class="col-6 container d-flex justify-content-end align-items-center pe-5">
+                <div class="bauble_box d-flex align-items-center justify-content-center">
+                    <input class="bauble_input" id="bauble_check_musica" name="bauble" type="checkbox">
+                    <label class="bauble_label" for="bauble_check_musica">Toggle</label>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center justify-content-start ps-5">
+                <p class="texto_ajustes">Volumen de Sonido</p>
+            </div>
+            <div class="col-6 container d-flex justify-content-end align-items-center pe-5">
+                <div class="bauble_box d-flex align-items-center justify-content-center">
+                    <input class="bauble_input" id="bauble_check_sonido" name="bauble" type="checkbox">
+                    <label class="bauble_label" for="bauble_check_sonido">Toggle</label>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center justify-content-start ps-5">
+                <p class="texto_ajustes">Pantalla completa</p>
+            </div>
+            <div class="col-6 container d-flex justify-content-end align-items-center pe-5">
+                <div class="bauble_box d-flex align-items-center justify-content-center">
+                    <input class="bauble_input" id="bauble_check_pantalla_completa" name="bauble" type="checkbox">
+                    <label class="bauble_label" for="bauble_check_pantalla_completa">Toggle</label>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-6 d-flex align-items-center justify-content-start ps-5">
+                <p class="texto_ajustes">Ajustes de partida</p>
+            </div>
+            <div class="col-6 container d-flex justify-content-end align-items-center pe-5">
+                <button class="but_ajustes_partida"><img src="../img/buttons/leader.png" alt="Ajustes de partida" class="img_button_ajustes_partida"/></button>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="container-fluid d-flex align-items-center justify-content-between">
+    <div class="row w-100">
+        <div class="col-6 d-flex justify-content-start align-items-end ps-4">
+            <p>&copy; 2024 Todos los derechos reservados</p>
+        </div>
+        <div class="col-6 d-flex justify-content-end align-items-center pb-3">
+            <button class="but_cancelar_ajustes" id="but_cancelar_ajustes"><img src="../img/buttons/close.png" alt="Cancelar ajustes" class="img_button"/></button>
+            <button class="but_aceptar_ajustes" id="but_aceptar_ajustes"><img src="../img/buttons/ok.png" alt="Guardar ajustes" class="img_button"/></button>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../js/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

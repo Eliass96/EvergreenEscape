@@ -1,0 +1,32 @@
+/*GAME OVER MODAL*/
+.modalGameOver {
+    background-color: rgba(0, 0, 0, .4);
+    border: none;
+    width: 70vw;
+    border-radius: 15px;
+}
+
+.modal-header {
+    border-bottom: none !important;
+}
+
+.textoGameOver {
+    font-family: 'turtles', sans-serif;
+    color: white;
+    font-size: clamp(1.75em, 4vh, 4em);
+}
+
+.img_button_restart {
+    width: 10vw;
+    min-width: 100px;
+    margin: 20px;
+}
+
+.img_buttonGameOver {
+    margin: 15px;
+    width: 7vw;
+}
+
+.titulo_game_over {
+    width: 30vw;
+}

@@ -1,0 +1,273 @@
+/*** FUENTES ***/
+@font-face {
+    font-family: 'jackpot';
+    src: url('../assets/fonts/Jackpot.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'turtles';
+    src: url('../assets/fonts/Turtles.woff') format('woff');
+}
+
+/*** REGLAS ***/
+body {
+    background-image: url('../img/background/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    height: 100vh;
+    min-height: 100vh;
+    min-width: 98vw;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    margin: 0 !important;
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+}
+
+dialog {
+    background-color: transparent;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+p {
+    margin-bottom: 0 !important;
+}
+
+footer p {
+    color: white;
+    font-family: 'turtles', sans-serif;
+    margin-bottom: 8px !important;
+    height: auto;
+    font-size: clamp(1em, 1vw, 4em);
+}
+
+/*** MEDIA QUERYS ***/
+@media screen and (max-width: 1300px) {
+    .titulo {
+        font-size: 2rem;
+    }
+
+    .formulariocaja {
+        font-size: 85%;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .titulo {
+        font-size: 2rem;
+    }
+
+    .formulariocaja {
+        font-size: 75%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .titulo {
+        font-size: 1.6rem;
+    }
+}
+
+@media screen and (max-height: 400px) {
+    .titulo {
+        font-size: 1.5rem;
+    }
+
+    .img_button_play {
+        max-width: 12vw;
+        min-width: 80px;
+    }
+
+    .img_button {
+        max-width: 4vw;
+        min-width: 60px;
+    }
+
+    .img_button_back {
+        max-width: 4vw;
+        min-width: 60px;
+    }
+
+    .titulo_settings {
+        max-width: 22vw;
+        min-width: 240px;
+    }
+
+    .titulo_game_over {
+        max-width: 22vw;
+        min-width: 240px;
+    }
+
+    .img_button_ajustes_partida {
+        max-width: 4vw;
+        min-width: 60px;
+        margin-left: 10px;
+    }
+
+    .bauble_box .bauble_label {
+        max-width: 60px;
+        min-width: 60px;
+        height: 30px;
+    }
+
+    .bauble_box .bauble_label:before {
+        left: 5px;
+        top: 3px;
+        height: 22px;
+        width: 22px;
+    }
+
+    .bauble_box input.bauble_input:checked + .bauble_label:before {
+        left: calc(100% - 25px);
+    }
+
+    .card {
+        width: 25vw;
+        height: 50vh;
+        max-height: 195px;
+        max-width: 350px;
+    }
+
+    .cardRanking {
+        width: 25vw;
+        height: 50vh;
+        max-height: 195px;
+        max-width: 350px;
+    }
+
+    .cardShop {
+        width: 23vw;
+        height: 60vh;
+        max-height: 195px;
+        max-width: 350px;
+    }
+
+    .btnComprar {
+        font-size: clamp(0.35em, 2vh, 0.75em);
+        padding: 5px 10px !important;
+    }
+
+    .items {
+        width: 11.5vw;
+        max-width: 65px;
+    }
+
+    .modalGameOver {
+        width: 60vw;
+        height: 90vh;
+        min-height: 350px;
+    }
+}
+
+@media screen and (max-height: 720px) and (min-height: 400px) {
+    .img_button_ajustes_partida {
+        max-width: 4vw;
+        min-width: 75px;
+        margin-left: 10px;
+    }
+
+    .bauble_box .bauble_label {
+        max-width: 75px;
+        min-width: 60px;
+        height: 30px;
+    }
+
+    .bauble_box .bauble_label:before {
+        left: 5px;
+        top: 3px;
+        height: 22px;
+        width: 22px;
+    }
+
+    .bauble_box input.bauble_input:checked + .bauble_label:before {
+        left: calc(100% - 25px);
+    }
+
+    .card {
+        width: 25vw;
+        height: 50vh;
+    }
+
+    .cardRanking {
+        width: 25vw;
+        height: 50vh;
+    }
+
+    .cardShop {
+        width: 23vw;
+        height: 60vh;
+    }
+
+    .btnComprar {
+        font-size: clamp(0.35em, 2vh, 0.75em);
+        padding: 5px 10px !important;
+    }
+
+    .items {
+        width: 11.5vw;
+        max-width: 140px;
+    }
+
+    .modalGameOver {
+        width: 60vw;
+        height: 90vh;
+        min-height: 350px;
+    }
+}
+
+/*** ANIMACIONES ***/
+.but_play:hover,
+.but_settings:hover,
+.but_info:hover,
+.but_records:hover,
+.but_login:hover,
+.but_shop:hover,
+.but_menu:hover,
+.button_back:hover,
+.but_ajustes_partida:hover,
+.but_aceptar_ajustes:hover,
+.but_cancelar_ajustes:hover,
+.botonenviar:hover,
+.btnComprar:hover,
+.botonPausa:hover {
+    transform: scale(1.1);
+}
+
+.but_play:active,
+.but_settings:active,
+.but_info:active,
+.but_records:active,
+.but_login:active,
+.but_menu:active,
+.but_shop:active,
+.button_back:active,
+.but_ajustes_partida:active,
+.but_aceptar_ajustes:active,
+.but_cancelar_ajustes:active,
+.botonenviar:active,
+.btnComprar:active,
+.botonPausa:active {
+    transform: scale(0.9);
+}
+
+/*** SCROLLBARS ***/
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #113A23;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: lightgreen;
+    border-radius: 15px;
+}

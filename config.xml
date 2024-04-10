@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.tfg.evergreenescape" version="1.0.0" xmlns="http://schemas.android.com/apk/res/android">
+    <name>EvergreenEscape</name>
+    <description>EvergreenEscape the game</description>
+    <author email="" href="">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="https://*/*" />
+    <preference name="viewport" value="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <preference name="Orientation" value="landscape" />
+</widget>

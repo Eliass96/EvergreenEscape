@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVERGREEN ESCAPE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styleMainSettings.css">
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+    <link rel="stylesheet" href="../css/styleLoginRegister.css">
+</head>
+<body>
+<header class="container-fluid d-flex justify-content-center align-items-center pt-4">
+    <a href="../index.html">
+        <button class="animate__animated animate__pulse animate__infinite animate__slow button_back" id="but_back"><img
+                src="../img/buttons/prew.png" alt="boton_settings"
+                class="img_button_back"/>
+        </button>
+    </a>
+    <img src="../img/headers/iniciar%20sesión.png" alt="boton_info" class="titulo_settings"/>
+</header>
+<main>
+    <div class="cajafuera">
+        <div class="formulariocaja d-flex align-items-center justify-content-center">
+            <form method="post" action="" name="vaidrollteam">
+                <div class="textoscajas" id="textBoxUserLogin">&#128273; Introduce tu usuario</div>
+                <label>
+                    <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
+                </label>
+                <p class="txtFaltanDatos" id="txtFaltanDatosUsuarioLogin">El nombre de usuario es obligatorio</p>
+                <div class="textoscajas" id="textBoxPasswordLogin">&#128274; Introduce tu contraseña</div>
+                <label for="txtpassword">
+                    <input type="password" name="txtpassword" id="txtpassword" class="cajaentradatexto">
+                </label>
+                <p class="txtFaltanDatos" id="txtFaltanDatosPasswordLogin">La contraseña es obligatoria</p>
+                <div class="afcheckbox1 d-flex align-items-center justify-content-start">
+                    <div>
+                        <label>
+                            <input type="checkbox" id="checkboxLogin" class="checkbox">
+                        </label>
+                    </div>
+                    <div>Mostrar contraseña</div>
+                </div>
+
+                <input type="button" value="Iniciar sesión" class="botonenviar" id="loginButton">
+
+                <div class="registrar">¿Necesitas una cuenta? <a class="but_abrir_registro" href="register.html">Registrar</a></div>
+            </form>
+        </div>
+    </div>
+</main>
+<footer class="d-flex align-items-center justify-content-start ps-4">
+    <p>&copy; 2024 Todos los derechos reservados</p>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/loginRegister.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVERGREEN ESCAPE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styleMainSettings.css">
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+    <link rel="stylesheet" href="../css/styleCards.css">
+</head>
+<body>
+<header class="container-fluid d-flex justify-content-center align-items-center pt-4">
+    <a href="../index.html">
+        <button class="animate__animated animate__pulse animate__infinite animate__slow button_back" id="but_back"><img
+                src="../img/buttons/prew.png" alt="boton_settings"
+                class="img_button_back"/>
+        </button>
+    </a>
+    <img src="../img/headers/TIENDA.webp" alt="boton_info" class="titulo_settings"/>
+    <div class="contadorMonedas d-flex align-items-center justify-content-center">
+        <img class="monedaShop" src="../img/shopItems/monedaShop.webp" alt="moneda">
+        <p>35</p>
+    </div>
+
+</header>
+<main class="container-fluid d-flex justify-content-around align-items-center">
+    <div class="cardShop">
+        <div class="card-inner d-flex flex-column align-items-center justify-content-between">
+            <header>
+                <h2 class="titulo_card_ranking">Super salto</h2>
+            </header>
+            <div class="d-flex align-items-center justify-content-center">
+                <img src="../img/shopItems/supersalto.webp" alt="supersalto" class="items"/>
+            </div>
+            <button class="btnComprar" id="btnComprarSalto">Comprar por 20 <img class="monedaShop"
+                                                                                src="../img/shopItems/monedaShop.webp"
+                                                                                alt="moneda"></button>
+        </div>
+    </div>
+
+    <div class="cardShop">
+        <div class="card-inner d-flex flex-column align-items-center justify-content-between">
+            <header>
+                <h2 class="titulo_card_ranking">Puntuacion x2</h2>
+            </header>
+            <div class="d-flex align-items-center justify-content-center">
+                <img src="../img/shopItems/x2.png" alt="x2" class="items"/>
+            </div>
+            <button class="btnComprar" id="btnComprarPuntuacionDoble">Comprar por 30 <img class="monedaShop"
+                                                                                          src="../img/shopItems/monedaShop.webp"
+                                                                                          alt="moneda"></button>
+        </div>
+    </div>
+
+    <div class="cardShop">
+        <div class="card-inner d-flex flex-column align-items-center justify-content-between">
+            <header>
+                <h2 class="titulo_card_ranking">Inmunidad</h2>
+            </header>
+            <div class="d-flex align-items-center justify-content-center">
+                <img src="../img/shopItems/antiobstaculos.png" alt="inmunidad" class="items"/>
+            </div>
+            <button class="btnComprar" id="btnComprarInmunidad">Comprar por 40 <img class="monedaShop"
+                                                                                    src="../img/shopItems/monedaShop.webp"
+                                                                                    alt="moneda"></button>
+        </div>
+    </div>
+
+    <div class="cardShop">
+        <div class="card-inner d-flex flex-column align-items-center justify-content-between">
+            <header>
+                <h2 class="titulo_card_ranking">Revivir</h2>
+            </header>
+            <div class="d-flex align-items-center justify-content-center">
+                <img src="../img/shopItems/revivir.png" alt="revivir" class="items"/>
+            </div>
+            <button class="btnComprar" id="btnComprarRevivir">Comprar por 50 <img class="monedaShop"
+                                                                                  src="../img/shopItems/monedaShop.webp"
+                                                                                  alt="moneda"></button>
+        </div>
+    </div>
+</main>
+<footer class="d-flex align-items-center justify-content-start ps-4">
+    <p>&copy; 2024 Todos los derechos reservados</p>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../js/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

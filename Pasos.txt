@@ -1,0 +1,28 @@
+**************************************
+***** OBJETIVOS PARA ESTA SEMANA *****
+**************************************
+
+***** Cambiar nombre a la carpeta del proyecto
+***** Avanzar documentación
+***** Crear app móvil con PhoneGap
+
+***************************
+********** ELIAS **********
+***************************
+
+***** Implementar inicio de sesión
+
+***************************
+********** JESÚS **********
+***************************
+
+***** Terminar app.js
+***** Terminar db.js
+
+***********************
+***** OTRAS COSAS *****
+***********************
+
+***** El modal de game over y pause no debe aceptar click fuera suyo
+***** Representar los items comprados en el juego
+***** Hacer para poder jugar en el móvil

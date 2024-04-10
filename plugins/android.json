@@ -1,0 +1,31 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.tfg.evergreenescape"
+    },
+    "cordova-plugin-viewport": {
+      "PACKAGE_NAME": "com.tfg.evergreenescape"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "com.tfg.evergreenescape"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "com.tfg.evergreenescape"
+    },
+    "cordova-plugin-navigationbar": {
+      "PACKAGE_NAME": "com.tfg.evergreenescape"
+    }
+  },
+  "dependent_plugins": {
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.tfg.evergreenescape"
+    }
+  }
+}

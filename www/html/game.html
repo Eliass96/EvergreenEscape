@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EVERGREEN ESCAPE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="../css/styleMainSettings.css">
+    <link rel="stylesheet" href="../css/styleGlobal.css">
+    <link rel="stylesheet" href="../css/styleGame.css">
+</head>
+<body class="d-flex align-items-center justify-content-center">
+<dialog class="modal" id="modalGameOver" tabindex="-1">
+    <div class="modal-dialog d-flex align-items-center justify-content-center">
+        <div class="modal-content modalGameOver d-flex align-items-center justify-content-center">
+            <header class="modal-header">
+                <img src="../img/headers/¡HAS%20PERDIDO!.png" alt="boton_info" class="titulo_game_over"/>
+            </header>
+            <p class="textoGameOver" id="textoCantidadPuntos"></p>
+            <p class="textoGameOver" id="textoCantidadMonedas"></p>
+            <div class="modal-body d-flex align-items-center justify-content-center">
+                <a href="../index.html">
+                    <button class="but_play animate__animated animate__pulse animate__infinite animate__slow"><img
+                            src="../img/buttons/home.png" alt="boton_play" class="img_buttonGameOver"/></button>
+                </a>
+                <a href="game.html">
+                    <button class="but_play animate__animated animate__pulse animate__infinite animate__slow"><img
+                            src="../img/buttons/restart.png" alt="boton_play" class="img_button_restart"/></button>
+                </a>
+                <a href="settings.html">
+                    <button id="botonSettings_gameOver"
+                            class="but_play animate__animated animate__pulse animate__infinite animate__slow"><img
+                            src="../img/buttons/settings.png" alt="boton_play" class="img_buttonGameOver"/></button>
+                </a>
+            </div>
+        </div>
+    </div>
+</dialog>
+
+<dialog class="modal" id="modalPause" tabindex="-1">
+    <div class="modal-dialog d-flex align-items-center justify-content-center">
+        <div class="modal-content modalGameOver d-flex align-items-center justify-content-center">
+            <header class="modal-header">
+                <img src="../img/headers/PAUSA.png" alt="boton_info" class="titulo_game_over"/>
+            </header>
+            <div class="modal-body d-flex align-items-center justify-content-center">
+                <a href="../index.html">
+                    <button class="but_play animate__animated animate__pulse animate__infinite animate__slow"><img
+                            src="../img/buttons/home.png" alt="boton_play" class="img_buttonGameOver"/></button>
+                </a>
+                <a href="game.html">
+                    <button class="but_play animate__animated animate__pulse animate__infinite animate__slow"><img
+                            src="../img/buttons/restart.png" alt="boton_play" class="img_button_restart"/></button>
+                </a>
+                <a href="#">
+                    <button id="botonPlay" class="but_play animate__animated animate__pulse animate__infinite animate__slow"><img
+                            src="../img/buttons/play.png" alt="boton_play" class="img_button_restart"/></button>
+                </a>
+                <a href="settings.html">
+                    <button id="botonSettings_pause"
+                            class="but_play animate__animated animate__pulse animate__infinite animate__slow"><img
+                            src="../img/buttons/settings.png" alt="boton_play" class="img_buttonGameOver"/></button>
+                </a>
+            </div>
+        </div>
+    </div>
+</dialog>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src=" https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js "></script>
+<script type="text/javascript" src="../js/index.js"></script>
+<script type="text/javascript" src="../js/game/gameScene.js"></script>
+<script type="text/javascript" src="../js/game/game.js"></script>
+</body>
+</html>
