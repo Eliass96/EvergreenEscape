@@ -13,12 +13,16 @@
     <feature name="NavigationBar">
         <param name="android-package" value="com.cranberrygame.cordova.plugin.navigationbar.NavigationBar" />
     </feature>
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
+    </feature>
     <name>EvergreenEscape</name>
     <description>EvergreenEscape the game</description>
     <author email="" href="">
         Apache Cordova Team
     </author>
     <content src="index.html" />
+    <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <preference name="loglevel" value="DEBUG" />
     <preference name="StatusBarOverlaysWebView" value="true" />

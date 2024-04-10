@@ -21,6 +21,9 @@
     },
     "cordova-plugin-navigationbar": {
       "PACKAGE_NAME": "com.tfg.evergreenescape"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.tfg.evergreenescape"
     }
   },
   "dependent_plugins": {

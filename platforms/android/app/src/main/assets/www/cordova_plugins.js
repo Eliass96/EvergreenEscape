@@ -38,6 +38,22 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "window.navigationbar"
       ]
+    },
+    {
+      "id": "cordova-plugin-network-information.network",
+      "file": "plugins/cordova-plugin-network-information/www/network.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "navigator.connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-network-information.Connection",
+      "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "Connection"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -46,6 +62,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "es6-promise-plugin": "4.2.2",
     "cordova-plugin-screen-orientation": "3.0.4",
     "cordova-plugin-statusbar": "4.0.0",
-    "cordova-plugin-navigationbar": "1.0.31"
+    "cordova-plugin-navigationbar": "1.0.31",
+    "cordova-plugin-network-information": "3.0.0"
   };
 });

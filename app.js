@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const db = require("../www/db.js");
+const db = require("./db.js");
 
 
 const HTTP_OK = 200;
