@@ -5,57 +5,57 @@ class gameScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.image("fondoBosque", "../..//assets/background/fondoBosque.jpg");
-        this.load.image("piedra", "../..//assets/components/piedra.png");
-        this.load.image("plataforma", "../..//assets/components/plataforma.png");
-        this.load.image("pincho", "../..//assets/components/pinchos.png");
-        this.load.image("botonPausa", "../..//img/buttons/pause.png");
+        this.load.image("fondoBosque", "../..//www/assets/background/fondoBosque.jpg");
+        this.load.image("piedra", "../..//www/assets/components/piedra.png");
+        this.load.image("plataforma", "../..//www/assets/components/plataforma.png");
+        this.load.image("pincho", "../..//www/assets/components/pinchos.png");
+        this.load.image("botonPausa", "../..//www/img/buttons/pause.png");
         botonPlay = document.getElementById('botonPlay');
 
-        this.load.spritesheet("jugador", "../..//assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet("muerteJugador", "../..//assets/character/main/Dead.png", {
+        this.load.spritesheet("jugador", "../..//www/assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
+        this.load.spritesheet("muerteJugador", "../..//www/assets/character/main/Dead.png", {
             frameWidth: 128,
             frameHeight: 128
         });
-        this.load.spritesheet("saltoJugador", "../..//assets/character/main/Jump.png", {
+        this.load.spritesheet("saltoJugador", "../..//www/assets/character/main/Jump.png", {
             frameWidth: 128,
             frameHeight: 128
         });
-        this.load.spritesheet("disparoJugador", "../..//assets/character/main/Shot_1.png", {
+        this.load.spritesheet("disparoJugador", "../..//www/assets/character/main/Shot_1.png", {
             frameWidth: 128,
             frameHeight: 128
         });
-        this.load.image("flechaJugador", "../..//assets/character/main/Arrow.png");
+        this.load.image("flechaJugador", "../..//www/assets/character/main/Arrow.png");
 
 
-        this.load.spritesheet("moneda", "../..//assets//components/coin.png", {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet("orcoRojo", "../..//assets/character/enemies/red/Run.png", {
+        this.load.spritesheet("moneda", "../..//www/assets//components/coin.png", {frameWidth: 128, frameHeight: 128});
+        this.load.spritesheet("orcoRojo", "../..//www/assets/character/enemies/red/Run.png", {
             frameWidth: 96,
             frameHeight: 96
         });
-        this.load.spritesheet("orcoVerde", "../..//assets/character/enemies/green/Run.png", {
+        this.load.spritesheet("orcoVerde", "../..//www/assets/character/enemies/green/Run.png", {
             frameWidth: 96,
             frameHeight: 96
         });
-        this.load.spritesheet("matarOrco", "../..//assets/character/enemies/green/Dead.png", {
+        this.load.spritesheet("matarOrco", "../..//www/assets/character/enemies/green/Dead.png", {
             frameWidth: 96,
             frameHeight: 96
         });
-        this.load.spritesheet("ataqueOrcoRojo", "../..//assets/character/enemies/red/Attack_2.png", {
+        this.load.spritesheet("ataqueOrcoRojo", "../..//www/assets/character/enemies/red/Attack_2.png", {
             frameWidth: 96,
             frameHeight: 96
         });
-        this.load.spritesheet("ataqueOrcoVerde", "../..//assets/character/enemies/green/Attack_1.png", {
+        this.load.spritesheet("ataqueOrcoVerde", "../..//www/assets/character/enemies/green/Attack_1.png", {
             frameWidth: 96,
             frameHeight: 96
         });
 
-        this.load.audio("orcosonido", "../..//assets/audio/enemigos.mp3");
-        this.load.audio("monedasonido", "../..//assets/audio/moneda.mp3");
-        this.load.audio("sonidofondo", "../..//assets/audio/musicafondo.mp3");
-        this.load.audio("muertesonido", "../..//assets/audio/defeat.mp3");
-        this.load.audio("orcoverdesonido", "../..//assets/audio/orcoVerde.mp3");
-        this.load.audio("arcosonido", "../..//assets/audio/arco.mp3");
+        this.load.audio("orcosonido", "../..//www/assets/audio/enemigos.mp3");
+        this.load.audio("monedasonido", "../..//www/assets/audio/moneda.mp3");
+        this.load.audio("sonidofondo", "../..//www/assets/audio/musicafondo.mp3");
+        this.load.audio("muertesonido", "../..//www/assets/audio/defeat.mp3");
+        this.load.audio("orcoverdesonido", "../..//www/assets/audio/orcoVerde.mp3");
+        this.load.audio("arcosonido", "../..//www/assets/audio/arco.mp3");
     }
 
     create() {
