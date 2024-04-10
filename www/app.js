@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const db = require("./db.js");
+const db = require("../www/db.js");
 
 
 const HTTP_OK = 200;
@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 40000;
 
 const app = express();
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static("www/public"));
 db.conectar().then(() => {
     console.log("Conectado con la base de datos.");
     app.listen(PORT, () =>

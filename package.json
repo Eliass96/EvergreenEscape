@@ -2,15 +2,15 @@
   "name": "dam.tfg.evergreenescape",
   "displayName": "EvergreenEscape",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "main": "index.js",
+  "description": "EvergreenEscape the game.",
+  "main": "www/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node www/app.js"
   },
   "keywords": [
     "ecosystem:cordova"
   ],
-  "author": "Apache Cordova Team",
+  "author": "Elías Botía García y Jesús Robles García",
   "license": "Apache-2.0",
   "dependencies": {
     "@ionic-native/navigation-bar": "^5.36.0",
