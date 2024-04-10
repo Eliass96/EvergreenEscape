@@ -2,9 +2,7 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-***** Cambiar nombre a la carpeta del proyecto
 ***** Avanzar documentación
-***** Crear app móvil con PhoneGap
 
 ***************************
 ********** ELIAS **********
