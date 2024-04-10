@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function verpasswordRegister() {
-        let tipo = document.getElementById("txtpassword_register");
-        let tipoRep = document.getElementById("txtpasswordrep_register");
+        let tipo = document.getElementById("txtpassword");
+        let tipoRep = document.getElementById("txtpasswordrep");
         if (tipo.type === "password" && tipoRep.type === "password") {
             tipo.type = "text";
             tipoRep.type = "text";
