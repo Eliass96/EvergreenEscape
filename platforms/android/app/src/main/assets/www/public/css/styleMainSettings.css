@@ -15,8 +15,7 @@
 .but_shop,
 .but_ajustes_partida,
 .but_aceptar_ajustes,
-.but_cancelar_ajustes,
-.botonPausa {
+.but_cancelar_ajustes {
     padding: 5px;
     background: transparent;
     border: none;

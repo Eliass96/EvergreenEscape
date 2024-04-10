@@ -5,57 +5,58 @@ class gameScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.image("fondoBosque", "../../..//www/public/assets/background/fondoBosque.jpg");
-        this.load.image("piedra", "../../..//www/public/assets/components/piedra.png");
-        this.load.image("plataforma", "../../..//www/public/assets/components/plataforma.png");
-        this.load.image("pincho", "../../..//www/public/assets/components/pinchos.png");
-        this.load.image("botonPausa", "../../..//www/public/img/buttons/pause.png");
+        this.load.image("fondoBosque", "../../assets/background/fondoBosque.jpg");
+        this.load.image("piedra", "../../assets/components/piedra.png");
+        this.load.image("plataforma", "../..//assets/components/plataforma.png");
+        this.load.image("pincho", "../../assets/components/pinchos.png");
+        this.load.image("botonPausa", "../../img/buttons/pause.png");
         botonPlay = document.getElementById('botonPlay');
+        botonPausa = document.getElementById('botonPausa');
 
-        this.load.spritesheet("jugador", "../../..//www/public/assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet("muerteJugador", "../../..//www/public/assets/character/main/Dead.png", {
+        this.load.spritesheet("jugador", "../../assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
+        this.load.spritesheet("muerteJugador", "../../assets/character/main/Dead.png", {
             frameWidth: 128,
             frameHeight: 128
         });
-        this.load.spritesheet("saltoJugador", "../../..//www/public/assets/character/main/Jump.png", {
+        this.load.spritesheet("saltoJugador", "../../assets/character/main/Jump.png", {
             frameWidth: 128,
             frameHeight: 128
         });
-        this.load.spritesheet("disparoJugador", "../../..//www/public/assets/character/main/Shot_1.png", {
+        this.load.spritesheet("disparoJugador", "../../assets/character/main/Shot_1.png", {
             frameWidth: 128,
             frameHeight: 128
         });
-        this.load.image("flechaJugador", "../../..//www/public/assets/character/main/Arrow.png");
+        this.load.image("flechaJugador", "../../assets/character/main/Arrow.png");
 
 
-        this.load.spritesheet("moneda", "../../..//www/public/assets//components/coin.png", {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet("orcoRojo", "../../..//www/public/assets/character/enemies/red/Run.png", {
+        this.load.spritesheet("moneda", "../../assets//components/coin.png", {frameWidth: 128, frameHeight: 128});
+        this.load.spritesheet("orcoRojo", "../../assets/character/enemies/red/Run.png", {
             frameWidth: 96,
             frameHeight: 96
         });
-        this.load.spritesheet("orcoVerde", "../../..//www/public/assets/character/enemies/green/Run.png", {
+        this.load.spritesheet("orcoVerde", "../../assets/character/enemies/green/Run.png", {
             frameWidth: 96,
             frameHeight: 96
         });
-        this.load.spritesheet("matarOrco", "../../..//www/public/assets/character/enemies/green/Dead.png", {
+        this.load.spritesheet("matarOrco", "../../assets/character/enemies/green/Dead.png", {
             frameWidth: 96,
             frameHeight: 96
         });
-        this.load.spritesheet("ataqueOrcoRojo", "../../..//www/public/assets/character/enemies/red/Attack_2.png", {
+        this.load.spritesheet("ataqueOrcoRojo", "../../assets/character/enemies/red/Attack_2.png", {
             frameWidth: 96,
             frameHeight: 96
         });
-        this.load.spritesheet("ataqueOrcoVerde", "../../..//www/public/assets/character/enemies/green/Attack_1.png", {
+        this.load.spritesheet("ataqueOrcoVerde", "../../assets/character/enemies/green/Attack_1.png", {
             frameWidth: 96,
             frameHeight: 96
         });
 
-        this.load.audio("orcosonido", "../../..//www/public/assets/audio/enemigos.mp3");
-        this.load.audio("monedasonido", "../../..//www/public/assets/audio/moneda.mp3");
-        this.load.audio("sonidofondo", "../../..//www/public/assets/audio/musicafondo.mp3");
-        this.load.audio("muertesonido", "../../..//www/public/assets/audio/defeat.mp3");
-        this.load.audio("orcoverdesonido", "../../..//www/public/assets/audio/orcoVerde.mp3");
-        this.load.audio("arcosonido", "../../..//www/public/assets/audio/arco.mp3");
+        this.load.audio("orcosonido", "../../assets/audio/enemigos.mp3");
+        this.load.audio("monedasonido", "../../assets/audio/moneda.mp3");
+        this.load.audio("sonidofondo", "../../assets/audio/musicafondo.mp3");
+        this.load.audio("muertesonido", "../../assets/audio/defeat.mp3");
+        this.load.audio("orcoverdesonido", "../../assets/audio/orcoVerde.mp3");
+        this.load.audio("arcosonido", "../../assets/audio/arco.mp3");
     }
 
     create() {
@@ -66,7 +67,7 @@ class gameScene extends Phaser.Scene {
         defeatSound = this.sound.add("muertesonido");
         fondoSound = this.sound.add("sonidofondo");
         orcoVerdeSound = this.sound.add("orcoverdesonido");
-        arcoSound= this.sound.add("arcosonido");
+        arcoSound = this.sound.add("arcosonido");
         fondoSound.play();
         fondoSound.volume = 0.2;
         fondoSound.loop = true;
@@ -184,27 +185,20 @@ class gameScene extends Phaser.Scene {
         this.physics.add.collider(suelo, orcoVerde);
 
         // Botones
-        botonPausa = this.add.image(1850, 75, "botonPausa").setInteractive();
-        botonPausa.setScale(0.5);
-        botonPausa.setData('botonPausa', botonPausa);
-        botonPausa.data.values.class = 'botonPausa';
-        botonPausa.data.values.id = 'botonPausa';
-
-        botonPausa.on('pointerdown', function (pointer) {
-            if (botonPausa.data.values.class === 'botonPausa' && pointer.leftButtonDown()) {
-                $('#modalPause').modal('show');
-                canMove = false;
-                jugador.anims.stop();
-                enemigos.forEach(function (orco) {
-                    orco.anims.stop();
-                });
-                orcosVerdes.forEach(function (orco) {
-                    orco.anims.stop();
-                });
-                monedero.forEach(function (moneda) {
-                    moneda.anims.stop();
-                });
-            }
+        $('#botonPausa').show();
+        botonPausa.addEventListener('click', async function () {
+            $('#modalPause').modal('show');
+            canMove = false;
+            jugador.anims.stop();
+            enemigos.forEach(function (orco) {
+                orco.anims.stop();
+            });
+            orcosVerdes.forEach(function (orco) {
+                orco.anims.stop();
+            });
+            monedero.forEach(function (moneda) {
+                moneda.anims.stop();
+            });
         }, this);
 
         botonPlay.addEventListener('click', async function () {
@@ -279,21 +273,9 @@ class gameScene extends Phaser.Scene {
             });
             enemigos.forEach(function (orco) {
                 orco.x -= velocidad / 1.36; // Mover cada orco junto con el fondo
-                /*if (orco.x <= 1000) {
-                    orco.anims.play('ataqueOrcoRojo');
-                    orco.once('animationcomplete', () => {
-                        orco.anims.play('run');
-                    })
-                }*/
             });
             orcosVerdes.forEach(function (orco) {
                 orco.x -= velocidad / 1.36; // Mover cada orco junto con el fondo
-                /*if (orco.x <= 1000) {
-                    orco.anims.play('ataqueOrcoVerde');
-                    orco.once('animationcomplete', () => {
-                        orco.anims.play('run');
-                    })
-                }*/
             });
             piedras.forEach(function (piedra) {
                 piedra.x -= velocidad / 2; // Mover cada piedra junto con el fondo
@@ -323,7 +305,7 @@ async function sumarPuntos() {
     while (estaVivo) {
         await new Promise(resolve => setTimeout(resolve, 100));
         puntos += 1;
-        if (puntos % 100 === 0) velocidad += 0.75;
+        if (puntos % 100 === 0) velocidad += 0.85;
     }
 }
 
@@ -539,16 +521,20 @@ async function morir() {
     fondoSound.stop();
     jugador.anims.stop();
     enemigos.forEach(function (orco) {
-        orco.anims.play('ataqueOrcoRojo');
-        orco.once('animationcomplete', () => {
-            orco.anims.stop();
-        })
+        if (orco.x <= 600) {
+            orco.anims.play('ataqueOrcoRojo');
+            orco.once('animationcomplete', () => {
+                orco.anims.stop();
+            })
+        }
     });
     orcosVerdes.forEach(function (orco) {
-        orco.anims.play('ataqueOrcoVerde');
-        orco.once('animationcomplete', () => {
-            orco.anims.stop();
-        })
+        if (orco.x <= 600) {
+            orco.anims.play('ataqueOrcoVerde');
+            orco.once('animationcomplete', () => {
+                orco.anims.stop();
+            })
+        }
     });
     canMove = false;
     estaVivo = false;
@@ -556,7 +542,7 @@ async function morir() {
     await new Promise(resolve => setTimeout(resolve, 400));
     jugador.anims.play('dead');
     jugador.once('animationcomplete', () => {
-        jugador.anims.stop(); dam.tfg.evergreenescape
+        jugador.anims.stop();
     })
     defeatSound.play();
     defeatSound.volume = 0.2;
