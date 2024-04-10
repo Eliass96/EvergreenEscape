@@ -5,9 +5,11 @@
     <author email="" href="">
         Apache Cordova Team
     </author>
-    <content src="www/index.html" />
-    <access origin="*" />
+    <content src="index.html"/>
+    <access origin="*"/>
+    <allow-intent href="localhost:*" />
     <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
     <allow-intent href="http://localhost:30000/*" />
     <allow-intent href="http://localhost:*/*" />
     <allow-intent href="https://localhost:30000/*" />
@@ -16,10 +18,17 @@
     <allow-intent href="http://127.0.0.1:*/*" />
     <allow-intent href="https://127.0.0.1:30000/*" />
     <allow-intent href="https://127.0.0.1:*/*" />
-    <allow-intent href="https://*/*" />
-    <platform name="android">
-        <allow-intent href="localhost:*" />
-    </platform>
-    <preference name="viewport" value="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <preference name="Orientation" value="landscape" />
+    <allow-navigation href="localhost:*" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="https://*/*" />
+    <allow-navigation href="http://localhost:30000/*" />
+    <allow-navigation href="http://localhost:*/*" />
+    <allow-navigation href="https://localhost:30000/*" />
+    <allow-navigation href="https://localhost:*/*" />
+    <allow-navigation href="http://127.0.0.1:30000/*" />
+    <allow-navigation href="http://127.0.0.1:*/*" />
+    <allow-navigation href="https://127.0.0.1:30000/*" />
+    <allow-navigation href="https://127.0.0.1:*/*" />
+    <preference name="viewport" value="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <preference name="Orientation" value="landscape"/>
 </widget>

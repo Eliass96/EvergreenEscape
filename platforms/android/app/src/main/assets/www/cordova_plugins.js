@@ -63,6 +63,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-screen-orientation": "3.0.4",
     "cordova-plugin-statusbar": "4.0.0",
     "cordova-plugin-navigationbar": "1.0.31",
-    "cordova-plugin-network-information": "3.0.0"
+    "cordova-plugin-network-information": "3.0.0",
+    "cordova-plugin-whitelist": "1.3.4"
   };
 });
