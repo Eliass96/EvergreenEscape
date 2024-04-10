@@ -5,6 +5,10 @@
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/platforms/android/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/platforms/android/CordovaLib/build" />
+      <excludeFolder url="file://$MODULE_DIR$/platforms/android/app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/platforms/android/gradle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
