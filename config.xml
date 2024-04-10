@@ -5,9 +5,21 @@
     <author email="" href="">
         Apache Cordova Team
     </author>
-    <content src="index.html" />
+    <content src="www/index.html" />
+    <access origin="*" />
     <allow-intent href="http://*/*" />
+    <allow-intent href="http://localhost:30000/*" />
+    <allow-intent href="http://localhost:*/*" />
+    <allow-intent href="https://localhost:30000/*" />
+    <allow-intent href="https://localhost:*/*" />
+    <allow-intent href="http://127.0.0.1:30000/*" />
+    <allow-intent href="http://127.0.0.1:*/*" />
+    <allow-intent href="https://127.0.0.1:30000/*" />
+    <allow-intent href="https://127.0.0.1:*/*" />
     <allow-intent href="https://*/*" />
+    <platform name="android">
+        <allow-intent href="localhost:*" />
+    </platform>
     <preference name="viewport" value="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <preference name="Orientation" value="landscape" />
 </widget>
