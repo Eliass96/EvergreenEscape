@@ -375,7 +375,7 @@ async function generarObstaculos() {
         }
 
         if (estaVivo && canMove) {
-            enemigoGenerado = Phaser.Math.RND.between(1, 2);
+            enemigoGenerado = Phaser.Math.RND.between(1, 4);
             if (enemigoGenerado === 1) {
                 let x = Phaser.Math.RND.between(game.config.width + 500, game.config.width + 800);
                 let y = Phaser.Math.RND.between(875, 875);
