@@ -3,9 +3,9 @@
   "displayName": "EvergreenEscape",
   "version": "1.0.0",
   "description": "EvergreenEscape the game.",
-  "main": "www/app.js",
+  "main": "server/app.js",
   "scripts": {
-    "run": "node www/app.js"
+    "run": "node server/app.js"
   },
   "keywords": [
     "ecosystem:cordova"
