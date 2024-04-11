@@ -173,9 +173,7 @@ app.post("/usuarios", async (req, res) => {
         }
 
         const usuarioAResvisar = await db.existeUsuario(nombre);
-        if (usuarioAResvisar === null) {
-            return res.status(400).send({ status: "Error", message: "Este usuario ya existe" });
-        } else {
+        if (usuarioAResvisar == null) {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);
             const nuevoUsuario = {
@@ -183,6 +181,8 @@ app.post("/usuarios", async (req, res) => {
             }
             await db.altaUsuario(nuevoUsuario);
             return res.status(201).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
+        } else {
+            return res.status(400).send({ status: "Error", message: "Este usuario ya existe" });
         }
     } catch (err) {
         console.log(err)
