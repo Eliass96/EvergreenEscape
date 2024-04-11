@@ -5,7 +5,8 @@
   "description": "EvergreenEscape the game.",
   "main": "server/app.js",
   "scripts": {
-    "run": "node server/app.js"
+    "run": "node server/app.js",
+    "dev": "nodemon --exec server/app.js"
   },
   "keywords": [
     "ecosystem:cordova"
@@ -14,10 +15,13 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@ionic-native/navigation-bar": "^5.36.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "gradle": "^1.2.4",
     "jquery": "^3.7.1",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.0",
     "phaser": "^3.80.1",
@@ -46,6 +50,7 @@
     "cordova-plugin-screen-orientation": "^3.0.4",
     "cordova-plugin-statusbar": "^4.0.0",
     "cordova-plugin-viewport": "^1.0.5",
-    "es6-promise-plugin": "^4.2.2"
+    "es6-promise-plugin": "^4.2.2",
+    "nodemon": "^3.1.0"
   }
 }

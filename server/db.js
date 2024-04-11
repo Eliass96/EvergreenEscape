@@ -114,7 +114,7 @@ exports.cambiarAjustes = async function (userId, valorMusica, valorSonido, valor
         }
 
         usuario.musica = valorMusica;
-        usuario.sonido=valorSonido;
+        usuario.sonido = valorSonido;
         usuario.pantallaCompleta = valorPantallaCompleta;
 
         await usuario.save();
@@ -191,7 +191,7 @@ exports.altaUsuario = async function (datosDeUsuario) {
 exports.listarPuntuacionesPorPais = async function (nacionalidad) {
     try {
         // Realizar una consulta a la base de datos para encontrar usuarios por país
-        const usuarios = await Usuario.find({ nacionalidad: nacionalidad });
+        const usuarios = await Usuario.find({nacionalidad: nacionalidad});
 
         if (usuarios.length === 0) {
             throw new Error('No se encontraron usuarios para el país especificado');
@@ -233,13 +233,7 @@ exports.listarTodasLasPuntuaciones = async function () {
     }
 };
 
+
 //AÑADIR USUARIO
 
 //VERIFICAR USUARIO AL INICIAR SESION
-
-
-
-
-
-
-
