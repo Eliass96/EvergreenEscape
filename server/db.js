@@ -234,6 +234,20 @@ exports.listarTodasLasPuntuaciones = async function () {
     }
 };
 
+//LISTAR USUARIO ----------
+exports.listarTodosLosUsuarios = async function () {
+    try {
+        const usuarios = await Usuario.find();
+
+        if (usuarios.length === 0) {
+            throw new Error('No se encontraron usuarios');
+        }
+        return usuarios;
+    } catch (error) {
+        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+    }
+};
+
 
 //AÑADIR USUARIO
 

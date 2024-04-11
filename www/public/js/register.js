@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let data = {
             nombre: usuario.value.trim(),
             password: password.value.trim(),
-            nacionalidad: dropdownMenuButton.value.trim()
+            nacionalidad: dropdownMenuButton.textContent.trim()
         }
         console.log(data)
         const resp = await fetch("/usuarios", {
@@ -147,10 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
-        console.log(resp)
         if (!resp.ok) {
             console.log("No ha funcionado!")
-            return false;
         } else {
             console.log("Ha funcionado!")
         }

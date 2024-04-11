@@ -34,6 +34,16 @@ db.conectar().then(() => {
 
 
 //METODOS
+// GES DE USUARIOS
+app.get("/usuarios", async function (req, resp) { // funciona
+    try {
+        const idUsuario = req.params.id;
+        let usuariosEncontrados = await db.listarTodosLosUsuarios();
+        resp.status(HTTP_OK).send(usuariosEncontrados);
+    } catch (err) {
+        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+    }
+});
 // GET A PUNTUACION-- LISTA PUNTUACION USUARIO
 app.get("/usuarios/:id", async function (req, resp) { // funciona
     try {
@@ -170,7 +180,8 @@ app.post("/usuarios", async (req, res) => {
             user, nacionalidad, password: hashPassword
         }
         await db.altaUsuario(nuevoUsuario);
-        return res.status(201).send({status: "ok", message: `Usuario ${nuevoUsuario.user} registrado`, redirect: "/"})
+        console.log(nuevoUsuario)
+        return res.status(201).send({status: "ok", message: `Usuario ${nuevoUsuario._id} registrado`, redirect: "/"})
     } catch (err) {
         return res.status(500).send({status: "error", message: `Error al crear el usuario.`, redirect: "/"})
     }
