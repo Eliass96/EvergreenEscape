@@ -1,12 +1,11 @@
 const cookieParser = require("cookie-parser");
 const bcrypt = require('bcryptjs');
-const dotenv = require("dotenv");
+require("dotenv").config();
 const express = require("express");
 const path = require('path');
 const {fileURLToPath} = require('url');
 const {createRequire} = require('module');
 const db = require("./db.js");
-dotenv.config();
 //import {methods as authentication, usuarios} from "../www/public/js/authentication.controller"
 //const requireFunc = createRequire('create-require');
 //const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -21,7 +20,6 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 
 const app = express();
-//app.use(express.static("/server"));
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.static("www/public"));

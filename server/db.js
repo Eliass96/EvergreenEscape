@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 //CREACION DEL ESQUEMA
 // USUARIO-≥ nombre required unique, contraseña required, nacionalidad required, array de puntuaciones vacio,
