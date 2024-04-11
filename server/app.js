@@ -76,7 +76,7 @@ app.get("/puntuaciones", async function (req, resp) {
 });
 
 //CREAR USUARIO
-app.post("/usuarios", async function (req, resp) { // funciona
+/*app.post("/usuarios", async function (req, resp) { // funciona
     try {
         const {
             nombre,
@@ -102,7 +102,7 @@ app.post("/usuarios", async function (req, resp) { // funciona
     } catch (err) {
         return resp.status(HTTP_INTERNAL_SERVER_ERROR).json({mensaje: 'Error al crear el usuario. Por favor, inténtelo de nuevo más tarde.'});
     }
-});
+});*/
 
 // PATCH PUNTUACION
 app.patch('/usuarios/puntuaciones/:id', async (req, res) => { //funciona
@@ -164,25 +164,28 @@ app.patch('/usuarios/ajustes/:id', async (req, res) => { //funciona
 //app.post("/usuarios/login", authentication.login);
 app.post("/usuarios", async (req, res) => {
     try {
-        const user = req.body.nombre;
+        const nombre = req.body.nombre;
         const password = req.body.password;
         const nacionalidad = req.body.nacionalidad;
-        if (!user || !password || !nacionalidad) {
+        console.log(req.body)
+        if (!nombre || !password || !nacionalidad) {
             return res.status(400).send({status: "Error", message: "Los campos están incompletos"})
         }
-        const usuarioAResvisar = usuarios.find(usuario => usuario.user === user);
-        if (usuarioAResvisar) {
-            return res.status(400).send({status: "Error", message: "Este usuario ya existe"})
+
+        const usuarioAResvisar = await db.existeUsuario(nombre);
+        if (usuarioAResvisar === null) {
+            return res.status(400).send({ status: "Error", message: "Este usuario ya existe" });
+        } else {
+            const salt = await bcrypt.genSalt(5);
+            const hashPassword = await bcrypt.hash(password, salt);
+            const nuevoUsuario = {
+                nombre, password: hashPassword, nacionalidad
+            }
+            await db.altaUsuario(nuevoUsuario);
+            return res.status(201).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
         }
-        const salt = await bcrypt.genSalt(5);
-        const hashPassword = await bcrypt.hash(password, salt);
-        const nuevoUsuario = {
-            user, nacionalidad, password: hashPassword
-        }
-        await db.altaUsuario(nuevoUsuario);
-        console.log(nuevoUsuario)
-        return res.status(201).send({status: "ok", message: `Usuario ${nuevoUsuario._id} registrado`, redirect: "/"})
     } catch (err) {
-        return res.status(500).send({status: "error", message: `Error al crear el usuario.`, redirect: "/"})
+        console.log(err)
+        return res.status(500).send({status: "error", message: `Error al crear el usuario.`})
     }
 });

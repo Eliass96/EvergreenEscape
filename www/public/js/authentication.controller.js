@@ -4,15 +4,15 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const usuarios = [{
+/*export const usuarios = [{
     user: "a",
     nacionalidad: "España",
     password: "$2a$05$nLY2It8riku2vwwDIINdgO/XIyPXRg1Gn9LFgnhwKqC4TwcAwEUL2"
-}]
+}]*/
 
 
 async function login(req, res) {
-/*    console.log(req.body);
+    console.log(req.body);
     const user = req.body.user;
     const password = req.body.password;
     if (!user || !password) {
@@ -36,7 +36,7 @@ async function login(req, res) {
         path: "/"
     }
     res.cookie("jwt", token, cookieOption);
-    res.send({status: "ok", message: "Usuario loggeado", redirect: "/admin"});*/
+    res.send({status: "ok", message: "Usuario loggeado", redirect: "/admin"});
 }
 
 async function register(req, res) {
@@ -60,7 +60,8 @@ async function register(req, res) {
     return res.status(201).send({status: "ok", message: `Usuario ${nuevoUsuario.user} registrado`, redirect: "/"})
 }
 
+/*
 export const methods = {
     login,
     register
-}
+}*/
