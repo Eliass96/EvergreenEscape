@@ -95,16 +95,15 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             txtPasswordRep.style.visibility = 'hidden';
             passwordRep.classList.remove('error');
-        }
-
-        if (password.value.trim() !== passwordRep.value.trim()) {
-            event.preventDefault(); // Evitar el envío del formulario
-            txtPasswordRep.style.visibility = 'visible';
-            passwordRep.classList.add('error');
-            txtPasswordRep.textContent = "Las contraseñas no coinciden";
-        } else {
-            txtPasswordRep.style.visibility = 'hidden';
-            passwordRep.classList.remove('error');
+            if (password.value.trim() !== passwordRep.value.trim()) {
+                event.preventDefault(); // Evitar el envío del formulario
+                txtPasswordRep.style.visibility = 'visible';
+                passwordRep.classList.add('error');
+                txtPasswordRep.textContent = "La contraseña no coincide";
+            } else {
+                txtPasswordRep.style.visibility = 'hidden';
+                passwordRep.classList.remove('error');
+            }
         }
 
         usuario.addEventListener('input', function () {
@@ -148,9 +147,12 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
+        console.log(resp)
         if (!resp.ok) {
             console.log("No ha funcionado!")
             return false;
+        } else {
+            console.log("Ha funcionado!")
         }
         const respJson = await resp.json();
         if (respJson.redirect) {
