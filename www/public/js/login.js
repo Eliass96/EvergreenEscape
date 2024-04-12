@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log("Ha funcionado!")
                     window.isLogged = true;
                     localStorage.setItem('isLogged', window.isLogged);
+                    console.log("smka")
                 }
                 const respJson = await resp.json();
                 if (respJson.redirect) {
