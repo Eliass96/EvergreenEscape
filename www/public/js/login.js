@@ -64,13 +64,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify(data)
                 });
                 if (!resp.ok) {
-                    console.log("No ha funcionado!")
                     window.isLogged = false;
                     localStorage.setItem('isLogged', window.isLogged);
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "¡Error al iniciar sesión!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    })
                 } else {
-                    console.log("Ha funcionado!")
                     window.isLogged = true;
                     localStorage.setItem('isLogged', window.isLogged);
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Has iniciado sesión!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        document.location.href = "/"
+                    })
                 }
                 const respJson = await resp.json();
                 if (respJson.redirect) {

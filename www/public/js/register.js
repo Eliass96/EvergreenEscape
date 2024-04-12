@@ -146,9 +146,39 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             console.log(resp);
             if (!resp.ok) {
-                console.log("No ha funcionado!")
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "¡Error al registrarte!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                })
             } else {
-                console.log("Ha funcionado!")
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "¡Te has registrado correctamente!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                }).then(async () => {
+                    let dataLogin = {
+                        nombre: usuario.value.trim(),
+                        password: password.value.trim()
+                    }
+                    await fetch("/usuarios/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(dataLogin)
+                    }).then(() => {
+                        window.isLogged = true;
+                        localStorage.setItem('isLogged', window.isLogged);
+                        document.location.href = "/"
+                    });
+                })
             }
             const respJson = await resp.json();
             if (respJson.redirect) {

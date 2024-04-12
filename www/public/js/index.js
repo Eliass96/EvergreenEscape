@@ -185,14 +185,19 @@ document.addEventListener('DOMContentLoaded', function () {
             cancelButtonText: "Cancelar",
             confirmButtonColor: "lightgreen",
         }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-
             if (result.isConfirmed) {
-
-                window.location.href = "../index.html";
-
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "¡Ajustes guardados!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                }).then(() => {
+                    document.location.href = "/"
+                })
             } else if (result.isDenied) {
-                window.location.href = "../index.html";
+                window.location.href = "/";
             }
 
         });
@@ -209,14 +214,19 @@ document.addEventListener('DOMContentLoaded', function () {
             cancelButtonText: "Cancelar",
             confirmButtonColor: "lightgreen",
         }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-
             if (result.isConfirmed) {
-
-                window.location.href = "../index.html";
-
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "¡Ajustes guardados!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                }).then(() => {
+                    document.location.href = "/"
+                })
             } else if (result.isDenied) {
-                window.location.href = "../index.html";
+                window.location.href = "/";
             }
 
         });
