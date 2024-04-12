@@ -188,7 +188,6 @@ class gameScene extends Phaser.Scene {
         $('#botonPausa').show();
         botonPausa.addEventListener('click', async function () {
             $('#modalPause').modal('show');
-            flechaJugador.setVelocityX(0);
             canMove = false;
             jugador.anims.stop();
             enemigos.forEach(function (orco) {
@@ -203,22 +202,19 @@ class gameScene extends Phaser.Scene {
         }, this);
 
         botonPlay.addEventListener('click', async function () {
-            if (estaVivo) {
-                $('#modalPause').modal('hide');
-                enableMovement();
-                enableAnimation();
-                flechaJugador.setVelocityX(700);
-                enemigos.forEach(function (orco) {
-                    orco.anims.play('orcoRojo');
-                });
-                orcosVerdes.forEach(function (orco) {
-                    orco.anims.play('orcoVerde');
-                });
-                monedero.forEach(function (moneda) {
-                    moneda.anims.play('moneda');
-                });
-                await Promise.all([generarObstaculos(), generarMonedas()]);
-            }
+            $('#modalPause').modal('hide');
+            enableMovement();
+            enableAnimation();
+            enemigos.forEach(function (orco) {
+                orco.anims.play('orcoRojo');
+            });
+            orcosVerdes.forEach(function (orco) {
+                orco.anims.play('orcoVerde');
+            });
+            monedero.forEach(function (moneda) {
+                moneda.anims.play('moneda');
+            });
+            await Promise.all([generarObstaculos(), generarMonedas()]);
         }, this);
 
         // Teclas
@@ -241,10 +237,11 @@ class gameScene extends Phaser.Scene {
         let botonPausaAlto = botonPausa.displayHeight;
 
         this.input.on('pointerdown', async function (pointer) {
-            console.log("hola")
             if (!disparando) {
-                if (pointer.leftButtonDown()) {
-                    console.log("hola2")
+                if (pointer.leftButtonDown() &&
+                    (pointer.x < botonPausaX || pointer.x > botonPausaX + botonPausaAncho ||
+                        pointer.y < botonPausaY || pointer.y > botonPausaY + botonPausaAlto)
+                ) {
                     await dispararFlechas();
                 }
             }

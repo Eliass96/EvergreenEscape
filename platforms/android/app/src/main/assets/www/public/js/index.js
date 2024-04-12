@@ -65,8 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     icon: "success",
                     title: "¡Compra realizada!",
                     showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
+                    timer: 1000
                 })
             }
         });
@@ -96,8 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     icon: "success",
                     title: "¡Compra realizada!",
                     showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
+                    timer: 1000
                 })
             }
         });
@@ -127,8 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     icon: "success",
                     title: "¡Compra realizada!",
                     showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
+                    timer: 1000
                 })
             }
         });
@@ -158,8 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     icon: "success",
                     title: "¡Compra realizada!",
                     showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
+                    timer: 1000
                 })
             }
         });
@@ -168,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function confirmarAjustes() {
         Swal.fire({
             title: "¿Quieres guardar los ajustes?",
-            icon: "question",
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: "Guardar",
@@ -192,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function cancelarAjustes() {
         Swal.fire({
             title: "¿Quieres salir sin guardar los ajustes?",
-            icon: "warning",
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: "Guardar",

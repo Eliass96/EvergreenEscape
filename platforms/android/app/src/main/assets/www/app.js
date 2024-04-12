@@ -1,14 +1,7 @@
-const cookieParser = require("cookie-parser");
-const bcrypt = require('bcryptjs');
 require("dotenv").config();
 const express = require("express");
-const path = require('path');
-const {fileURLToPath} = require('url');
-const {createRequire} = require('module');
 const db = require("./db.js");
-//import {methods as authentication, usuarios} from "../www/public/js/authentication.controller"
-//const requireFunc = createRequire('create-require');
-//const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
@@ -21,7 +14,6 @@ const PORT = process.env.PORT || 40000;
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser())
 app.use(express.static("www/public"));
 db.conectar().then(() => {
     console.log("Conectado con la base de datos.");
@@ -30,26 +22,13 @@ db.conectar().then(() => {
     );
 });
 
-// INICIO DE SESIÓN Y REGISTRO
-
-
 //METODOS
-// GES DE USUARIOS
-app.get("/usuarios", async function (req, resp) { // funciona
-    try {
-        const idUsuario = req.params.id;
-        let usuariosEncontrados = await db.listarTodosLosUsuarios();
-        resp.status(HTTP_OK).send(usuariosEncontrados);
-    } catch (err) {
-        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
-    }
-});
 // GET A PUNTUACION-- LISTA PUNTUACION USUARIO
 app.get("/usuarios/:id", async function (req, resp) { // funciona
     try {
         const idUsuario = req.params.id;
         console.log(idUsuario);
-        let usuarioEncontrado = await db.listarPuntuaciones(idUsuario);
+        usuarioEncontrado = await db.listarPuntuaciones(idUsuario);
         resp.status(HTTP_OK).send(usuarioEncontrado);
     } catch (err) {
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
@@ -59,7 +38,7 @@ app.get("/usuarios/:id", async function (req, resp) { // funciona
 app.get("/puntuaciones/pais/:id", async function (req, resp) {
     try {
         const pais = req.params.id;
-        let puntuacionesPorPais = await db.listarPuntuacionesPorPais(pais);
+        puntuacionesPorPais = await db.listarPuntuacionesPorPais(pais);
         resp.status(HTTP_OK).send(puntuacionesPorPais);
     } catch (err) {
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
@@ -76,33 +55,18 @@ app.get("/puntuaciones", async function (req, resp) {
 });
 
 //CREAR USUARIO
-/*app.post("/usuarios", async function (req, resp) { // funciona
+app.post("/usuarios", async function (req, resp) { // funciona
     try {
-        const {
-            nombre,
-            password,
-            nacionalidad,
-            puntuaciones,
-            monedas,
-            superSalto,
-            puntuacionExtra,
-            revivir,
-            inmunidad,
-            musica,
-            sonido,
-            pantallaCompleta
-        } = req.body;
+        const { nombre, password, nacionalidad, puntuaciones, monedas, superSalto, puntuacionExtra, revivir, inmunidad, musica, sonido, pantallaCompleta } = req.body;
 
-        const nuevoUsuario = await db.altaUsuario({
-            nombre, password, nacionalidad, puntuaciones, monedas, superSalto, puntuacionExtra, revivir,
-            inmunidad, musica, sonido, pantallaCompleta
-        });
+        const nuevoUsuario = await db.altaUsuario({ nombre, password, nacionalidad, puntuaciones, monedas, superSalto, puntuacionExtra, revivir,
+            inmunidad, musica, sonido, pantallaCompleta });
 
-        return resp.status(HTTP_CREATED).json({mensaje: 'Usuario creado con éxito.', usuario: nuevoUsuario});
+        return resp.status(HTTP_CREATED).json({ mensaje: 'Usuario creado con éxito.', usuario: nuevoUsuario });
     } catch (err) {
-        return resp.status(HTTP_INTERNAL_SERVER_ERROR).json({mensaje: 'Error al crear el usuario. Por favor, inténtelo de nuevo más tarde.'});
+        return resp.status(HTTP_INTERNAL_SERVER_ERROR).json({ mensaje: 'Error al crear el usuario. Por favor, inténtelo de nuevo más tarde.' });
     }
-});*/
+});
 
 // PATCH PUNTUACION
 app.patch('/usuarios/puntuaciones/:id', async (req, res) => { //funciona
@@ -159,33 +123,3 @@ app.patch('/usuarios/ajustes/:id', async (req, res) => { //funciona
 // GET A PUNTUACION-- LISTA PUNTUACION PAIS
 
 // GET A PUNTUACION-- LISTA PUNTUACION GLOBAL
-
-
-//app.post("/usuarios/login", authentication.login);
-app.post("/usuarios", async (req, res) => {
-    try {
-        const nombre = req.body.nombre;
-        const password = req.body.password;
-        const nacionalidad = req.body.nacionalidad;
-        console.log(req.body)
-        if (!nombre || !password || !nacionalidad) {
-            return res.status(400).send({status: "Error", message: "Los campos están incompletos"})
-        }
-
-        const usuarioAResvisar = await db.existeUsuario(nombre);
-        if (usuarioAResvisar == null) {
-            const salt = await bcrypt.genSalt(5);
-            const hashPassword = await bcrypt.hash(password, salt);
-            const nuevoUsuario = {
-                nombre, password: hashPassword, nacionalidad
-            }
-            await db.altaUsuario(nuevoUsuario);
-            return res.status(201).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
-        } else {
-            return res.status(400).send({ status: "Error", message: "Este usuario ya existe" });
-        }
-    } catch (err) {
-        console.log(err)
-        return res.status(500).send({status: "error", message: `Error al crear el usuario.`})
-    }
-});
