@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function formularioLogin() {
+    async function formularioLogin() {
         let usuario = document.getElementById('txtusuario');
         let password = document.getElementById('txtpassword');
         let txtUsuarioLogin = document.getElementById('txtFaltanDatosUsuarioLogin');
@@ -48,5 +48,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 password.classList.remove('error');
             }
         });
+
+        if (!usuario.classList.contains('error') && !password.classList.contains('error')) {
+            let data = {
+                nombre: usuario.value.trim(),
+                password: password.value.trim()
+            }
+            const resp = await fetch("/usuarios/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            if (!resp.ok) {
+                console.log("No ha funcionado!")
+            } else {
+                console.log("Ha funcionado!")
+            }
+            const respJson = await resp.json();
+            if (respJson.redirect) {
+                window.location.href = respJson.redirect;
+            }
+        }
     }
 });

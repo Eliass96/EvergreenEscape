@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 event.preventDefault(); // Evitar el envío del formulario
                 txtPasswordRep.style.visibility = 'visible';
                 passwordRep.classList.add('error');
+                password.classList.add('error');
                 txtPasswordRep.textContent = "La contraseña no coincide";
             } else {
                 txtPasswordRep.style.visibility = 'hidden';
@@ -128,33 +129,31 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (!usuario.classList.contains('error')
-            || !dropdownMenuButton.classList.contains('error')
-            || !password.classList.contains('error')
-            || !passwordRep.classList.contains('error')
-            || password.value.trim() !== passwordRep.value.trim()
+            && !dropdownMenuButton.classList.contains('error')
+            && !password.classList.contains('error')
+            && !passwordRep.classList.contains('error')
         ) {
-            const mensajeError = document.getElementsByClassName("error")[0];
-            console.log(usuario.value.trim())
-        }
-        let data = {
-            nombre: usuario.value.trim(),
-            password: password.value.trim(),
-            nacionalidad: dropdownMenuButton.textContent.trim()
-        }
-        console.log(data)
-        const resp = await fetch("/usuarios", {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        });
-        if (!resp.ok) {
-            console.log("No ha funcionado!")
-        } else {
-            console.log("Ha funcionado!")
-        }
-        const respJson = await resp.json();
-        if (respJson.redirect) {
-            window.location.href = respJson.redirect;
+            let data = {
+                nombre: usuario.value.trim(),
+                password: password.value.trim(),
+                nacionalidad: dropdownMenuButton.textContent.trim()
+            }
+            console.log(data);
+            const resp = await fetch("/usuarios/register", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            console.log(resp);
+            if (!resp.ok) {
+                console.log("No ha funcionado!")
+            } else {
+                console.log("Ha funcionado!")
+            }
+            const respJson = await resp.json();
+            if (respJson.redirect) {
+                window.location.href = respJson.redirect;
+            }
         }
     }
 })
