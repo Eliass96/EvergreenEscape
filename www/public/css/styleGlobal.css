@@ -236,8 +236,7 @@ footer p {
 .but_cancelar_ajustes:hover,
 .botonenviar:hover,
 .btnComprar:hover,
-.botonPausa:hover,
-.botonCerrarSesion:hover {
+.botonPausa:hover {
     transform: scale(1.1);
 }
 
@@ -254,8 +253,7 @@ footer p {
 .but_cancelar_ajustes:active,
 .botonenviar:active,
 .btnComprar:active,
-.botonPausa:active,
-.botonCerrarSesion:active {
+.botonPausa:active {
     transform: scale(0.9);
 }
 

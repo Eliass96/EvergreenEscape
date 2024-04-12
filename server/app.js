@@ -6,8 +6,6 @@ const path = require('path');
 const {fileURLToPath} = require('url');
 const {createRequire} = require('module');
 const db = require("./db.js");
-const bcryptjs = require("bcryptjs");
-const jsonwebtoken = require("jsonwebtoken");
 //import {methods as authentication, usuarios} from "../www/public/js/authentication.controller"
 //const requireFunc = createRequire('create-require');
 //const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -164,17 +162,18 @@ app.patch('/usuarios/ajustes/:id', async (req, res) => { //funciona
 
 
 //app.post("/usuarios/login", authentication.login);
-app.post("/usuarios/register", async (req, res) => {
+app.post("/usuarios", async (req, res) => {
     try {
         const nombre = req.body.nombre;
         const password = req.body.password;
         const nacionalidad = req.body.nacionalidad;
+        console.log(req.body)
         if (!nombre || !password || !nacionalidad) {
             return res.status(400).send({status: "Error", message: "Los campos están incompletos"})
         }
 
         const usuarioAResvisar = await db.existeUsuario(nombre);
-        if (!usuarioAResvisar) {
+        if (usuarioAResvisar == null) {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);
             const nuevoUsuario = {
@@ -190,34 +189,3 @@ app.post("/usuarios/register", async (req, res) => {
         return res.status(500).send({status: "error", message: `Error al crear el usuario.`})
     }
 });
-
-app.post("/usuarios/login", async (req, res) => {
-    console.log(req.body)
-    const nombre = req.body.nombre;
-    const password = req.body.password;
-    if (!nombre || !password) {
-        return res.status(400).send({status: "Error", message: "Los campos están incompletos"})
-    }
-    const usuarioAResvisar = await db.existeUsuario(nombre);
-    if (!usuarioAResvisar) {
-        return res.status(400).send({status: "Error", message: "Error durante login"})
-    }
-    const loginCorrecto = await bcryptjs.compare(password, usuarioAResvisar.password);
-    console.log(loginCorrecto)
-    if (!loginCorrecto) {
-        return res.status(400).send({status: "Error", message: "Error durante login"})
-    } else {
-        const token = jsonwebtoken.sign(
-            {user: usuarioAResvisar.nombre},
-            process.env.JWT_SECRET,
-            {expiresIn: process.env.JWT_EXPIRATION});
-
-        const cookieOption = {
-            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-            path: "/"
-        }
-        res.cookie("jwt", token, cookieOption);
-        res.send({status: "ok", message: "Usuario loggeado"});
-    }
-});
-
