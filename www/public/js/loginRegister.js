@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('registerButton').addEventListener('click', formularioRegister);
-    document.getElementById('checkboxRegister').addEventListener('click', verpasswordRegister);
+
+    if (document.getElementById('loginButton')) {
+        document.getElementById('loginButton').addEventListener('click', formularioLogin);
+        document.getElementById('checkboxLogin').addEventListener('click', verpasswordLogin);
+    } else if (document.getElementById('registerButton')) {
+        document.getElementById('registerButton').addEventListener('click', formularioRegister);
+        document.getElementById('checkboxRegister').addEventListener('click', verpasswordRegister);
+    }
 
     let dropdownMenuButton = document.getElementById('dropdownMenuButton');
 
@@ -20,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 dropdownMenuButton.textContent = e.target.closest('a').textContent.trim();
                 document.getElementById('txtFaltanDatosNacionalidad').style.visibility = 'hidden';
                 dropdownMenuButton.classList.remove('error');
-                $('.cajaentradatexto').each(function () {
+                $('.cajaentradatexto').each(function() {
                     let $this = $(this);
                     if (!$this.hasClass('d-flex')) {
                         $this.addClass('d-flex');
@@ -40,6 +46,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    function verpasswordLogin() {
+        let tipo = document.getElementById("txtpassword");
+        if (tipo.type === "password") {
+            tipo.type = "text";
+        } else {
+            tipo.type = "password";
+        }
+    }
+
     function verpasswordRegister() {
         let tipo = document.getElementById("txtpassword");
         let tipoRep = document.getElementById("txtpasswordrep");
@@ -52,7 +67,46 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    async function formularioRegister() {
+    function formularioLogin() {
+        let usuario = document.getElementById('txtusuario');
+        let password = document.getElementById('txtpassword');
+        let txtUsuarioLogin = document.getElementById('txtFaltanDatosUsuarioLogin');
+        let txtPasswordLogin = document.getElementById('txtFaltanDatosPasswordLogin');
+
+        if (usuario.value.trim() === '') {
+            event.preventDefault(); // Evitar el envío del formulario
+            txtUsuarioLogin.style.visibility = 'visible';
+            usuario.classList.add('error');
+        } else {
+            txtUsuarioLogin.style.visibility = 'hidden';
+            usuario.classList.remove('error');
+        }
+
+        if (password.value.trim() === '') {
+            event.preventDefault(); // Evitar el envío del formulario
+            txtPasswordLogin.style.visibility = 'visible';
+            password.classList.add('error');
+        } else {
+            txtPasswordLogin.style.visibility = 'hidden';
+            password.classList.remove('error');
+        }
+
+        usuario.addEventListener('input', function () {
+            if (usuario.value.trim() !== '') {
+                txtUsuarioLogin.style.visibility = 'hidden';
+                usuario.classList.remove('error');
+            }
+        });
+
+        password.addEventListener('input', function () {
+            if (password.value.trim() !== '') {
+                txtPasswordLogin.style.visibility = 'hidden';
+                password.classList.remove('error');
+            }
+        });
+    }
+
+    function formularioRegister() {
         let usuario = document.getElementById('txtusuario');
         let password = document.getElementById('txtpassword');
         let passwordRep = document.getElementById('txtpasswordrep');
@@ -95,15 +149,6 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             txtPasswordRep.style.visibility = 'hidden';
             passwordRep.classList.remove('error');
-            if (password.value.trim() !== passwordRep.value.trim()) {
-                event.preventDefault(); // Evitar el envío del formulario
-                txtPasswordRep.style.visibility = 'visible';
-                passwordRep.classList.add('error');
-                txtPasswordRep.textContent = "La contraseña no coincide";
-            } else {
-                txtPasswordRep.style.visibility = 'hidden';
-                passwordRep.classList.remove('error');
-            }
         }
 
         usuario.addEventListener('input', function () {
@@ -126,39 +171,5 @@ document.addEventListener('DOMContentLoaded', function () {
                 passwordRep.classList.remove('error');
             }
         });
-
-        if (!usuario.classList.contains('error')
-            || !dropdownMenuButton.classList.contains('error')
-            || !password.classList.contains('error')
-            || !passwordRep.classList.contains('error')
-            || password.value.trim() !== passwordRep.value.trim()
-        ) {
-            const mensajeError = document.getElementsByClassName("error")[0];
-            console.log(usuario.value.trim())
-        }
-        let data = {
-            nombre: usuario.value.trim(),
-            password: password.value.trim(),
-            nacionalidad: dropdownMenuButton.textContent.trim()
-        }
-        console.log(data)
-        const resp = await fetch("/usuarios", {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        });
-        if (!resp.ok) {
-            console.log("No ha funcionado!")
-        } else {
-            console.log("Ha funcionado!")
-        }
-        const respJson = await resp.json();
-        if (respJson.redirect) {
-            window.location.href = respJson.redirect;
-        }
     }
-})
-
-
-
-
+});

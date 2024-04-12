@@ -74,25 +74,11 @@
     overflow-y: hidden;
 }
 
-.cardPerfil {
-    width: 23vw;
-    height: 55vh;
-    border-radius: 15px;
-    overflow-y: hidden;
-    font-family: 'turtles', sans-serif;
-    font-size: clamp(1em, 4vh, 1.5em);
-}
-
-.txtDatosPerfil {
-    font-size: clamp(1.3em, 5vh, 2.5em);
-}
-
 .items {
     width: 11.5vw;
 }
 
-.btnComprar,
-.botonCerrarSesion {
+.btnComprar {
     width: 90%;
     padding: 10px 30px;
     cursor: pointer;

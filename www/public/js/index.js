@@ -6,15 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    if (document.getElementById('butUser')) {
-        console.log(localStorage.getItem('isLogged'))
-        if (localStorage.getItem('isLogged') === 'true') {
-            document.getElementById('butUser').setAttribute('href', '../html/profile.html');
-        } else {
-            document.getElementById('butUser').setAttribute('href', '../html/login.html');
-        }
-    }
-
     if (document.getElementById('but_aceptar_ajustes')) {
         let but_aceptar_ajustes = document.getElementById('but_aceptar_ajustes');
         but_aceptar_ajustes.addEventListener('click', function () {
