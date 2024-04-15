@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 40000;
 const app = express();
 app.use(express.json());
 app.use(cookieParser())
-app.use(express.static("www/public"));
+app.use(express.static("www"));
 db.conectar().then(() => {
     console.log("Conectado con la base de datos.");
     app.listen(PORT, () =>
