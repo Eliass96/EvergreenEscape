@@ -1,0 +1,8 @@
+{
+  "name": "EvergreenEscape",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "custom"
+}

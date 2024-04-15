@@ -1,0 +1,14 @@
+{
+  "appId": "com.game.evergreenescape",
+  "appName": "EvergreenEscape",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "cordova": {
+    "preferences": {
+      "viewport": "width=device-width, initial-scale=1.0, maximum-scale=1.0",
+      "Orientation": "landscape"
+    }
+  }
+}
