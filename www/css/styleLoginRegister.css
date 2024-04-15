@@ -1,22 +1,16 @@
 /*** LOGIN Y REGISTER ***/
-.cajafuera {
-    width: 100%;
-    height: 100%;
-    font-family: 'turtles', sans-serif;
-    display: flex;
-    justify-content: center;
-}
-
 .formulariocaja {
     background-color: rgba(0, 0, 0, .5);
     width: 25vw;
     min-width: 300px;
-    height: auto;
     position: relative;
     margin: auto;
-    padding: 1em;
-    border-radius: 5px;
+    border-radius: 15px;
     color: white;
+    font-family: 'turtles', sans-serif;
+    display: flex;
+    justify-content: center;
+    overflow-y: hidden;
 }
 
 input {

@@ -19,59 +19,58 @@
     </a>
     <img src="../img/headers/REGISTRARSE.png" alt="boton_info" class="titulo_settings"/>
 </header>
-<main class="container-fluid">
-    <div class="cajafuera">
-        <div class="formulariocaja d-flex align-items-center justify-content-center">
-            <form method="post" action="" name="vaidrollteam">
-                <div class="textoscajas">&#128273; Introduce tu usuario</div>
-                <label>
-                    <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosUsuario">El usuario es obligatorio</p>
-                <div class="textoscajas">&#127760; Selecciona tu nacionalidad</div>
+<main>
+    <div class="formulariocaja d-flex align-items-center justify-content-center">
+        <form method="post" action="" name="vaidrollteam">
+            <div class="textoscajas">&#128273; Introduce tu usuario</div>
+            <label>
+                <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
+            </label>
+            <p class="txtFaltanDatos" id="txtFaltanDatosUsuario">El usuario es obligatorio</p>
+            <div class="textoscajas">&#127760; Selecciona tu nacionalidad</div>
 
-                <div class="dropdown">
-                    <button class="cajaentradatexto dropdown-toggle text-end" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <label>
-                            <input type="text" class="busquedapaises form-control m-1" id="formularioPaises" placeholder="Busca tu país...">
-                        </label>
-                        <div id="listadoPaises" aria-labelledby="dropdownMenuLink">
+            <div class="dropdown">
+                <button class="cajaentradatexto dropdown-toggle text-end" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <label>
+                        <input type="text" class="busquedapaises form-control m-1" id="formularioPaises"
+                               placeholder="Busca tu país...">
+                    </label>
+                    <div id="listadoPaises" aria-labelledby="dropdownMenuLink">
 
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <p class="txtFaltanDatos" id="txtFaltanDatosNacionalidad">La nacionalidad es obligatoria</p>
-                <div class="textoscajas">&#128274; Introduce tu contraseña</div>
-                <label for="txtpassword">
-                    <input type="password" name="txtpassword_register" id="txtpassword"
-                           class="cajaentradatexto">
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosPassword">La contraseña es obligatoria</p>
-                <div class="textoscajas">&#128274; Repite tu contraseña</div>
-                <label for="txtpasswordrep">
-                    <input type="password" name="txtpasswordrep_register" id="txtpasswordrep"
-                           class="cajaentradatexto">
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosPasswordRep">Por favor, repite tu contraseña</p>
-                <div class="afcheckbox1 d-flex align-items-center justify-content-start">
-                    <div>
-                        <label>
-                            <input type="checkbox" id="checkboxRegister" class="checkbox">
-                        </label>
-                    </div>
-                    <div>Mostrar contraseña</div>
+            <p class="txtFaltanDatos" id="txtFaltanDatosNacionalidad">La nacionalidad es obligatoria</p>
+            <div class="textoscajas">&#128274; Introduce tu contraseña</div>
+            <label for="txtpassword">
+                <input type="password" name="txtpassword_register" id="txtpassword"
+                       class="cajaentradatexto">
+            </label>
+            <p class="txtFaltanDatos" id="txtFaltanDatosPassword">La contraseña es obligatoria</p>
+            <div class="textoscajas">&#128274; Repite tu contraseña</div>
+            <label for="txtpasswordrep">
+                <input type="password" name="txtpasswordrep_register" id="txtpasswordrep"
+                       class="cajaentradatexto">
+            </label>
+            <p class="txtFaltanDatos" id="txtFaltanDatosPasswordRep">Por favor, repite tu contraseña</p>
+            <div class="afcheckbox1 d-flex align-items-center justify-content-start">
+                <div>
+                    <label>
+                        <input type="checkbox" id="checkboxRegister" class="checkbox">
+                    </label>
                 </div>
+                <div>Mostrar contraseña</div>
+            </div>
 
-                <input type="button" value="Registrar" class="botonenviar" id="registerButton">
+            <input type="button" value="Registrar" class="botonenviar" id="registerButton">
 
-                <div class="registrar">¿Ya tienes cuenta? <a class="but_abrir_login" href="login.html">Iniciar
-                    sesión</a></div>
-            </form>
-        </div>
+            <div class="registrar">¿Ya tienes cuenta? <a class="but_abrir_login" href="login.html">Iniciar
+                sesión</a></div>
+        </form>
     </div>
 </main>
 <footer class="d-flex align-items-center justify-content-start ps-4">

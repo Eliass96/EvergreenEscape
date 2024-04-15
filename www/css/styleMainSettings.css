@@ -59,16 +59,26 @@
 
 .ajustes {
     background-color: rgba(0, 0, 0, .35);
-    border-radius: 20px;
+    border-radius: 15px;
     width: 50vw;
+    max-height: 45vh;
     min-width: 450px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    overflow-y: hidden;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
+.ajustes-inner {
+    color: white;
+    overflow-y: auto;
+    height: 100%;
+    border-radius: 15px;
 }
 
 .ajustes .row {
     margin-bottom: 15px !important;
     margin-top: 15px !important;
+    --bs-gutter-x: 0 !important;
 }
 
 .texto_ajustes {

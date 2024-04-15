@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/styleMainSettings.css">
     <link rel="stylesheet" href="../css/styleGlobal.css">
     <link rel="stylesheet" href="../css/styleLoginRegister.css">
+    <link rel="stylesheet" href="../css/styleCards.css">
 </head>
 <body>
 <header class="container-fluid d-flex justify-content-center align-items-center pt-4">
@@ -20,33 +21,33 @@
     <img src="../img/headers/iniciar%20sesión.png" alt="boton_info" class="titulo_settings"/>
 </header>
 <main>
-    <div class="cajafuera">
-        <div class="formulariocaja d-flex align-items-center justify-content-center">
-            <form method="post" action="" name="vaidrollteam">
-                <div class="textoscajas" id="textBoxUserLogin">&#128273; Introduce tu usuario</div>
-                <label>
-                    <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosUsuarioLogin">El nombre de usuario es obligatorio</p>
-                <div class="textoscajas" id="textBoxPasswordLogin">&#128274; Introduce tu contraseña</div>
-                <label for="txtpassword">
-                    <input type="password" name="txtpassword" id="txtpassword" class="cajaentradatexto">
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosPasswordLogin">La contraseña es obligatoria</p>
-                <div class="afcheckbox1 d-flex align-items-center justify-content-start">
-                    <div>
-                        <label>
-                            <input type="checkbox" id="checkboxLogin" class="checkbox">
-                        </label>
-                    </div>
-                    <div>Mostrar contraseña</div>
+    <div class="formulariocaja d-flex align-items-center justify-content-center">
+
+        <form method="post" action="" name="vaidrollteam">
+            <div class="textoscajas" id="textBoxUserLogin">&#128273; Introduce tu usuario</div>
+            <label>
+                <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
+            </label>
+            <p class="txtFaltanDatos" id="txtFaltanDatosUsuarioLogin">El nombre de usuario es obligatorio</p>
+            <div class="textoscajas" id="textBoxPasswordLogin">&#128274; Introduce tu contraseña</div>
+            <label for="txtpassword">
+                <input type="password" name="txtpassword" id="txtpassword" class="cajaentradatexto">
+            </label>
+            <p class="txtFaltanDatos" id="txtFaltanDatosPasswordLogin">La contraseña es obligatoria</p>
+            <div class="afcheckbox1 d-flex align-items-center justify-content-start">
+                <div>
+                    <label>
+                        <input type="checkbox" id="checkboxLogin" class="checkbox">
+                    </label>
                 </div>
+                <div>Mostrar contraseña</div>
+            </div>
 
-                <input type="button" value="Iniciar sesión" class="botonenviar" id="loginButton">
+            <input type="button" value="Iniciar sesión" class="botonenviar" id="loginButton">
 
-                <div class="registrar">¿Necesitas una cuenta? <a class="but_abrir_registro" href="register.html">Registrar</a></div>
-            </form>
-        </div>
+            <div class="registrar">¿Necesitas una cuenta? <a class="but_abrir_registro"
+                                                             href="register.html">Registrar</a></div>
+        </form>
     </div>
 </main>
 <footer class="d-flex align-items-center justify-content-start ps-4">
