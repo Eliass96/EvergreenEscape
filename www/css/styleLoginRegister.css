@@ -3,6 +3,7 @@
     background-color: rgba(0, 0, 0, .5);
     width: 25vw;
     min-width: 300px;
+    max-height: 60vh;
     position: relative;
     margin: auto;
     border-radius: 15px;
@@ -11,6 +12,15 @@
     display: flex;
     justify-content: center;
     overflow-y: hidden;
+}
+
+.form-inner {
+    color: white;
+    overflow-y: auto;
+    width: 25vw;
+    max-height: 60vh;
+    min-width: 300px;
+    border-radius: 15px;
 }
 
 input {

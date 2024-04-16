@@ -2,11 +2,10 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Hacer PUG para HTML dinámico
-*** Hacer scrollbar en login y registrar
 *** Hacer que al poner el ratón encima de los botones se desactive la animación y haga el evecto de hover y click.
-*** Revisar HTML para hacerlo semántico
-*** Revisar CSS para eliminar lo que sobre
+*** Hacer PUG para HTML dinámico
+    *** Revisar HTML para hacerlo semántico
+    *** Revisar CSS para eliminar lo que sobre
 *** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
 *** El modal de game over y pause no debe aceptar click fuera suyo
 
