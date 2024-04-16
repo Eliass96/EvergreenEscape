@@ -561,9 +561,9 @@ async function morir() {
     jugador.setVelocity(0);
     await new Promise(resolve => setTimeout(resolve, 400));
     jugador.anims.play('dead');
-    jugador.once('animationcomplete', () => {
+    /*jugador.once('animationcomplete', () => {
         jugador.anims.stop();
-    })
+    })*/
     defeatSound.play();
     defeatSound.volume = 0.2;
     document.getElementById("textoCantidadPuntos").textContent = "Puntuación: " + puntos.toString();
