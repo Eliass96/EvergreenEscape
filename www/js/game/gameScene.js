@@ -183,7 +183,9 @@ class gameScene extends Phaser.Scene {
         $('#botonPausa').show();
         botonPausa.addEventListener('click', async function () {
             $('#modalPause').modal('show');
-            flechaJugador.setVelocityX(0);
+            flechasJugador.forEach(function (flecha) {
+                flecha.setVelocityX(0);
+            });
             canMove = false;
             jugador.anims.stop();
             enemigos.forEach(function (orco) {
@@ -557,6 +559,7 @@ async function morir() {
     document.getElementById("textoCantidadPuntos").textContent = "Puntuación: " + puntos.toString();
     document.getElementById("textoCantidadMonedas").textContent = "Monedas: " + monedas.toString();
     await new Promise(resolve => setTimeout(resolve, 1500));
+    $('#modalPause').modal('hide');
     $('#modalGameOver').modal('show');
 }
 
