@@ -150,6 +150,14 @@ class gameScene extends Phaser.Scene {
         jugador.setCollideWorldBounds(true);
         jugador.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
 
+        // Flecha
+        flechaJugador = context.physics.add.image(jugador.x, jugador.y, "flechaJugador").setScale(2.5);
+        flechaJugador.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        flechaJugador.body.setAllowGravity(false);
+        flechaJugador.disableBody(true, true);
+        flechaJugador.setScale(2.5);
+        flechaJugador.setSize(40, 10);
+
         // Monedas
         this.physics.add.overlap(jugador, monedero, cogerMonedas, null, this)
 
