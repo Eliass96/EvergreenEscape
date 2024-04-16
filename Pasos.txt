@@ -2,7 +2,6 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Hacer que al poner el ratón encima de los botones se desactive la animación y haga el evecto de hover y click.
 *** Hacer PUG para HTML dinámico
     *** Revisar HTML para hacerlo semántico
     *** Revisar CSS para eliminar lo que sobre
