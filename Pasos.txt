@@ -7,7 +7,6 @@
     *** Revisar HTML para hacerlo semántico
     *** Revisar CSS para eliminar lo que sobre
 *** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
-*** El modal de game over y pause no debe aceptar click fuera suyo
 
 ***************************
 ********** ELIAS **********

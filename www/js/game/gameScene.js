@@ -182,7 +182,7 @@ class gameScene extends Phaser.Scene {
         // Botones
         $('#botonPausa').show();
         botonPausa.addEventListener('click', async function () {
-            $('#modalPause').modal('show');
+            $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
             flechasJugador.forEach(function (flecha) {
                 flecha.setVelocityX(0);
             });
@@ -204,7 +204,9 @@ class gameScene extends Phaser.Scene {
                 $('#modalPause').modal('hide');
                 enableMovement();
                 enableAnimation();
-                flechaJugador.setVelocityX(700);
+                flechasJugador.forEach(function (flecha) {
+                    flecha.setVelocityX(700);
+                });
                 enemigos.forEach(function (orco) {
                     orco.anims.play('orcoRojo');
                 });
@@ -560,7 +562,7 @@ async function morir() {
     document.getElementById("textoCantidadMonedas").textContent = "Monedas: " + monedas.toString();
     await new Promise(resolve => setTimeout(resolve, 1500));
     $('#modalPause').modal('hide');
-    $('#modalGameOver').modal('show');
+    $('#modalGameOver').modal({backdrop: 'static', keyboard: false}).modal('show');
 }
 
 
