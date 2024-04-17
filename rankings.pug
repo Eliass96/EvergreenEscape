@@ -1,9 +1,9 @@
-.cardRanking
+output.cardRanking
     .card-inner
         header.d-flex.align-items-center.justify-content-center
             h2.titulo_card_ranking Tus mejores puntuaciones
         ol.lista_ranking
             each punt in puntuaciones
-                li.texto_ranking.d-flex.align-items-center.justify-content-between.ms-3(id=punt._id)
+                li.texto_ranking.d-flex.align-items-center.justify-content-between.ms-3
                     p= punt + ' puntos'
 

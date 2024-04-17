@@ -51,6 +51,16 @@ app.get("/usuarios/:id", async function (req, resp) { // funciona
     }
 });
 
+app.get("/usuarios/:id/puntuaciones", async function (req, resp) { // funciona
+    try {
+        const idUsuario = req.params.id;
+        let usuarioEncontrado = await db.listarPuntuaciones(idUsuario);
+        resp.status(HTTP_OK).send(usuarioEncontrado);
+    } catch (err) {
+        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+    }
+});
+
 app.get("/puntuaciones/pais/:id", async function (req, resp) {
     try {
         const pais = req.params.id;
