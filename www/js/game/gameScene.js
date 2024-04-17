@@ -192,7 +192,7 @@ class gameScene extends Phaser.Scene {
         botonPausa.addEventListener('click', async function () {
             $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
             flechasJugador.forEach(function (flecha) {
-                flecha.setVelocityX(0);
+                flecha.setVelocityY(0);
             });
             canMove = false;
             jugador.anims.stop();

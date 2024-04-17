@@ -106,6 +106,20 @@ exports.listarPuntuaciones = async function (userId) {
     }
 };
 
+// GET USUARIO
+exports.getUsuario = async function (userId) {
+    try {
+        const usuario = await Usuario.findById(userId);
+        if (!usuario) {
+            throw new Error('Usuario no encontrado');
+        }
+        // Obtiene las primeras 10 puntuaciones
+        return usuario;
+    } catch (error) {
+        throw new Error('Error al listar puntuaciones: ' + error.message);
+    }
+};
+
 //CAMBIAR AJUSTES
 exports.cambiarAjustes = async function (userId, valorMusica, valorSonido, valorPantallaCompleta) {
     try {
