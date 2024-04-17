@@ -4,6 +4,6 @@
             h2.titulo_card_ranking Tus mejores puntuaciones
         ol.lista_ranking
             each punt in puntuaciones
-                li.texto_ranking.d-flex.align-items-center.justify-content-between.ms-3
+                li.texto_ranking.d-flex.align-items-center.justify-content-between.ms-3(id=punt._id)
                     p= punt + ' puntos'
 

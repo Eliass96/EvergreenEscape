@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function cargarPuntuaciones() {
         try {
+            const item = evt.target.closest(".texto_ranking");
+            const id = item.getAttribute("id");
             const resp = await fetch(`/usuarios/${id}`);
             if (!resp.ok) {
                 throw new Error("Error al cargar");
