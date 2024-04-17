@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify(data)
                 });
                 if (!resp.ok) {
-                    window.isLogged = false;
+                    window.isLogged = null;
                     localStorage.setItem('isLogged', window.isLogged);
                     Swal.fire({
                         position: "center",
@@ -75,8 +75,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         timerProgressBar: true,
                     })
                 } else {
-                    window.isLogged = true;
+                    let respJson = await resp.json();
+                    console.log(respJson.usuario._id);
+                    window.isLogged = respJson.usuario._id;
                     localStorage.setItem('isLogged', window.isLogged);
+                    console.log(localStorage.getItem('isLogged'))
                     Swal.fire({
                         position: "center",
                         icon: "success",
@@ -85,12 +88,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         timer: 1000,
                         timerProgressBar: true,
                     }).then(() => {
-                        document.location.href = "/"
+                        //document.location.href = "/"
                     })
-                }
-                const respJson = await resp.json();
-                if (respJson.redirect) {
-                    window.location.href = respJson.redirect;
                 }
             }
         }

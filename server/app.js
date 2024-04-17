@@ -176,7 +176,10 @@ app.post("/usuarios/login", async (req, res) => {
             path: "/"
         }
         res.cookie("jwt", token, cookieOption);
-        res.send({status: "ok", message: "Usuario loggeado"});
+        res
+            .location(`/usuarios/${usuarioAResvisar._id}`)
+            .status(HTTP_OK)
+            .send({usuario: usuarioAResvisar, mensaje: "Usuario logueado"});
     }
 });
 

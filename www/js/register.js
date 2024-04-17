@@ -173,10 +173,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify(dataLogin)
-                    }).then(() => {
-                        window.isLogged = true;
+                    }).then(async () => {
+                        let respJson = await resp.json();
+                        console.log(respJson.usuario._id);
+                        window.isLogged = respJson.usuario._id;
                         localStorage.setItem('isLogged', window.isLogged);
-                        document.location.href = "/"
+                        //document.location.href = "/"
                     });
                 })
             }
