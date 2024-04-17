@@ -2,15 +2,9 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require('bcryptjs');
 require("dotenv").config();
 const express = require("express");
-const path = require('path');
-const {fileURLToPath} = require('url');
-const {createRequire} = require('module');
 const db = require("./db.js");
 const bcryptjs = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
-//import {methods as authentication, usuarios} from "../www/public/js/authentication.controller"
-//const requireFunc = createRequire('create-require');
-//const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
@@ -36,23 +30,33 @@ db.conectar().then(() => {
 
 
 //METODOS
-// GES DE USUARIOS
+// GET DE USUARIOS
 app.get("/usuarios", async function (req, resp) { // funciona
     try {
-        const idUsuario = req.params.id;
         let usuariosEncontrados = await db.listarTodosLosUsuarios();
         resp.status(HTTP_OK).send(usuariosEncontrados);
     } catch (err) {
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
     }
 });
-// GET A PUNTUACION-- LISTA PUNTUACION USUARIO
+
+// GET DE USUARIO LOGUEADO
 app.get("/usuarios/:id", async function (req, resp) { // funciona
     try {
         const idUsuario = req.params.id;
-        console.log(idUsuario);
-        let usuarioEncontrado = await db.listarPuntuaciones(idUsuario);
+        let usuarioEncontrado = await db.getUsuario(idUsuario);
         resp.status(HTTP_OK).send(usuarioEncontrado);
+    } catch (err) {
+        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+    }
+});
+
+// GET DE PUNTUACIONES
+app.get("/usuarios/:id/puntuaciones", async function (req, resp) { // funciona
+    try {
+        const idUsuario = req.params.id;
+        let puntuaciones = await db.listarPuntuaciones(idUsuario);
+        resp.status(HTTP_OK).send(puntuaciones);
     } catch (err) {
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
     }
@@ -76,7 +80,6 @@ app.get("/puntuaciones", async function (req, resp) {
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
     }
 });
-
 
 // PATCH PUNTUACION
 app.patch('/usuarios/puntuaciones/:id', async (req, res) => { //funciona
@@ -130,10 +133,6 @@ app.patch('/usuarios/ajustes/:id', async (req, res) => { //funciona
     }
 });
 
-
-
-
-//app.post("/usuarios/login", authentication.login);
 app.post("/usuarios/register", async (req, res) => {
     try {
         const nombre = req.body.nombre;
