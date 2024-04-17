@@ -3,8 +3,11 @@
 **************************************
 
 *** Hacer PUG para HTML dinámico
-    *** Revisar HTML para hacerlo semántico
-    *** Revisar CSS para eliminar lo que sobre
+    *** Puntuaciones
+    *** Perfil
+*** Revisar HTML para hacerlo semántico
+*** Revisar CSS para eliminar lo que sobre
+*** Hacer la pantalla de cambio de fondo ¿y personaje?
 *** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
 
 ***************************
