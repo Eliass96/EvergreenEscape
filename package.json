@@ -7,8 +7,8 @@
   "scripts": {
     "run": "node server/app.js",
     "dev": "nodemon --exec server/app.js",
-    "comp-perfil": "pug -c -D -n crearPerfil -o public perfil.pug",
-    "comp-puntuaciones": "pug -c -D -n crearPuntuaciones -o public puntuaciones.pug"
+    "comp-perfil": "pug -c -D -n crearPerfil -o public profile.pug",
+    "comp-puntuaciones": "pug -c -D -n crearPuntuaciones -o public rankings.pug"
   },
   "keywords": [
     "ecosystem:cordova"
