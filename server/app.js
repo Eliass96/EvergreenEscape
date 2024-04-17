@@ -77,34 +77,6 @@ app.get("/puntuaciones", async function (req, resp) {
     }
 });
 
-//CREAR USUARIO
-/*app.post("/usuarios", async function (req, resp) { // funciona
-    try {
-        const {
-            nombre,
-            password,
-            nacionalidad,
-            puntuaciones,
-            monedas,
-            superSalto,
-            puntuacionExtra,
-            revivir,
-            inmunidad,
-            musica,
-            sonido,
-            pantallaCompleta
-        } = req.body;
-
-        const nuevoUsuario = await db.altaUsuario({
-            nombre, password, nacionalidad, puntuaciones, monedas, superSalto, puntuacionExtra, revivir,
-            inmunidad, musica, sonido, pantallaCompleta
-        });
-
-        return resp.status(HTTP_CREATED).json({mensaje: 'Usuario creado con éxito.', usuario: nuevoUsuario});
-    } catch (err) {
-        return resp.status(HTTP_INTERNAL_SERVER_ERROR).json({mensaje: 'Error al crear el usuario. Por favor, inténtelo de nuevo más tarde.'});
-    }
-});*/
 
 // PATCH PUNTUACION
 app.patch('/usuarios/puntuaciones/:id', async (req, res) => { //funciona
@@ -158,9 +130,7 @@ app.patch('/usuarios/ajustes/:id', async (req, res) => { //funciona
     }
 });
 
-// GET A PUNTUACION-- LISTA PUNTUACION PAIS
 
-// GET A PUNTUACION-- LISTA PUNTUACION GLOBAL
 
 
 //app.post("/usuarios/login", authentication.login);
