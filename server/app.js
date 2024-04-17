@@ -51,17 +51,6 @@ app.get("/usuarios/:id", async function (req, resp) { // funciona
     }
 });
 
-// GET DE PUNTUACIONES
-app.get("/usuarios/:id/puntuaciones", async function (req, resp) { // funciona
-    try {
-        const idUsuario = req.params.id;
-        let puntuaciones = await db.listarPuntuaciones(idUsuario);
-        resp.status(HTTP_OK).send(puntuaciones);
-    } catch (err) {
-        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
-    }
-});
-
 app.get("/puntuaciones/pais/:id", async function (req, resp) {
     try {
         const pais = req.params.id;
@@ -107,6 +96,7 @@ app.patch('/usuarios/items/:id', async (req, res) => { //funciona
         res.status(500).json({error: 'Hubo un error al comprar el item'});
     }
 });
+
 //PATCH A MONEDAS
 app.patch('/usuarios/monedas/:id', async (req, res) => { //funciona
     const userId = req.params.id;
