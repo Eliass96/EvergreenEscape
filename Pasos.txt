@@ -6,6 +6,7 @@
 *** Funcionalidad sumar puntuación y monedas al acabar la partida
 *** Funcionalidad comprar items y gastar monedas
 *** Funcionalidad para cambiar los ajustes
+*** Funcionalidad para cerrar sesión
 *** Bug al pausar mientras el jugador salta
 *** Revisar HTML para hacerlo semántico
 *** Revisar CSS para eliminar lo que sobre
