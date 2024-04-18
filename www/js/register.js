@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.log(respJson.usuario._id);
                         window.isLogged = respJson.usuario._id;
                         localStorage.setItem('isLogged', window.isLogged);
-                        //document.location.href = "/"
+                        document.location.href = "/"
                     });
                 })
             }

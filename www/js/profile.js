@@ -1,9 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    if (document.getElementById('butCerrarSesion')) {
-        document.getElementById('butCerrarSesion').addEventListener('click', function () {
-            cerrarSesion();
-        });
-    }
+    document.getElementById('outputPerfil').addEventListener('click', cerrarSesion);
     console.log(localStorage.getItem('isLogged'))
     let outputPerfil = document.getElementById("outputPerfil");
 
@@ -24,19 +20,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    function cerrarSesion() {
-        window.isLogged = null;
-        localStorage.setItem('isLogged', window.isLogged);
-        document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "¡Has cerrado sesión!",
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true,
-        }).then(() => {
-            //document.location.href = "/"
-        })
+    function cerrarSesion(evt) {
+        console.log("1")
+        if (evt.target.classList.contains("botonCerrarSesion")) {
+            console.log("2")
+            window.isLogged = null;
+            localStorage.setItem('isLogged', window.isLogged);
+            document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "¡Has cerrado sesión!",
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+            }).then(() => {
+                document.location.href = "/"
+            })
+        }
     }
 });

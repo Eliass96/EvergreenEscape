@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!resp.ok) {
                     window.isLogged = null;
                     localStorage.setItem('isLogged', window.isLogged);
+                    console.log(resp)
                     Swal.fire({
                         position: "center",
                         icon: "error",
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         timer: 1000,
                         timerProgressBar: true,
                     }).then(() => {
-                        //document.location.href = "/"
+                        document.location.href = "/"
                     })
                 }
             }

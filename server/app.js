@@ -16,11 +16,6 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 
 const app = express();
-app.use((req, res, next) => {
-    res.set('Content-Type', 'text/html; charset=utf-8');
-    req.setEncoding('utf8');
-    next();
-});
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.static("www"));
