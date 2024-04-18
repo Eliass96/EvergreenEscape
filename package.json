@@ -10,7 +10,7 @@
     "comp-perfil": "pug -c -D -n crearPerfil -o www/js/pug profile.pug",
     "comp-puntuaciones": "pug -c -D -n crearPuntuaciones -o www/js/pug rankings.pug",
     "comp-puntuacionesPais": "pug -c -D -n crearPuntuacionesPorPais -o www/js/pug rankingsPorPais.pug",
-    "comp-puntuacionesGlobales": "pug -c -D -n crearPuntuacionesGlobales -o www/js/pug rankingsGlobales.pug"
+    "comp-puntuacionesGlobales": "pug -c -D -n crearPuntuacionesGlobales -o www/js/pug globalRankings.pug"
   },
   "keywords": [
     "ecosystem:cordova"
