@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
         const datosPuntuacion = await resp.json();
         console.log(datosPuntuacion);
-        const html1 = crearPuntuacionesGlobales({puntuaciones: datosPuntuacion})
+        const html1 = crearPuntuacionesGlobales({puntuaciones: datosPuntuacion});
         outputRankingGlobal.innerHTML = html1;
     } catch (error) {
         console.log(error);
