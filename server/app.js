@@ -16,6 +16,11 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 
 const app = express();
+app.use((req, res, next) => {
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    req.setEncoding('utf8');
+    next();
+});
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.static("www"));
@@ -64,7 +69,8 @@ app.get("/usuarios/:id/puntuaciones", async function (req, resp) { // funciona
 app.get("/puntuaciones/pais/:id", async function (req, resp) {
     try {
         const pais = req.params.id;
-        let puntuacionesPorPais = await db.listarPuntuacionesPorPais(pais);
+        const paisDec = decodeURIComponent(pais);
+        let puntuacionesPorPais = await db.listarPuntuacionesPorPais(paisDec);
         resp.status(HTTP_OK).send(puntuacionesPorPais);
     } catch (err) {
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
