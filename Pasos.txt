@@ -2,9 +2,11 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Hacer PUG para HTML dinámico
-    *** Puntuaciones
-    *** Perfil
+*** Funcionalidad mostrar contador de monedas del usuario
+*** Funcionalidad sumar puntuación y monedas al acabar la partida
+*** Funcionalidad comprar items y gastar monedas
+*** Funcionalidad para cambiar los ajustes
+*** Bug al pausar mientras el jugador salta
 *** Revisar HTML para hacerlo semántico
 *** Revisar CSS para eliminar lo que sobre
 *** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
