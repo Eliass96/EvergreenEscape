@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     try {
         let idUsuario = localStorage.getItem('isLogged');
+        console.log(idUsuario)
         const resp = await fetch(`/usuarios/${idUsuario}/puntuaciones`);
         if (!resp.ok) {
             throw new Error("Error al cargar");

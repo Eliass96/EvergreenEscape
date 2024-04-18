@@ -178,13 +178,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.log(respJson.usuario._id);
                         window.isLogged = respJson.usuario._id;
                         localStorage.setItem('isLogged', window.isLogged);
-                        document.location.href = "/"
+                        console.log(localStorage.getItem('isLogged'))
+                        //document.location.href = "/"
                     });
                 })
-            }
-            const respJson = await resp.json();
-            if (respJson.redirect) {
-                window.location.href = respJson.redirect;
             }
         }
     }
