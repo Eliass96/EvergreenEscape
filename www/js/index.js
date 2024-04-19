@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (elemento.classList.contains('animate__slow')) {
             elemento.classList.remove('animate__slow');
             elemento.classList.add('animate__faster');
-        } else {
+        } else if (elemento.classList.contains('animate__faster')) {
             elemento.classList.remove('animate__faster');
             elemento.classList.add('animate__slow');
         }
