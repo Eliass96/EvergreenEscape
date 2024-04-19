@@ -222,43 +222,6 @@ footer p {
     }
 }
 
-/*** ANIMACIONES ***/
-.but_play:hover,
-.but_settings:hover,
-.but_info:hover,
-.but_records:hover,
-.but_login:hover,
-.but_shop:hover,
-.but_menu:hover,
-.button_back:hover,
-.but_ajustes_partida:hover,
-.but_aceptar_ajustes:hover,
-.but_cancelar_ajustes:hover,
-.botonenviar:hover,
-.btnComprar:hover,
-.botonPausa:hover,
-.botonCerrarSesion:hover {
-    transform: scale(1.1);
-}
-
-.but_play:active,
-.but_settings:active,
-.but_info:active,
-.but_records:active,
-.but_login:active,
-.but_menu:active,
-.but_shop:active,
-.button_back:active,
-.but_ajustes_partida:active,
-.but_aceptar_ajustes:active,
-.but_cancelar_ajustes:active,
-.botonenviar:active,
-.btnComprar:active,
-.botonPausa:active,
-.botonCerrarSesion:active {
-    transform: scale(0.9);
-}
-
 /*** SCROLLBARS ***/
 ::-webkit-scrollbar {
     width: 5px;

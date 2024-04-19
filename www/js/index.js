@@ -1,15 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const elementosA = document.querySelectorAll('a');
+
     if (document.getElementById('butUser')) {
-        console.log(localStorage.getItem('isLogged'))
-        console.log(typeof localStorage.getItem('isLogged'))
         if (localStorage.getItem('isLogged') !== 'null' && localStorage.getItem('isLogged') !== null) {
             document.getElementById('butUser').setAttribute('href', '../html/profile.html');
+            elementosA.forEach(elemento => {
+                elemento.style.visibility = 'visible';
+            });
         } else {
             document.getElementById('butUser').setAttribute('href', '../html/login.html');
+            elementosA.forEach(elemento => {
+                elemento.style.visibility = 'hidden';
+            });
+            document.getElementById('butUser').style.visibility = 'visible';
         }
     }
 
-    const elementosA = document.querySelectorAll('a');
     elementosA.forEach(elemento => {
         elemento.addEventListener('mouseenter', toggleClase);
         elemento.addEventListener('mouseleave', toggleClase);
@@ -17,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function toggleClase(event) {
         const elemento = event.target;
-
         if (elemento.classList.contains('animate__slow')) {
             elemento.classList.remove('animate__slow');
             elemento.classList.add('animate__faster');

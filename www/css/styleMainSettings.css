@@ -157,3 +157,9 @@
     background-color: transparent;
     border: none;
 }
+
+.dropdown_mainScreen li {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
