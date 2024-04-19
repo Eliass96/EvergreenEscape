@@ -1,8 +1,8 @@
 let monedasTotales;
 let usuario;
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     usuario = localStorage.getItem('isLogged');
-    cantidadMonedas();
+    await cantidadMonedas();
 
     async function cantidadMonedas() {
         try {
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     timer: 1000,
                     timerProgressBar: true,
                 })
-                cantidadMonedas();
+                await cantidadMonedas();
             }
             return await response.json();
         } catch (error) {
