@@ -166,22 +166,30 @@ document.addEventListener('DOMContentLoaded', function () {
                     let dataLogin = {
                         nombre: usuario.value.trim(),
                         password: password.value.trim()
-                    }
-                    await fetch("/usuarios/login", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(dataLogin)
-                    }).then(async () => {
-                        let respJson = await resp.json();
+                    };
+                    try {
+                        let respLogin = await fetch("/usuarios/login", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(dataLogin)
+                        });
+
+                        if (!respLogin.ok) {
+                            throw new Error("Error en la solicitud");
+                        }
+
+                        let respJson = await respLogin.json();
                         console.log(respJson.usuario._id);
                         window.isLogged = respJson.usuario._id;
                         localStorage.setItem('isLogged', window.isLogged);
-                        console.log(localStorage.getItem('isLogged'))
-                        //document.location.href = "/"
-                    });
-                })
+                        console.log(localStorage.getItem('isLogged'));
+                        document.location.href = "/";
+                    } catch (error) {
+                        console.error("Se produjo un error al iniciar sesión:", error);
+                    }
+                });
             }
         }
     }

@@ -21,10 +21,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function cerrarSesion(evt) {
-        console.log("1")
         if (evt.target.classList.contains("botonCerrarSesion")) {
-            console.log("2")
             window.isLogged = null;
+            console.log(typeof localStorage.getItem('isLogged'))
             localStorage.setItem('isLogged', window.isLogged);
             document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
             Swal.fire({
