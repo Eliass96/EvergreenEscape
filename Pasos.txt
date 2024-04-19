@@ -2,13 +2,16 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Funcionalidad mostrar contador de monedas del usuario
 *** Funcionalidad comprar items y gastar monedas
+
+
 *** Funcionalidad para cambiar los ajustes
 *** Bug al pausar mientras el jugador salta
+*** PUG PONER NOMBRE DE LOS JUGADORES
 *** Revisar HTML para hacerlo semántico
 *** Revisar CSS para eliminar lo que sobre
 *** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
+*** Representar los items comprados en el juego
 
 ***************************
 ********** ELIAS **********
@@ -22,6 +25,6 @@
 ***** OTRAS COSAS *****
 ***********************
 
-*** Representar los items comprados en el juego
+
 *** Hacer para poder jugar en el móvil
 *** Hacer la pantalla de cambio de fondo ¿y personaje?

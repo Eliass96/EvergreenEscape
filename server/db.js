@@ -151,19 +151,19 @@ exports.comprarItems = async function (userId, itemComprado, cantidadComprada) {
         switch (itemComprado) {
             case 1: // Supersalto
                 costoItem = cantidadComprada * 20;
-                usuario.superSalto++;
+                usuario.superSalto+=cantidadComprada;
                 break;
             case 2: // X2
                 costoItem = cantidadComprada * 30;
-                usuario.puntuacionExtra++;
+                usuario.puntuacionExtra+=cantidadComprada;
                 break;
             case 3: // Inmunidad
                 costoItem = cantidadComprada * 40;
-                usuario.inmunidad++;
+                usuario.inmunidad+=cantidadComprada;
                 break;
             case 4: // Revivir
                 costoItem = cantidadComprada * 50;
-                usuario.revivir++;
+                usuario.revivir+=cantidadComprada;
                 break;
             default:
                 throw new Error('Item no válido');

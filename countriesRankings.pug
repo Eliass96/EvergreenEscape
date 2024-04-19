@@ -3,7 +3,7 @@ output.cardRanking#rankingPorPais
         header.d-flex.align-items-center.justify-content-center
             h2.titulo_card_ranking Mejores jugadores de tu pais
         ol.lista_ranking
-            li.texto_ranking.d-flex.align-items-center.justify-content-between
-                each punt in puntuaciones
+            each punt in puntuaciones
+                li.texto_ranking.d-flex.align-items-center.justify-content-between
                     p= "Jugador 1"
                     p= punt + " puntos"

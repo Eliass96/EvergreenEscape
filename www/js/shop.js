@@ -1,154 +1,225 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
 
-    if (document.getElementById('btnComprarSalto')) {
-        let btnComprarSalto = document.getElementById('btnComprarSalto');
-        btnComprarSalto.addEventListener('click', function () {
-            confirmarCompraSalto();
-        });
-    }
+        try {
+            var usuario = localStorage.getItem('isLogged');
+            try {
+                let idUsuario = localStorage.getItem('isLogged');
+                const respUsuario = await fetch(`/usuarios/${idUsuario}`);
+                if (respUsuario.status !== 200) {
+                    throw new Error("Error al cargar");
+                }
+                let usuario = await respUsuario.json();
+                let monedasTotales = usuario.monedas;
 
-    if (document.getElementById('btnComprarPuntuacionDoble')) {
-        let btnComprarPuntuacionDoble = document.getElementById('btnComprarPuntuacionDoble');
-        btnComprarPuntuacionDoble.addEventListener('click', function () {
-            confirmarCompraPuntuacionDoble();
-        });
-    }
-
-    if (document.getElementById('btnComprarInmunidad')) {
-        let btnComprarSalto = document.getElementById('btnComprarInmunidad');
-        btnComprarSalto.addEventListener('click', function () {
-            confirmarCompraInmunidad();
-        });
-    }
-
-    if (document.getElementById('btnComprarRevivir')) {
-        let btnComprarRevivir = document.getElementById('btnComprarRevivir');
-        btnComprarRevivir.addEventListener('click', function () {
-            confirmarCompraRevivir();
-        });
-    }
-
-    function confirmarCompraSalto() {
-        Swal.fire({
-            title: "¿Cuántos saltos quieres comprar?",
-            input: "number",
-            inputValue: 1,
-            inputAttributes: {
-                min: 1
-            },
-            animation: true,
-            confirmButtonColor: "lightgreen",
-            showCancelButton: true,
-            confirmButtonText: "Comprar",
-            cancelButtonText: "Cancelar",
-            showLoaderOnConfirm: true,
-            preConfirm: async () => {
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-            if (result.isConfirmed) {
+                document.getElementById("cantidadMonedas").textContent = monedasTotales.toString();
+            } catch (error) {
                 Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Compra realizada!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                })
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Algo ha fallado, pruebe a reiniciar la página"
+                });
             }
-        });
-    }
 
-    function confirmarCompraPuntuacionDoble() {
-        Swal.fire({
-            title: "¿Cuántos objetos de puntuación doble quieres comprar?",
-            input: "number",
-            inputValue: 1,
-            animation: true,
-            confirmButtonColor: "lightgreen",
-            inputAttributes: {
-                min: 1
-            },
-            showCancelButton: true,
-            confirmButtonText: "Comprar",
-            cancelButtonText: "Cancelar",
-            showLoaderOnConfirm: true,
-            preConfirm: async () => {
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Compra realizada!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                })
-            }
-        });
-    }
+            const actualizarMonedas = async (userId, itemComprado, cantidadComprada) => {
+                const url = `/usuarios/items/${userId}`;
+                const data = {itemComprado, cantidadComprada};
 
-    function confirmarCompraInmunidad() {
-        Swal.fire({
-            title: "¿Cuántos escudos quieres comprar?",
-            input: "number",
-            inputValue: 1,
-            animation: true,
-            confirmButtonColor: "lightgreen",
-            inputAttributes: {
-                min: 1
-            },
-            showCancelButton: true,
-            confirmButtonText: "Comprar",
-            cancelButtonText: "Cancelar",
-            showLoaderOnConfirm: true,
-            preConfirm: async () => {
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Compra realizada!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                })
-            }
-        });
-    }
+                try {
+                    const response = await fetch(url, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
 
-    function confirmarCompraRevivir() {
-        Swal.fire({
-            title: "¿Cuántas vidas quieres comprar?",
-            input: "number",
-            inputValue: 1,
-            animation: true,
-            confirmButtonColor: "lightgreen",
-            inputAttributes: {
-                min: 1
-            },
-            showCancelButton: true,
-            confirmButtonText: "Comprar",
-            cancelButtonText: "Cancelar",
-            showLoaderOnConfirm: true,
-            preConfirm: async () => {
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Compra realizada!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                })
+                    if (!response.ok) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Algo ha fallado, pruebe a reiniciar la página"
+                        });
+                        return null;
+                    } else {
+                        return await response.json();
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Algo ha fallado, pruebe a reiniciar la página"
+                    });
+                }
+            };
+
+
+            if (document.getElementById('btnComprarSalto')) {
+                let btnComprarSalto = document.getElementById('btnComprarSalto');
+                btnComprarSalto.addEventListener('click', function () {
+                    confirmarCompraSalto();
+
+                });
             }
-        });
+
+            if (document.getElementById('btnComprarPuntuacionDoble')) {
+                let btnComprarPuntuacionDoble = document.getElementById('btnComprarPuntuacionDoble');
+                btnComprarPuntuacionDoble.addEventListener('click', function () {
+                    confirmarCompraPuntuacionDoble();
+
+                });
+            }
+
+            if (document.getElementById('btnComprarInmunidad')) {
+                let btnComprarSalto = document.getElementById('btnComprarInmunidad');
+                btnComprarSalto.addEventListener('click', function () {
+                    confirmarCompraInmunidad();
+
+                });
+            }
+
+            if (document.getElementById('btnComprarRevivir')) {
+                let btnComprarRevivir = document.getElementById('btnComprarRevivir');
+                btnComprarRevivir.addEventListener('click', function () {
+                    confirmarCompraRevivir();
+
+                });
+            }
+
+            function confirmarCompraSalto() {
+                Swal.fire({
+                    title: "¿Cuántos saltos quieres comprar?",
+                    input: "number",
+                    inputValue: 1,
+                    inputAttributes: {
+                        min: 1
+                    },
+                    animation: true,
+                    confirmButtonColor: "lightgreen",
+                    showCancelButton: true,
+                    confirmButtonText: "Comprar",
+                    cancelButtonText: "Cancelar",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async () => {
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        actualizarMonedas(usuario, 1, result.value);
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "¡Compra realizada!",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true,
+                        })
+                    }
+                });
+            }
+
+            function confirmarCompraPuntuacionDoble() {
+                Swal.fire({
+                    title: "¿Cuántos objetos de puntuación doble quieres comprar?",
+                    input: "number",
+                    inputValue: 1,
+                    animation: true,
+                    confirmButtonColor: "lightgreen",
+                    inputAttributes: {
+                        min: 1
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: "Comprar",
+                    cancelButtonText: "Cancelar",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async () => {
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        actualizarMonedas(usuario, 2, result.value);
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "¡Compra realizada!",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true,
+                        })
+                    }
+                });
+            }
+
+            function confirmarCompraInmunidad() {
+                Swal.fire({
+                    title: "¿Cuántos escudos quieres comprar?",
+                    input: "number",
+                    inputValue: 1,
+                    animation: true,
+                    confirmButtonColor: "lightgreen",
+                    inputAttributes: {
+                        min: 1
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: "Comprar",
+                    cancelButtonText: "Cancelar",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async () => {
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        actualizarMonedas(usuario, 3, result.value);
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "¡Compra realizada!",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true,
+                        })
+                    }
+                });
+            }
+
+            function confirmarCompraRevivir() {
+                Swal.fire({
+                    title: "¿Cuántas vidas quieres comprar?",
+                    input: "number",
+                    inputValue: 1,
+                    animation: true,
+                    confirmButtonColor: "lightgreen",
+                    inputAttributes: {
+                        min: 1
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: "Comprar",
+                    cancelButtonText: "Cancelar",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async () => {
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        actualizarMonedas(usuario, 4, result.value);
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "¡Compra realizada!",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true,
+                        })
+                    }
+                });
+            }
+
+
+        } catch
+            (error) {
+
+        }
+
+
     }
-});
+)
+;
