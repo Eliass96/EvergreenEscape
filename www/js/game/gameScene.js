@@ -571,6 +571,61 @@ async function morir() {
     await new Promise(resolve => setTimeout(resolve, 1500));
     $('#modalPause').modal('hide');
     $('#modalGameOver').modal({backdrop: 'static', keyboard: false}).modal('show');
+
+    let idUsuario = localStorage.getItem('isLogged');
+    actualizarPuntuacion(idUsuario,puntos);
+    actualizarMonedas(idUsuario,monedas);
 }
+
+
+const actualizarPuntuacion = async (userId, nuevaPuntuacion) => {
+    const url = `/usuarios/puntuaciones/${userId}`;
+    const data = {nuevaPuntuacion};
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.json();
+            throw new Error(errorMessage.error);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Hubo un error al actualizar la puntuación:', error);
+        throw error;
+    }
+};
+
+const actualizarMonedas = async (userId, monedasObtenidas) => {
+    const url = `/usuarios/monedas/${userId}`;
+    const data = {monedasObtenidas};
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.json();
+            throw new Error(errorMessage.error);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Hubo un error al actualizar la puntuación:', error);
+        throw error;
+    }
+};
 
 
