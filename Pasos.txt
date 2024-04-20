@@ -6,6 +6,7 @@
 
 
 *** Funcionalidad para cambiar los ajustes
+*** Bug al poner pausa siguen sumando los puntos
 *** Bug al pausar mientras el jugador salta
 *** PUG PONER NOMBRE DE LOS JUGADORES
 *** Revisar HTML para hacerlo semántico
