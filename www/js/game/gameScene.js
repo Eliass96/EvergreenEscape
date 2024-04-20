@@ -354,7 +354,7 @@ async function generarMonedas() {
 function cogerMonedas(jugador, moneda) {
     moneda.disableBody(true, true);// desactiva las monedas
     puntos += 10; //suma puntos
-    monedas += 1; //suma monedas
+    monedas += 5; //suma monedas
     txtPuntos.setText("Puntos: " + puntos)
     monedaSound.play();
 }
@@ -561,9 +561,9 @@ async function morir() {
     jugador.setVelocity(0);
     await new Promise(resolve => setTimeout(resolve, 400));
     jugador.anims.play('dead');
-    /*jugador.once('animationcomplete', () => {
+    jugador.once('animationcomplete', () => {
         jugador.anims.stop();
-    })*/
+    })
     defeatSound.play();
     defeatSound.volume = 0.2;
     document.getElementById("textoCantidadPuntos").textContent = "Puntuación: " + puntos.toString();

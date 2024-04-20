@@ -236,3 +236,16 @@ footer p {
     background-color: lightgreen;
     border-radius: 15px;
 }
+
+/*** ANIMACIONES ***/
+.btnComprar:hover,
+.botonCerrarSesion:hover,
+.botonenviar:hover {
+    transform: scale(1.1);
+}
+
+.btnComprar:active,
+.botonCerrarSesion:active,
+.botonenviar:active {
+    transform: scale(0.9);
+}
