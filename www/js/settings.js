@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
+    cargarAjustes();
+
     if (document.getElementById('but_cancelar_ajustes')) {
         let but_cancelar_ajustes = document.getElementById('but_cancelar_ajustes');
         but_cancelar_ajustes.addEventListener('click', function () {
@@ -23,8 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
             denyButtonText: "Salir sin guardar",
             cancelButtonText: "Cancelar",
             confirmButtonColor: "lightgreen",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
+                await guardarAjustes();
                 Swal.fire({
                     position: "center",
                     icon: "success",
@@ -52,8 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
             denyButtonText: "Salir sin guardar",
             cancelButtonText: "Cancelar",
             confirmButtonColor: "lightgreen",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
+                await guardarAjustes();
                 Swal.fire({
                     position: "center",
                     icon: "success",
@@ -69,5 +73,36 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
         });
+    }
+    const checkboxMusica = document.getElementById('bauble_check_musica');
+    const checkboxSonido = document.getElementById('bauble_check_sonido');
+    const checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
+    async function guardarAjustes() {
+        const data = {
+            valorMusica: !checkboxMusica.checked,
+            valorSonido: !checkboxSonido.checked,
+            valorPantallaCompleta: !checkboxPantallaCompleta.checked
+        };
+        console.log(data);
+        const response = await fetch('/usuarios/ajustes/usuario', {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    }
+
+    async function cargarAjustes() {
+        const respUsuario = await fetch('/usuarios/usuario');
+        if (respUsuario.status !== 200) {
+            throw new Error("Error al cargar");
+        }
+        let usuario = await respUsuario.json();
+
+        checkboxMusica.checked = !usuario.musica;
+        checkboxSonido.checked = !usuario.sonido;
+        checkboxPantallaCompleta.checked = !usuario.pantallaCompleta;
     }
 });

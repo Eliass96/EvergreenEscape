@@ -195,7 +195,14 @@ class gameScene extends Phaser.Scene {
                 flecha.setVelocityY(0);
             });
             canMove = false;
+
+            // Detener la animación del jugador
             jugador.anims.stop();
+
+            // Detener la gravedad del jugador y establecer su velocidad vertical en 0
+            jugador.setVelocityY(0);
+            jugador.setAccelerationY(0); // Asegúrate de que no haya aceleración que pueda hacer que el jugador caiga
+
             enemigos.forEach(function (orco) {
                 orco.anims.stop();
             });
@@ -205,7 +212,11 @@ class gameScene extends Phaser.Scene {
             monedero.forEach(function (moneda) {
                 moneda.anims.stop();
             });
+
+            // Pausar el juego
+            game.paused = true;
         }, this);
+
 
         botonPlay.addEventListener('click', async function () {
             if (estaVivo) {

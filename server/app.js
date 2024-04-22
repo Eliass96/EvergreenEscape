@@ -165,7 +165,7 @@ app.patch('/usuarios/monedas/usuario', async (req, res) => { //funciona
 
 //CAMBIAR AJUSTES
 app.patch('/usuarios/ajustes/usuario', async (req, res) => { //funciona
-    const userId = req.params.id;
+    const userId = req.session.usuario;
     const {valorMusica, valorSonido, valorPantallaCompleta} = req.body;
 
     try {
