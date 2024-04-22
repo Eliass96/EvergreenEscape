@@ -1,18 +1,28 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const elementosA = document.querySelectorAll('a');
 
     if (document.getElementById('butUser')) {
-        fetch('/usuarios/sesion/estado', {
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
+        try {
+            console.log("hola")
+            let resp = await fetch('/usuarios/sesion/estado', {
+                credentials: 'include',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!resp.ok) {
+                console.log(resp)
+                document.getElementById('butUser').setAttribute('href', '../html/login.html');
+                elementosA.forEach(elemento => {
+                    elemento.style.visibility = 'hidden';
+                });
+                document.getElementById('butUser').style.visibility = 'visible';
+            } else {
+                const data = await resp.json();
                 console.log(data)
-                if (data.usuario) {
+                if (data.usuarioId) {
+                    console.log(data.usuarioId)
                     document.getElementById('butUser').setAttribute('href', '../html/profile.html');
                     elementosA.forEach(elemento => {
                         elemento.style.visibility = 'visible';
@@ -24,8 +34,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     document.getElementById('butUser').style.visibility = 'visible';
                 }
-            })
-            .catch(error => console.error(error));
+            }
+        } catch (error) {
+            console.log(error)
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Algo ha fallado, pruebe a reiniciar la página"
+            });
+        }
     }
 
     elementosA.forEach(elemento => {
