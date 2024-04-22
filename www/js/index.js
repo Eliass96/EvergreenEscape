@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     elemento.style.visibility = 'hidden';
                 });
                 document.getElementById('butUser').style.visibility = 'visible';
+                document.getElementById('txtNotLogged').style.visibility = 'visible';
             } else {
                 const data = await resp.json();
                 console.log(data)
@@ -27,12 +28,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                     elementosA.forEach(elemento => {
                         elemento.style.visibility = 'visible';
                     });
+                    document.getElementById('txtNotLogged').style.visibility = 'hidden';
                 } else {
                     document.getElementById('butUser').setAttribute('href', '../html/login.html');
                     elementosA.forEach(elemento => {
                         elemento.style.visibility = 'hidden';
                     });
                     document.getElementById('butUser').style.visibility = 'visible';
+                    document.getElementById('txtNotLogged').style.visibility = 'visible';
                 }
             }
         } catch (error) {

@@ -1,9 +1,16 @@
 /*** PANTALLA PRINCIPAL Y AJUSTES ***/
 .titulo {
     font-family: 'jackpot', sans-serif;
-    font-size: 3rem;
+    font-size: 3.25rem;
     text-align: center;
     line-height: 1.5;
+}
+
+.txtNotLogged {
+    font-family: 'Turtles', sans-serif;
+    font-size: 1.75rem;
+    text-align: center;
+    line-height: 1;
 }
 
 .but_play,

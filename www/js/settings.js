@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             Swal.fire({
                 icon: "warning",
                 title: "No estás logueado",
-                text: "¡Tienes que loguearte para poder acceder a los ajustes!",
+                text: "¡Tienes que iniciar sesión para poder acceder a los ajustes!",
                 confirmButtonText: "Aceptar"
             }).then(() => {
                 document.location.href = "../html/login.html";
