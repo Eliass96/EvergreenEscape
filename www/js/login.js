@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('loginButton')) {
         document.getElementById('loginButton').addEventListener('click', formularioLogin);
         document.getElementById('checkboxLogin').addEventListener('click', verpasswordLogin);
-        console.log(localStorage.getItem('isLogged'))
 
         function verpasswordLogin() {
             let tipo = document.getElementById("txtpassword");
@@ -64,8 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify(data)
                 });
                 if (!resp.ok) {
-                    window.isLogged = null;
-                    localStorage.setItem('isLogged', window.isLogged);
                     console.log(resp)
                     Swal.fire({
                         position: "center",
@@ -78,9 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     let respJson = await resp.json();
                     console.log(respJson.usuario._id);
-                    window.isLogged = respJson.usuario._id;
-                    localStorage.setItem('isLogged', window.isLogged);
-                    console.log(localStorage.getItem('isLogged'))
                     Swal.fire({
                         position: "center",
                         icon: "success",

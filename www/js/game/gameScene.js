@@ -572,14 +572,13 @@ async function morir() {
     $('#modalPause').modal('hide');
     $('#modalGameOver').modal({backdrop: 'static', keyboard: false}).modal('show');
 
-    let idUsuario = localStorage.getItem('isLogged');
-    actualizarPuntuacion(idUsuario,puntos);
-    actualizarMonedas(idUsuario,monedas);
+    actualizarPuntuacion(puntos);
+    actualizarMonedas(monedas);
 }
 
 
-const actualizarPuntuacion = async (userId, nuevaPuntuacion) => {
-    const url = `/usuarios/puntuaciones/${userId}`;
+const actualizarPuntuacion = async (nuevaPuntuacion) => {
+    const url = '/usuarios/puntuaciones/usuario';
     const data = {nuevaPuntuacion};
 
     try {
@@ -603,7 +602,7 @@ const actualizarPuntuacion = async (userId, nuevaPuntuacion) => {
     }
 };
 
-const actualizarMonedas = async (userId, monedasObtenidas) => {
+const actualizarMonedas = async (monedasObtenidas) => {
     const url = '/usuarios/monedas/usuario';
     const data = {monedasObtenidas};
 

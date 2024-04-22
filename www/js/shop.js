@@ -1,13 +1,11 @@
 let monedasTotales;
 let usuario;
 document.addEventListener('DOMContentLoaded', async function () {
-    usuario = localStorage.getItem('isLogged');
     await cantidadMonedas();
 
     async function cantidadMonedas() {
         try {
-            let idUsuario = localStorage.getItem('isLogged');
-            const respUsuario = await fetch(`/usuarios/${idUsuario}`);
+            const respUsuario = await fetch('/usuarios/usuario');
             if (respUsuario.status !== 200) {
                 throw new Error("Error al cargar");
             }

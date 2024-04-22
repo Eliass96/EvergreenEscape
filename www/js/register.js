@@ -182,9 +182,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         let respJson = await respLogin.json();
                         console.log(respJson.usuario._id);
-                        window.isLogged = respJson.usuario._id;
-                        localStorage.setItem('isLogged', window.isLogged);
-                        console.log(localStorage.getItem('isLogged'));
                         document.location.href = "/";
                     } catch (error) {
                         console.error("Se produjo un error al iniciar sesión:", error);

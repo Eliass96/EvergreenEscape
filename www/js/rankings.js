@@ -21,15 +21,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     }
 
-
-
-
-
-
-
     try {
-        let idUsuario = localStorage.getItem('isLogged');
-        const respUsuario = await fetch(`/usuarios/${idUsuario}`);
+        const respUsuario = await fetch('/usuarios/usuario');
         if (respUsuario.status !== 200) {
             throw new Error("Error al cargar");
         }
@@ -52,9 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     try {
-        let idUsuario = localStorage.getItem('isLogged');
-        console.log(idUsuario)
-        const resp = await fetch(`/usuarios/${idUsuario}/puntuaciones`);
+        const resp = await fetch('/usuarios/usuario/puntuaciones');
         if (!resp.ok) {
             throw new Error("Error al cargar");
         }

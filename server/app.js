@@ -38,20 +38,25 @@ db.conectar().then(() => {
 
 // INICIO DE SESIÓN Y REGISTRO
 app.get('/usuarios/sesion/estado', async (req, res) => {
-    if (req.session) {
-        const usuarioId = req.session.usuario; // Obtener ID del usuario de la sesión
-        const usuario = await db.getUsuario(usuarioId); // Buscar usuario en la base de datos
-        if (usuario) {
-            // Usuario encontrado y sesión válida
-            res.status(HTTP_OK).send({estadoSesion: 'activa', usuario});
+    try {
+        if (req.session) {
+            const usuarioId = req.session.usuario; // Obtener ID del usuario de la sesión
+            const usuario = await db.getUsuario(usuarioId); // Buscar usuario en la base de datos
+            if (usuario) {
+                // Usuario encontrado y sesión válida
+                res.status(HTTP_OK).send({estadoSesion: 'activa', usuario});
+            } else {
+                // Usuario no encontrado o información no válida
+                req.session.destroy(); // Destruir sesión
+                res.status(401).send({message: 'No estás logueado'});
+            }
         } else {
-            // Usuario no encontrado o información no válida
-            req.session.destroy(); // Destruir sesión
+            // Sesión no existente
             res.status(401).send({message: 'No estás logueado'});
         }
-    } else {
-        // Sesión no existente
-        res.status(401).send({message: 'No estás logueado'});
+    } catch (e) {
+        console.log(e)
+        console.log("No estás logueado!")
     }
 });
 
@@ -64,7 +69,6 @@ app.post('/usuarios/cerarSesion', async (req, res) => {
         res.status(401).send({message: 'No estás logueado'});
     }
 });
-
 
 //METODOS
 // GET DE USUARIOS
@@ -81,16 +85,16 @@ app.get("/usuarios", async function (req, resp) { // funciona
 app.get("/usuarios/usuario", async function (req, resp) { // funciona
     try {
         const userId = req.session.usuario;
-        let usuarioEncontrado = await db.getUsuario(idUsuario);
+        let usuarioEncontrado = await db.getUsuario(userId);
         resp.status(HTTP_OK).send(usuarioEncontrado);
     } catch (err) {
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
     }
 });
 
-app.get("/usuarios/:id/puntuaciones", async function (req, resp) { // funciona
+app.get("/usuarios/usuario/puntuaciones", async function (req, resp) { // funciona
     try {
-        const idUsuario = req.params.id;
+        const idUsuario = req.session.usuario;
         let usuarioEncontrado = await db.listarPuntuaciones(idUsuario);
         resp.status(HTTP_OK).send(usuarioEncontrado);
     } catch (err) {
@@ -119,8 +123,8 @@ app.get("/puntuaciones", async function (req, resp) {
 });
 
 // PATCH PUNTUACION
-app.patch('/usuarios/puntuaciones/:id', async (req, res) => { //funciona
-    const userId = req.params.id;
+app.patch('/usuarios/puntuaciones/usuario', async (req, res) => { //funciona
+    const userId = req.session.usuario;
     const {nuevaPuntuacion} = req.body;
 
     try {
