@@ -5,25 +5,21 @@
 *** Bug al pausar mientras el jugador salta
 *** Representar los items comprados en el juego
 *** try catch a todo
-
-
+*** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
 
 *** Revisar HTML para hacerlo semántico
 *** Revisar CSS para eliminar lo que sobre
 *** Revisar todas las funcionalidades javascript para ver si funcionan correctamente
-*** SEGUIR LA DOCUMENTACION
 
+*** SEGUIR LA DOCUMENTACION
 
 ***************************
 ********** ELIAS **********
 ***************************
 
-*** PONER RECTO PANTALLA PRINCIPAL DESPLEGABLE
-
 ***************************
 ********** JESÚS **********
 ***************************
-*** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
 
 ***********************
 ***** OTRAS COSAS *****

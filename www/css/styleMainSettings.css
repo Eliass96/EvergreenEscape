@@ -149,6 +149,11 @@
 .dropdown_mainScreen ul {
     background-color: transparent;
     border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    width: 6.5vw !important;
+    min-width: 80px !important;
 }
 
 .dropdown_mainScreen a {
@@ -166,6 +171,8 @@
 }
 
 .dropdown_mainScreen li {
+    width: 6.5vw !important;
+    min-width: 80px !important;
     display: flex;
     align-items: center;
     justify-content: end;
