@@ -60,7 +60,7 @@ app.get('/usuarios/sesion/estado', async (req, res) => {
     }
 });
 
-app.post('/usuarios/cerarSesion', async (req, res) => {
+app.post('/usuarios/cerrarSesion', async (req, res) => {
     if (req.session) {
         req.session.destroy(); // Destruir sesión
         res.status(HTTP_OK).send({message: 'Sesión cerrada'});

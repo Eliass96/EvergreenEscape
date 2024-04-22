@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                if (data.estadoSesion === 'activa') {
+                if (data.usuario) {
                     document.getElementById('butUser').setAttribute('href', '../html/profile.html');
                     elementosA.forEach(elemento => {
                         elemento.style.visibility = 'visible';
