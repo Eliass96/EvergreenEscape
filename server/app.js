@@ -39,12 +39,15 @@ db.conectar().then(() => {
 // INICIO DE SESIÓN Y REGISTRO
 app.get('/usuarios/sesion/estado', async (req, res) => {
     try {
+        console.log(req.session)
         if (req.session) {
             const usuarioId = req.session.usuario; // Obtener ID del usuario de la sesión
             const usuario = await db.getUsuario(usuarioId); // Buscar usuario en la base de datos
+            console.log(usuario)
             if (usuario) {
+                let usuarioId = usuario._id
                 // Usuario encontrado y sesión válida
-                res.status(HTTP_OK).send({estadoSesion: 'activa', usuario});
+                res.status(HTTP_OK).send({estadoSesion: 'activa', usuarioId});
             } else {
                 // Usuario no encontrado o información no válida
                 req.session.destroy(); // Destruir sesión
@@ -54,9 +57,9 @@ app.get('/usuarios/sesion/estado', async (req, res) => {
             // Sesión no existente
             res.status(401).send({message: 'No estás logueado'});
         }
-    } catch (e) {
-        console.log(e)
+    } catch (error) {
         console.log("No estás logueado!")
+        res.status(401).send({message: 'No estás logueado'});
     }
 });
 
