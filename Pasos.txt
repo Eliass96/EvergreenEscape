@@ -12,10 +12,6 @@
 ***************************
 
 *** PONER RECTO PANTALLA PRINCIPAL DESPLEGABLE
-*** AJUSTES DE PARTIDA TORCIDO EN PANTALLA PEQUEÑA
-*** Poner texto en la pantalla principal diciendo que te loguees
-
-*** Funcionalidad js para evitar errores en las páginas al no estar logueado
 
 ***************************
 ********** JESÚS **********

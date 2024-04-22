@@ -5,11 +5,19 @@ document.addEventListener('DOMContentLoaded', async function () {
     try {
         let urlUsuario = '/usuarios/usuario';
         let resp = await fetch(urlUsuario);
-        if (!resp.ok) {
-            throw new Error("Error al cargar");
+        if (resp.ok) {
+            const datosUsuario = await resp.json();
+            outputPerfil.innerHTML = crearPerfil(datosUsuario);
+        } else {
+            Swal.fire({
+                icon: "warning",
+                title: "No estás logueado",
+                text: "¡Tienes que iniciar sesión para poder acceder al perfil!",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                document.location.href = "../html/login.html";
+            });
         }
-        const datosUsuario = await resp.json();
-        outputPerfil.innerHTML = crearPerfil(datosUsuario);
     } catch (error) {
         Swal.fire({
             icon: "error",

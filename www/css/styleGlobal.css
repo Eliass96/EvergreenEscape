@@ -171,6 +171,7 @@ footer p {
         max-width: 4vw;
         min-width: 75px;
         margin-left: 10px;
+        margin-right: -4px;
     }
 
     .bauble_box .bauble_label {

@@ -1,5 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
-    cargarAjustes();
+document.addEventListener('DOMContentLoaded', async function () {
+    const checkboxMusica = document.getElementById('bauble_check_musica');
+    const checkboxSonido = document.getElementById('bauble_check_sonido');
+    const checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
 
     if (document.getElementById('but_cancelar_ajustes')) {
         let but_cancelar_ajustes = document.getElementById('but_cancelar_ajustes');
@@ -15,6 +17,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    try {
+        let urlUsuario = '/usuarios/usuario';
+        let resp = await fetch(urlUsuario);
+        if (resp.ok) {
+            await cargarAjustes();
+        } else {
+            Swal.fire({
+                icon: "warning",
+                title: "No estás logueado",
+                text: "¡Tienes que iniciar sesión para poder acceder a los ajustes!",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                document.location.href = "../html/login.html";
+            });
+        }
+    } catch (error) {
+        console.log(error)
+        Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error inesperado al cargar los ajustes... Pruebe a reiniciar la página",
+        });
+    }
 
     function confirmarAjustes() {
         Swal.fire({
@@ -75,9 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         });
     }
-    const checkboxMusica = document.getElementById('bauble_check_musica');
-    const checkboxSonido = document.getElementById('bauble_check_sonido');
-    const checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
+
     async function guardarAjustes() {
         const data = {
             valorMusica: !checkboxMusica.checked,
