@@ -2,13 +2,8 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Funcionalidad comprar items y gastar monedas
-
-
 *** Funcionalidad para cambiar los ajustes
-*** Bug al poner pausa siguen sumando los puntos
 *** Bug al pausar mientras el jugador salta
-*** PUG PONER NOMBRE DE LOS JUGADORES
 *** Revisar HTML para hacerlo semántico
 *** Revisar CSS para eliminar lo que sobre
 *** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)

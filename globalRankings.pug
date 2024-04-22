@@ -3,7 +3,7 @@ output.cardRanking#rankingGlobal
         header.d-flex.align-items-center.justify-content-center
             h2.titulo_card_ranking Mejores jugadores del mundo
         ol.lista_ranking
-            each punt in puntuaciones
+            each jugador in jugadores
                 li.texto_ranking.d-flex.align-items-center.justify-content-between
-                    p Jugador 1
-                    p= punt + ' puntos'
+                    p= jugador.nombre
+                    p= jugador.puntuacion + " puntos"
