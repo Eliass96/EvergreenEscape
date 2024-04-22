@@ -12,7 +12,6 @@
 ***************************
 
 *** PONER RECTO PANTALLA PRINCIPAL DESPLEGABLE
-*** AJUSTES DE PARTIDA TORCIDO EN PANTALLA PEQUEÑA
 
 ***************************
 ********** JESÚS **********

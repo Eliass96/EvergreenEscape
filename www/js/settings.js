@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', async function () {
+    const checkboxMusica = document.getElementById('bauble_check_musica');
+    const checkboxSonido = document.getElementById('bauble_check_sonido');
+    const checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
+
     if (document.getElementById('but_cancelar_ajustes')) {
         let but_cancelar_ajustes = document.getElementById('but_cancelar_ajustes');
         but_cancelar_ajustes.addEventListener('click', function () {
@@ -29,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
     } catch (error) {
+        console.log(error)
         Swal.fire({
             icon: "error",
             title: "Ups...",
@@ -95,9 +100,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         });
     }
-    const checkboxMusica = document.getElementById('bauble_check_musica');
-    const checkboxSonido = document.getElementById('bauble_check_sonido');
-    const checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
+
     async function guardarAjustes() {
         const data = {
             valorMusica: !checkboxMusica.checked,
