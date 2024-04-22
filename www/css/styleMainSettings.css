@@ -11,6 +11,7 @@
     font-size: 1.75rem;
     text-align: center;
     line-height: 1;
+    visibility: hidden;
 }
 
 .but_play,
@@ -149,10 +150,6 @@
 .dropdown_mainScreen ul {
     background-color: transparent;
     border: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    width: 6.5vw !important;
     min-width: 80px !important;
 }
 
@@ -170,12 +167,17 @@
     border: none;
 }
 
-.dropdown_mainScreen li {
-    width: 6.5vw !important;
-    min-width: 80px !important;
+.dropdown_mainScreen {
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
+}
+
+.dropdown_mainScreen li {
+    min-width: 80px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .backgroundImg {

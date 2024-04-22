@@ -94,8 +94,23 @@ footer p {
         min-width: 60px;
     }
 
-    .img_button_back {
+    .dropdown_mainScreen {
         max-width: 4vw;
+        min-width: 60px;
+    }
+
+    .dropdown_mainScreen a {
+        max-width: 4vw;
+        min-width: 60px;
+    }
+
+    .dropdown_mainScreen li {
+        max-width: 4vw;
+        min-width: 60px;
+    }
+
+    .img_button_back {
+        width: 4vw;
         min-width: 60px;
     }
 
