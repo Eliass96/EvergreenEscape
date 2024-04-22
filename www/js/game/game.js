@@ -39,6 +39,7 @@ let enemigoSound;
 let monedaSound;
 let fondoSound;
 let arcoSound;
+let usuario;
 let orcoVerdeSound;
 let defeatSound;
 let piedra;

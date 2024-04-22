@@ -3,14 +3,9 @@ class gameScene extends Phaser.Scene {
         super("nivel1");
     }
 
-     preload() {
-
-        if (fondoUser === true) {
-            this.load.image("fondoBosque", "../../assets/background/fondoBosque.jpg");
-        } else {
-            this.load.image("fondoBosqueNoche", "../../assets/background/fondoBosqueNoche.jpg");
-        }
-
+    preload() {
+        this.load.image("fondoBosque", "../../assets/background/fondoBosque.jpg");
+        this.load.image("fondoBosqueNoche", "../../assets/background/fondoBosqueNoche.jpg");
         this.load.image("piedra", "../../assets/components/piedra.png");
         this.load.image("plataforma", "../../assets/components/plataforma.png");
         this.load.image("pincho", "../../assets/components/pinchos.png");
@@ -64,18 +59,53 @@ class gameScene extends Phaser.Scene {
         this.load.audio("arcosonido", "../../assets/audio/arco.mp3");
     }
 
-    create() {
+    async create() {
+
+        fondoSound = this.sound.add("sonidofondo");
+        try {
+            let urlUsuario = '/usuarios/usuario';
+            let resp = await fetch(urlUsuario);
+            if (resp.ok) {
+                usuario = await resp.json();
+                if (usuario.fondoClaro) {
+                    fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosque").setOrigin(0);
+                } else {
+                    fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosqueNoche").setOrigin(0);
+                }
+
+                if (usuario.musica) {
+                    fondoSound.play();
+                    fondoSound.volume = 0.2;
+                    fondoSound.loop = true;
+                }
+
+
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "No estás logueado",
+                    text: "¡Tienes que iniciar sesión para poder acceder a las puntuaciones!",
+                    confirmButtonText: "Aceptar"
+                }).then(() => {
+                    document.location.href = "../html/login.html";
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Ups...",
+                text: "Error inesperado al cargar las puntuaciones... Pruebe a reiniciar la página",
+            });
+        }
+
         context = this;
         // Sonidos
         enemigoSound = this.sound.add("orcosonido");
         monedaSound = this.sound.add("monedasonido");
         defeatSound = this.sound.add("muertesonido");
-        fondoSound = this.sound.add("sonidofondo");
         orcoVerdeSound = this.sound.add("orcoverdesonido");
         arcoSound = this.sound.add("arcosonido");
-        fondoSound.play();
-        fondoSound.volume = 0.2;
-        fondoSound.loop = true;
+
 
         // Animaciones
         this.anims.create({
@@ -142,11 +172,6 @@ class gameScene extends Phaser.Scene {
         });
 
         // Fondo
-        if (fondoUser===true) {
-            fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosque").setOrigin(0);
-        } else {
-            fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosqueNoche").setOrigin(0);
-        }
 
 
         // Definimos el fondo desde el punto de origen 0,0
@@ -351,7 +376,10 @@ async function dispararFlechas() {
             jugador.anims.play('run');
             flechaJugador.setVelocityX(700);
             disparando = false
-            arcoSound.play();
+            if(usuario.sonido) {
+                arcoSound.play();
+            }
+
         });
     }
 }
@@ -379,7 +407,9 @@ function cogerMonedas(jugador, moneda) {
     puntos += 10; //suma puntos
     monedas += 5; //suma monedas
     txtPuntos.setText("Puntos: " + puntos)
-    monedaSound.play();
+    if(usuario.sonido) {
+        monedaSound.play();
+    }
 }
 
 async function generarObstaculos() {
@@ -401,7 +431,9 @@ async function generarObstaculos() {
             if (enemigoGenerado === 1) {
                 let x = Phaser.Math.RND.between(game.config.width + 500, game.config.width + 800);
                 let y = Phaser.Math.RND.between(875, 875);
-                enemigoSound.play();
+                if(usuario.sonido) {
+                    enemigoSound.play();
+                }
                 orco = context.physics.add.sprite(x, y, "orcoRojo").setScale(1.75);
                 orco.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
                 orco.setFlipX(true);
@@ -434,7 +466,9 @@ async function generarObstaculos() {
             } else if (enemigoGenerado === 2) {
                 let x = Phaser.Math.RND.between(game.config.width + 500, game.config.width + 800);
                 let y = Phaser.Math.RND.between(770, 770);
-                orcoVerdeSound.play();
+                if(usuario.sonido) {
+                    orcoVerdeSound.play();
+                }
                 orcoVerde = context.physics.add.sprite(x, y, "orcoVerde").setScale(4);
                 orcoVerde.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
                 orcoVerde.setFlipX(true);
@@ -561,7 +595,9 @@ async function morir() {
     }
     txtPuntos.setText("")
     txtMonedas.setText("")
-    fondoSound.stop();
+    if(usuario.sonido) {
+        fondoSound.stop();
+    }
     jugador.anims.stop();
     enemigos.forEach(function (orco) {
         if (orco.x <= 600) {
@@ -587,8 +623,10 @@ async function morir() {
     jugador.once('animationcomplete', () => {
         jugador.anims.stop();
     })
-    defeatSound.play();
-    defeatSound.volume = 0.2;
+    if(usuario.sonido) {
+        defeatSound.play();
+        defeatSound.volume = 0.2;
+    }
     document.getElementById("textoCantidadPuntos").textContent = "Puntuación: " + puntos.toString();
     document.getElementById("textoCantidadMonedas").textContent = "Monedas: " + monedas.toString();
     await new Promise(resolve => setTimeout(resolve, 1500));

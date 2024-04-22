@@ -16,9 +16,7 @@
 ***************************
 ********** JESÚS **********
 ***************************
-
 *** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
-*** Hacer la pantalla de cambio de fondo
 
 ***********************
 ***** OTRAS COSAS *****
