@@ -30,6 +30,7 @@ let orco;
 let enemigos = [];
 let fondo;
 let suelo;
+let fondoUser;
 let txtPuntos;
 let txtMonedas;
 let puntos = 0;

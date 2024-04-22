@@ -163,3 +163,17 @@
     align-items: center;
     justify-content: end;
 }
+
+.backgroundImg {
+    border-radius: 35px;
+    width: 35vw;
+    padding: 15px;
+}
+
+.card-outer_fondo {
+    width: 35vw;
+}
+
+.card-inner {
+    border-radius: 35px;
+}

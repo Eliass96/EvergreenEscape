@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+
     function confirmarAjustes() {
         Swal.fire({
             title: "¿Quieres guardar los ajustes?",

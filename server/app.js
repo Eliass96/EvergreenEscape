@@ -179,6 +179,19 @@ app.patch('/usuarios/ajustes/usuario', async (req, res) => { //funciona
     }
 });
 
+app.patch('/usuarios/partida/usuario', async (req, res) => { //funciona
+    const userId = req.session.usuario;
+    const {fondoJuego} = req.body;
+
+    try {
+        console.log(req.body);
+        const usuarioActualizado = await db.guardarFondo(userId, fondoJuego);
+        res.status(HTTP_OK).json(usuarioActualizado);
+    } catch (error) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: error.message});
+    }
+});
+
 app.post("/usuarios/register", async (req, res) => {
     try {
         const nombre = req.body.nombre;

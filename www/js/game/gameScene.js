@@ -3,9 +3,14 @@ class gameScene extends Phaser.Scene {
         super("nivel1");
     }
 
-    preload() {
+     preload() {
 
-        this.load.image("fondoBosque", "../../assets/background/fondoBosque.jpg");
+        if (fondoUser === true) {
+            this.load.image("fondoBosque", "../../assets/background/fondoBosque.jpg");
+        } else {
+            this.load.image("fondoBosqueNoche", "../../assets/background/fondoBosqueNoche.jpg");
+        }
+
         this.load.image("piedra", "../../assets/components/piedra.png");
         this.load.image("plataforma", "../../assets/components/plataforma.png");
         this.load.image("pincho", "../../assets/components/pinchos.png");
@@ -137,7 +142,14 @@ class gameScene extends Phaser.Scene {
         });
 
         // Fondo
-        fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosque").setOrigin(0); // Definimos el fondo desde el punto de origen 0,0
+        if (fondoUser===true) {
+            fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosque").setOrigin(0);
+        } else {
+            fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosqueNoche").setOrigin(0);
+        }
+
+
+        // Definimos el fondo desde el punto de origen 0,0
         fondo.displayWidth = game.config.width;
         fondo.displayHeight = game.config.height;
         fondo.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
@@ -637,6 +649,9 @@ const actualizarMonedas = async (monedasObtenidas) => {
         console.error('Hubo un error al actualizar la puntuación:', error);
         throw error;
     }
+
+
 };
+
 
 

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if (document.getElementById('butUser')) {
         try {
-            console.log("hola")
+
             let resp = await fetch('/usuarios/sesion/estado', {
                 credentials: 'include',
                 method: 'GET',

@@ -57,6 +57,10 @@ const UsuarioSchema = new mongoose.Schema(
             type: Boolean,
             default: true
         },
+        fondoClaro: {
+            type: Boolean,
+            default: true
+        },
     }
 );
 
@@ -132,6 +136,23 @@ exports.cambiarAjustes = async function (userId, valorMusica, valorSonido, valor
         usuario.musica = valorMusica;
         usuario.sonido = valorSonido;
         usuario.pantallaCompleta = valorPantallaCompleta;
+
+        await usuario.save();
+        return usuario;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Hubo un error al cambiar los ajustes');
+    }
+}
+
+exports.guardarFondo = async function (userId, fondoJuego) {
+    try {
+        const usuario = await Usuario.findById(userId);
+        if (!usuario) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        usuario.fondoClaro= fondoJuego;
 
         await usuario.save();
         return usuario;
