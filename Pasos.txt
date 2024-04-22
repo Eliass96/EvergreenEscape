@@ -2,12 +2,6 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** PONER RECTO PANTALLA PRINCIPAL DESPLEGABLE
-*** AJUSTES DE PARTIDA TORCIDO EN PANTALLA PEQUEÑA
-*** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
-*** Hacer la pantalla de cambio de fondo
-
-
 *** Bug al pausar mientras el jugador salta
 *** Revisar HTML para hacerlo semántico
 *** Revisar CSS para eliminar lo que sobre
@@ -17,9 +11,18 @@
 ********** ELIAS **********
 ***************************
 
+*** PONER RECTO PANTALLA PRINCIPAL DESPLEGABLE
+*** AJUSTES DE PARTIDA TORCIDO EN PANTALLA PEQUEÑA
+*** Poner texto en la pantalla principal diciendo que te loguees
+
+*** Funcionalidad js para evitar errores en las páginas al no estar logueado
+
 ***************************
 ********** JESÚS **********
 ***************************
+
+*** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
+*** Hacer la pantalla de cambio de fondo
 
 ***********************
 ***** OTRAS COSAS *****
