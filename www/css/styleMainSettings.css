@@ -152,7 +152,7 @@
 }
 
 .dropdown_mainScreen a {
-    width: 7vw !important;
+    min-width: 80px !important;
 }
 
 .dropdown_mainScreen a:hover {
@@ -184,3 +184,4 @@
 .card-inner {
     border-radius: 35px;
 }
+
