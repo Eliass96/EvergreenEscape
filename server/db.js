@@ -116,7 +116,8 @@ exports.getUsuario = async function (userId) {
         // Obtiene las primeras 10 puntuaciones
         return usuario;
     } catch (error) {
-        throw new Error('Error al listar puntuaciones: ' + error.message);
+        console.log(error)
+        throw new Error('Error al buscar el usuario: ' + error.message);
     }
 };
 

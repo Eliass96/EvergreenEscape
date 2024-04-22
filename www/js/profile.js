@@ -1,11 +1,9 @@
 document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('outputPerfil').addEventListener('click', cerrarSesion);
-    console.log(localStorage.getItem('isLogged'))
     let outputPerfil = document.getElementById("outputPerfil");
 
     try {
-        let idUsuario = localStorage.getItem('isLogged');
-        let urlUsuario = `/usuarios/${idUsuario}`;
+        let urlUsuario = '/usuarios/usuario';
         let resp = await fetch(urlUsuario);
         if (!resp.ok) {
             throw new Error("Error al cargar");
@@ -20,12 +18,28 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    function cerrarSesion(evt) {
+    async function cerrarSesion(evt) {
         if (evt.target.classList.contains("botonCerrarSesion")) {
-            window.isLogged = null;
-            console.log(typeof localStorage.getItem('isLogged'))
-            localStorage.setItem('isLogged', window.isLogged);
-            document.cookie = 'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            await fetch('/usuarios/cerrarSesion', {
+                credentials: 'include',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Sesión cerrada') {
+                    } else {
+                        console.error('Error al cerrar sesión');
+                        Swal.fire({
+                            icon: "error",
+                            title: "Ups...",
+                            text: "Error inesperado al cargar el perfil... Pruebe a reiniciar la página",
+                        });
+                    }
+                })
+                .catch(error => console.error(error));
             Swal.fire({
                 position: "center",
                 icon: "success",

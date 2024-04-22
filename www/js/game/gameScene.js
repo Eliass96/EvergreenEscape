@@ -604,11 +604,12 @@ const actualizarPuntuacion = async (userId, nuevaPuntuacion) => {
 };
 
 const actualizarMonedas = async (userId, monedasObtenidas) => {
-    const url = `/usuarios/monedas/${userId}`;
+    const url = '/usuarios/monedas/usuario';
     const data = {monedasObtenidas};
 
     try {
         const response = await fetch(url, {
+            credentials: 'include',
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

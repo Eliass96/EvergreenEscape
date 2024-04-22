@@ -24,13 +24,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-
-    const actualizarMonedas = async (userId, itemComprado, cantidadComprada) => {
-        const url = `/usuarios/items/${userId}`;
+    const comprarItem = async (itemComprado, cantidadComprada) => {
+        const url = '/usuarios/items/usuario';
         const data = {itemComprado, cantidadComprada};
 
         try {
             const response = await fetch(url, {
+                credentials: 'include',
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         text: "No tienes suficientes monedas"
                     });
                 } else {
-                    actualizarMonedas(usuario, 1, result.value)
+                    comprarItem(1, result.value)
                 }
             }
         });
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         text: "No tienes suficientes monedas"
                     });
                 } else {
-                    actualizarMonedas(usuario, 2, result.value)
+                    comprarItem(2, result.value)
                 }
             }
         });
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         text: "No tienes suficientes monedas"
                     });
                 } else {
-                    actualizarMonedas(usuario, 3, result.value)
+                    comprarItem( 3, result.value)
                 }
             }
         });
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         text: "No tienes suficientes monedas"
                     });
                 } else {
-                    actualizarMonedas(usuario, 4, result.value)
+                    comprarItem(4, result.value)
                 }
             }
         });
