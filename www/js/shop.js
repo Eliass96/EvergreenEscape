@@ -1,7 +1,28 @@
 let monedasTotales;
 let usuario;
 document.addEventListener('DOMContentLoaded', async function () {
-    await cantidadMonedas();
+    try {
+        let urlUsuario = '/usuarios/usuario';
+        let resp = await fetch(urlUsuario);
+        if (resp.ok) {
+            await cantidadMonedas();
+        } else {
+            Swal.fire({
+                icon: "warning",
+                title: "No estás logueado",
+                text: "¡Tienes que loguearte para poder acceder a la tienda!",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                document.location.href = "../html/login.html";
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error inesperado al cargar la tienda... Pruebe a reiniciar la página",
+        });
+    }
 
     async function cantidadMonedas() {
         try {
@@ -186,7 +207,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         text: "No tienes suficientes monedas"
                     });
                 } else {
-                    comprarItem( 3, result.value)
+                    comprarItem(3, result.value)
                 }
             }
         });

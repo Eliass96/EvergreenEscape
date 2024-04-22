@@ -1,6 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
-    cargarAjustes();
-
+document.addEventListener('DOMContentLoaded', async function () {
     if (document.getElementById('but_cancelar_ajustes')) {
         let but_cancelar_ajustes = document.getElementById('but_cancelar_ajustes');
         but_cancelar_ajustes.addEventListener('click', function () {
@@ -12,6 +10,29 @@ document.addEventListener('DOMContentLoaded', function () {
         let but_aceptar_ajustes = document.getElementById('but_aceptar_ajustes');
         but_aceptar_ajustes.addEventListener('click', function () {
             confirmarAjustes();
+        });
+    }
+
+    try {
+        let urlUsuario = '/usuarios/usuario';
+        let resp = await fetch(urlUsuario);
+        if (resp.ok) {
+            await cargarAjustes();
+        } else {
+            Swal.fire({
+                icon: "warning",
+                title: "No estás logueado",
+                text: "¡Tienes que loguearte para poder acceder a los ajustes!",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                document.location.href = "../html/login.html";
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error inesperado al cargar los ajustes... Pruebe a reiniciar la página",
         });
     }
 
