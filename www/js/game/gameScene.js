@@ -224,7 +224,7 @@ class gameScene extends Phaser.Scene {
                 monedero.forEach(function (moneda) {
                     moneda.anims.play('moneda');
                 });
-                await Promise.all([generarObstaculos(), generarMonedas()]);
+                await Promise.all([generarObstaculos(), generarMonedas(), sumarPuntos()]);
             }
         }, this);
 
@@ -305,7 +305,7 @@ function enableAnimation() {
 
 async function sumarPuntos() {
     await new Promise(resolve => setTimeout(resolve, 1470));
-    while (estaVivo) {
+    while (canMove && estaVivo) {
         await new Promise(resolve => setTimeout(resolve, 100));
         puntos += 1;
         if (puntos % 100 === 0) velocidad += 0.85;
