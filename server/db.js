@@ -204,25 +204,41 @@ exports.altaUsuario = async function (datosDeUsuario) {
 
 
 //LISTAR PUNTUACIONES POR PAIS ----------
+
 exports.listarPuntuacionesPorPais = async function (nacionalidad) {
     try {
-        // Realizar una consulta a la base de datos para encontrar usuarios por país
-        const usuarios = await Usuario.find({nacionalidad: nacionalidad});
+        const usuarios = await Usuario.find({ nacionalidad: nacionalidad });
 
         if (usuarios.length === 0) {
             throw new Error('No se encontraron usuarios para el país especificado');
         }
 
-        let puntuaciones = [];
+        let todasLasPuntuaciones = [];
 
         usuarios.forEach(usuario => {
-            puntuaciones = puntuaciones.concat(usuario.puntuaciones);
+            todasLasPuntuaciones.push(...usuario.puntuaciones);
         });
 
-        puntuaciones.sort((a, b) => b - a);
-        return puntuaciones.slice(0, 10);
+        todasLasPuntuaciones.sort((a, b) => b - a);
+
+        const mejoresPuntuaciones = todasLasPuntuaciones.slice(0, 10);
+
+        const mejoresPuntuacionesConUsuarios = [];
+
+        mejoresPuntuaciones.forEach(puntuacion => {
+            usuarios.forEach(usuario => {
+                if (usuario.puntuaciones.includes(puntuacion)) {
+                    mejoresPuntuacionesConUsuarios.push({
+                        nombre: usuario.nombre,
+                        puntuacion: puntuacion
+                    });
+                }
+            });
+        });
+
+        return mejoresPuntuacionesConUsuarios;
     } catch (error) {
-        throw new Error('Error al listar puntuaciones por país: ' + error.message);
+        throw new Error('Error al listar usuarios con mejores puntuaciones por país: ' + error.message);
     }
 };
 
@@ -235,19 +251,35 @@ exports.listarTodasLasPuntuaciones = async function () {
             throw new Error('No se encontraron usuarios');
         }
 
-        let puntuaciones = [];
+        let todasLasPuntuaciones = [];
 
         usuarios.forEach(usuario => {
-            puntuaciones = puntuaciones.concat(usuario.puntuaciones);
+            todasLasPuntuaciones.push(...usuario.puntuaciones);
         });
 
-        puntuaciones.sort((a, b) => b - a);
+        todasLasPuntuaciones.sort((a, b) => b - a);
 
-        return puntuaciones.slice(0, 10);
+        const mejoresPuntuaciones = todasLasPuntuaciones.slice(0, 10);
+
+        const mejoresPuntuacionesConUsuarios = [];
+
+        mejoresPuntuaciones.forEach(puntuacion => {
+            usuarios.forEach(usuario => {
+                if (usuario.puntuaciones.includes(puntuacion)) {
+                    mejoresPuntuacionesConUsuarios.push({
+                        nombre: usuario.nombre,
+                        puntuacion: puntuacion
+                    });
+                }
+            });
+        });
+
+        return mejoresPuntuacionesConUsuarios;
     } catch (error) {
-        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+        throw new Error('Error al listar todas las puntuaciones con nombres: ' + error.message);
     }
 };
+
 
 //LISTAR USUARIOS ----------
 exports.listarTodosLosUsuarios = async function () {

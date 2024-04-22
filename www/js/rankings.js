@@ -9,14 +9,23 @@ document.addEventListener("DOMContentLoaded", async function () {
             throw new Error("Error al cargar");
         }
         const datosPuntuacion = await resp.json();
-        outputRankingGlobal.innerHTML = crearPuntuacionesGlobales({puntuaciones: datosPuntuacion});
+        console.log(datosPuntuacion);
+        outputRankingGlobal.innerHTML = crearPuntuacionesGlobales({jugadores: datosPuntuacion});
+
     } catch (error) {
+        console.log(error);
         Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Algo ha fallado, pruebe a reiniciar la página"
         });
     }
+
+
+
+
+
+
 
     try {
         let idUsuario = localStorage.getItem('isLogged');
@@ -31,8 +40,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             throw new Error("Error al cargar");
         }
         const datosPuntuacion = await resp.json();
-        outputRankingPorPais.innerHTML = crearPuntuacionesPorPais({puntuaciones: datosPuntuacion});
+        outputRankingPorPais.innerHTML = crearPuntuacionesPorPais({jugadores: datosPuntuacion});
     } catch (error) {
+        console.log(error);
         Swal.fire({
             icon: "error",
             title: "Oops...",
