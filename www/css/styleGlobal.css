@@ -40,6 +40,10 @@ p {
     margin-bottom: 0 !important;
 }
 
+a {
+    padding: 5px !important;
+}
+
 footer p {
     color: white;
     font-family: 'turtles', sans-serif;
