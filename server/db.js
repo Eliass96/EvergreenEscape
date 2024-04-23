@@ -70,7 +70,6 @@ exports.conectar = async function () {
     try {
         const uri = process.env.MONGODB_URI;
         await mongoose.connect(uri);
-        console.log("Conexión a la base de datos establecida con éxito.");
     } catch (error) {
         console.error("Error al conectar a la base de datos:", error);
     }
@@ -120,7 +119,6 @@ exports.getUsuario = async function (userId) {
         // Obtiene las primeras 10 puntuaciones
         return usuario;
     } catch (error) {
-        console.log(error)
         throw new Error('Error al buscar el usuario: ' + error.message);
     }
 };
@@ -140,7 +138,6 @@ exports.cambiarAjustes = async function (userId, valorMusica, valorSonido, valor
         await usuario.save();
         return usuario;
     } catch (error) {
-        console.error(error);
         throw new Error('Hubo un error al cambiar los ajustes');
     }
 }
@@ -157,8 +154,7 @@ exports.guardarFondo = async function (userId, fondoJuego) {
         await usuario.save();
         return usuario;
     } catch (error) {
-        console.error(error);
-        throw new Error('Hubo un error al cambiar los ajustes');
+        throw new Error('Hubo un error al guardar el fondo');
     }
 }
 
@@ -197,7 +193,6 @@ exports.comprarItems = async function (userId, itemComprado, cantidadComprada) {
         await usuario.save();
         return usuario;
     } catch (error) {
-        console.error(error);
         throw new Error('Hubo un error al comprar el item');
     }
 }
@@ -213,7 +208,6 @@ exports.sumarMonedas = async function (userId, monedasObtenidas) {
         await usuario.save();
         return usuario;
     } catch (error) {
-        console.error(error);
         throw new Error('Hubo un error al sumar monedas');
     }
 }
@@ -325,6 +319,3 @@ exports.existeUsuario = async function (nombreUsuario) {
 };
 
 
-//AÑADIR USUARIO
-
-//VERIFICAR USUARIO AL INICIAR SESION
