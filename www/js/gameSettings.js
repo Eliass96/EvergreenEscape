@@ -1,46 +1,60 @@
-
-
+let fondo;
 document.addEventListener('DOMContentLoaded', async function () {
-    let fondo;
 
-    botonFondoClaro = document.getElementById('botonFondoClaro');
-    botonFondoOscuro = document.getElementById('botonFondoOscuro');
+    let botonFondoClaro = document.getElementById('botonFondoClaro');
+    let botonFondoOscuro = document.getElementById('botonFondoOscuro');
 
-    const respUsuario = await fetch('/usuarios/usuario');
-    if (respUsuario.status !== 200) {
-        throw new Error("Error al cargar");
+    try {
+        let urlUsuario = '/usuarios/usuario';
+        let resp = await fetch(urlUsuario);
+        if (resp.ok) {
+            let usuario = await resp.json();
+            fondo = usuario.fondoClaro;
+            botonFondoClaro.addEventListener('click', function () {
+                fondo = true;
+                guardarFondo();
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Fondo claro guardado correctamente!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true
+                });
+
+            })
+
+            botonFondoOscuro.addEventListener('click', function () {
+                fondo = false;
+                guardarFondo();
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Fondo oscuro guardado correctamente!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true
+                });
+
+            })
+        } else {
+            Swal.fire({
+                icon: "warning",
+                title: "No has iniciado sesión",
+                text: "¡Tienes que iniciar sesión para poder acceder a los ajustes de fondo!",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                document.location.href = "../html/login.html";
+            });
+        }
+    } catch (error) {
+        console.log(error)
+        Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error inesperado al cargar los ajustes... Pruebe a reiniciar la página",
+        });
     }
-    let usuario = await respUsuario.json();
-    fondo = usuario.fondoClaro;
-
-
-    botonFondoClaro.addEventListener('click', function () {
-        fondo = true;
-        guardarFondo();
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Fondo claro guardado correctamente!",
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true
-        });
-
-    })
-
-    botonFondoOscuro.addEventListener('click', function () {
-        fondo = false;
-        guardarFondo();
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Fondo oscuro guardado correctamente!",
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true
-        });
-
-    })
 
     async function guardarFondo() {
         try {

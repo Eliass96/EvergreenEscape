@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         } else {
             Swal.fire({
                 icon: "warning",
-                title: "No estás logueado",
+                title: "No has iniciado sesión",
                 text: "¡Tienes que iniciar sesión para poder acceder al perfil!",
                 confirmButtonText: "Aceptar"
             }).then(() => {
