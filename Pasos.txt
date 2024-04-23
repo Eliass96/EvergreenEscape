@@ -2,10 +2,8 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Bug al pausar mientras el jugador salta
 *** Representar los items comprados en el juego
-*** try catch a todo
-*** Revisar ajustes dentro de los menús de pausa y game over (no puedes volver al estado anterior)
+
 
 *** Revisar HTML para hacerlo semántico
 *** Revisar CSS para eliminar lo que sobre

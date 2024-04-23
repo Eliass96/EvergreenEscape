@@ -11,8 +11,10 @@ const HTTP_OK = 200;
 const HTTP_CREATED = 201;
 const HTTP_NO_CONTENT = 204;
 const HTTP_BAD_REQUEST = 400;
+const HTTP_UNAUTHORIZED=401;
 const HTTP_NOT_FOUND = 404;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
+
 
 const PORT = process.env.PORT || 40000;
 
@@ -39,37 +41,37 @@ db.conectar().then(() => {
 // INICIO DE SESIÓN Y REGISTRO
 app.get('/usuarios/sesion/estado', async (req, res) => {
     try {
-        console.log(req.session)
         if (req.session) {
-            const usuarioId = req.session.usuario; // Obtener ID del usuario de la sesión
-            const usuario = await db.getUsuario(usuarioId); // Buscar usuario en la base de datos
-            console.log(usuario)
+            const usuarioId = req.session.usuario;
+            const usuario = await db.getUsuario(usuarioId);
             if (usuario) {
                 let usuarioId = usuario._id
-                // Usuario encontrado y sesión válida
+
                 res.status(HTTP_OK).send({estadoSesion: 'activa', usuarioId});
             } else {
-                // Usuario no encontrado o información no válida
+
                 req.session.destroy(); // Destruir sesión
-                res.status(401).send({message: 'No estás logueado'});
+                res.status(HTTP_UNAUTHORIZED).send({message: 'No estás logueado'});
             }
         } else {
-            // Sesión no existente
-            res.status(401).send({message: 'No estás logueado'});
+
+            res.status(HTTP_UNAUTHORIZED).send({message: 'No estás logueado'});
         }
     } catch (error) {
-        console.log("No estás logueado!")
-        res.status(401).send({message: 'No estás logueado'});
+        res.status(HTTP_UNAUTHORIZED).send({message: 'No estás logueado'});
     }
 });
 
 app.post('/usuarios/cerrarSesion', async (req, res) => {
-    if (req.session) {
-        req.session.destroy(); // Destruir sesión
-        res.status(HTTP_OK).send({message: 'Sesión cerrada'});
-    } else {
-        // Sesión no existente
-        res.status(401).send({message: 'No estás logueado'});
+    try {
+        if (req.session) {
+            req.session.destroy();
+            res.status(HTTP_OK).send({message: 'Sesión cerrada'});
+        } else {
+            res.status(HTTP_UNAUTHORIZED).send({message: 'No estás logueado'});
+        }
+    }catch (error) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).send({message: 'Error inesperado al cerrar sesión'});
     }
 });
 
@@ -145,16 +147,14 @@ app.patch('/usuarios/items/usuario', async (req, res) => { //funciona
 
     try {
         const usuarioActualizado = await db.comprarItems(userId, itemComprado, cantidadComprada);
-        res.status(200).json(usuarioActualizado);
+        res.status(HTTP_OK).json(usuarioActualizado);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({error: 'Hubo un error al comprar el item'});
+        res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: 'Hubo un error al comprar el item'});
     }
 });
 
 //PATCH A MONEDAS
 app.patch('/usuarios/monedas/usuario', async (req, res) => { //funciona
-    console.log(req.session)
     const userId = req.session.usuario;
     const {monedasObtenidas} = req.body;
 
@@ -184,7 +184,7 @@ app.patch('/usuarios/partida/usuario', async (req, res) => { //funciona
     const {fondoJuego} = req.body;
 
     try {
-        console.log(req.body);
+
         const usuarioActualizado = await db.guardarFondo(userId, fondoJuego);
         res.status(HTTP_OK).json(usuarioActualizado);
     } catch (error) {
@@ -198,7 +198,7 @@ app.post("/usuarios/register", async (req, res) => {
         const password = req.body.password;
         const nacionalidad = req.body.nacionalidad;
         if (!nombre || !password || !nacionalidad) {
-            return res.status(400).send({status: "Error", message: "Los campos están incompletos"})
+            return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"})
         }
 
         const usuarioAResvisar = await db.existeUsuario(nombre);
@@ -209,79 +209,41 @@ app.post("/usuarios/register", async (req, res) => {
                 nombre, password: hashPassword, nacionalidad
             }
             await db.altaUsuario(nuevoUsuario);
-            return res.status(201).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
+            return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
         } else {
-            return res.status(400).send({status: "Error", message: "Este usuario ya existe"});
+            return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Este usuario ya existe"});
         }
     } catch (err) {
         console.log(err)
-        return res.status(500).send({status: "error", message: `Error al crear el usuario.`})
+        return res.status(HTTP_INTERNAL_SERVER_ERROR).send({status: "error", message: `Error al crear el usuario.`})
     }
 });
 
 app.post("/usuarios/login", async (req, res) => {
-    console.log(req.body);
 
     const nombre = req.body.nombre;
     const password = req.body.password;
 
-    // Validación de campos incompletos
     if (!nombre || !password) {
-        return res.status(400).send({status: "Error", message: "Los campos están incompletos"});
+        return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"});
     }
 
-    // Buscar usuario en base de datos
     const usuarioAResvisar = await db.existeUsuario(nombre);
     if (!usuarioAResvisar) {
-        return res.status(400).send({status: "Error", message: "Error durante login"});
+        return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Error durante login"});
     }
 
-    // Validar contraseña
     const loginCorrecto = await bcryptjs.compare(password, usuarioAResvisar.password);
     if (!loginCorrecto) {
-        return res.status(400).send({status: "Error", message: "Error durante login"});
+        return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Error durante login"});
     }
 
-    // Inicio de sesión exitoso - almacenar datos en la sesión
-    req.session.usuario = usuarioAResvisar._id.toString();  // Guardar información del usuario en la sesión
+    req.session.usuario = usuarioAResvisar._id.toString();
     console.log(req.session)
 
-    // No se genera token JWT (opcional para este enfoque)
     res
         .location(`/usuarios/${usuarioAResvisar._id}`)
         .status(HTTP_OK)
         .send({usuario: usuarioAResvisar, mensaje: "Usuario logueado"});
 });
 
-/*app.post("/usuarios/login", async (req, res) => {
-    console.log(req.body)
-    const nombre = req.body.nombre;
-    const password = req.body.password;
-    if (!nombre || !password) {
-        return res.status(400).send({status: "Error", message: "Los campos están incompletos"})
-    }
-    const usuarioAResvisar = await db.existeUsuario(nombre);
-    if (!usuarioAResvisar) {
-        return res.status(400).send({status: "Error", message: "Error durante login"})
-    }
-    const loginCorrecto = await bcryptjs.compare(password, usuarioAResvisar.password);
-    console.log(loginCorrecto)
-    if (!loginCorrecto) {
-        return res.status(400).send({status: "Error", message: "Error durante login"})
-    } else {
-        const token = jsonwebtoken.sign(
-            {user: usuarioAResvisar.nombre},
-            process.env.JWT_SECRET,
-            {expiresIn: process.env.JWT_EXPIRATION});
-
-        const cookieOption = {
-            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-            path: "/"
-        }
-        res.cookie("jwt", token, cookieOption);
-        res
-            .location(`/usuarios/${usuarioAResvisar._id}`)
-            .status(HTTP_OK)
-            .send({usuario: usuarioAResvisar, mensaje: "Usuario logueado"});
-    }
-});*/

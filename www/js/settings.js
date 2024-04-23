@@ -102,31 +102,48 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function guardarAjustes() {
-        const data = {
-            valorMusica: !checkboxMusica.checked,
-            valorSonido: !checkboxSonido.checked,
-            valorPantallaCompleta: !checkboxPantallaCompleta.checked
-        };
-        console.log(data);
-        const response = await fetch('/usuarios/ajustes/usuario', {
-            credentials: 'include',
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
+        try {
+            const data = {
+                valorMusica: !checkboxMusica.checked,
+                valorSonido: !checkboxSonido.checked,
+                valorPantallaCompleta: !checkboxPantallaCompleta.checked
+            };
+            const response = await fetch('/usuarios/ajustes/usuario', {
+                credentials: 'include',
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        } catch (error) {
+            console.error('Error al intentar guardar los ajustes:', error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error inesperado al guardar los ajustes"
+            });
+        }
     }
 
     async function cargarAjustes() {
-        const respUsuario = await fetch('/usuarios/usuario');
-        if (respUsuario.status !== 200) {
-            throw new Error("Error al cargar");
-        }
-        let usuario = await respUsuario.json();
+        try {
+            const respUsuario = await fetch('/usuarios/usuario');
+            if (respUsuario.status !== 200) {
+                throw new Error("Error al cargar");
+            }
+            let usuario = await respUsuario.json();
 
-        checkboxMusica.checked = !usuario.musica;
-        checkboxSonido.checked = !usuario.sonido;
-        checkboxPantallaCompleta.checked = !usuario.pantallaCompleta;
+            checkboxMusica.checked = !usuario.musica;
+            checkboxSonido.checked = !usuario.sonido;
+            checkboxPantallaCompleta.checked = !usuario.pantallaCompleta;
+        } catch (error) {
+            console.error('Error al intentar cargar los ajustes:', error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error inesperado al cargar los ajustes"
+            });
+        }
     }
 });
