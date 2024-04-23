@@ -186,13 +186,11 @@
     padding: 15px;
 }
 
-
-.card-outer_fondo {
-    width: 35.5vw;
-}
-
-.card-inner {
+.cardBackground-inner {
     border-radius: 75px;
+    background-color: rgba(0, 0, 0, .5);
+    color: white;
+    overflow-y: auto;
 }
 
 
