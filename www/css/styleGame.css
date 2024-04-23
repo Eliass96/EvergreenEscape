@@ -6,42 +6,67 @@
     border-radius: 15px;
 }
 
-.modal-header {
-    border-bottom: none !important;
+.modalSettings {
+    background-color: rgba(0, 0, 0, .4);
+    border: none;
+    border-radius: 15px;
+    max-height: 78vh;
+    width: 50vw;
 }
 
+.modalSettings-inner {
+    color: white;
+    overflow-y: auto;
+    border-radius: 15px;
+    max-height: 78vh;
+    width: 50vw;
+}
+
+.modal-footer {
+border-top: none;
+}
+
+.modal-header {
+border-bottom: none !important;
+}
+
+.row {
+--bs-gutter-x: 0 !important;
+}
+
+
 .botonPausa {
-    padding: 5px;
-    background: transparent;
-    border: none;
-    transition: transform 0.3s ease;
-    position: absolute;
-    right: 15px;
-    top: 15px;
+padding: 5px;
+background: transparent;
+border: none;
+transition: transform 0.3s ease;
+position: absolute;
+right: 15px;
+top: 15px;
 }
 
 .img_buttonPause {
-    width: 1vw;
-    min-width: 60px;
+width: 1vw;
+min-width: 60px;
 }
 
 .textoGameOver {
-    font-family: 'turtles', sans-serif;
-    color: white;
-    font-size: clamp(1.75em, 4vh, 4em);
+font-family: 'turtles', sans-serif;
+color: white;
+font-size: clamp(1.75em, 4vh, 4em);
 }
 
 .img_button_restart {
-    width: 10vw;
-    min-width: 100px;
-    margin: 20px;
+width: 10vw;
+min-width: 100px;
+margin: 20px;
 }
 
 .img_buttonGameOver {
-    margin: 15px;
-    width: 7vw;
+margin: 15px;
+width: 7vw;
 }
 
 .titulo_game_over {
-    width: 30vw;
+width: 30vw;
 }

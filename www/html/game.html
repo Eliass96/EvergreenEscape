@@ -13,63 +13,127 @@
     <link rel="stylesheet" href="../css/styleGame.css">
 </head>
 <body class="d-flex align-items-center justify-content-center">
-<button id="botonPausa" class="botonPausa"><img
-        src="../img/buttons/pause.png" alt="boton_play" class="img_buttonPause"/>
-</button>
-<dialog class="modal" id="modalGameOver" tabindex="-1">
-    <div class="modal-dialog d-flex align-items-center justify-content-center">
-        <div class="modal-content modalGameOver d-flex align-items-center justify-content-center">
-            <header class="modal-header">
-                <img src="../img/headers/¡HAS%20PERDIDO!.png" alt="boton_info" class="titulo_game_over"/>
-            </header>
-            <p class="textoGameOver" id="textoCantidadPuntos"></p>
-            <p class="textoGameOver" id="textoCantidadMonedas"></p>
-            <div class="modal-body d-flex align-items-center justify-content-center">
-                <a class="but_play animate__animated animate__pulse animate__infinite animate__slow" href="../index.html"><img
+<main>
+    <button id="botonPausa" class="botonPausa"><img
+            src="../img/buttons/pause.png" alt="boton_play" class="img_buttonPause"/>
+    </button>
+    <dialog class="modal" id="modalGameOver" tabindex="-1">
+        <div class="modal-dialog d-flex align-items-center justify-content-center">
+            <div class="modal-content modalGameOver d-flex align-items-center justify-content-center">
+                <header class="modal-header">
+                    <img src="../img/headers/¡HAS%20PERDIDO!.png" alt="boton_info" class="titulo_game_over"/>
+                </header>
+                <p class="textoGameOver" id="textoCantidadPuntos"></p>
+                <p class="textoGameOver" id="textoCantidadMonedas"></p>
+                <div class="modal-body d-flex align-items-center justify-content-center">
+                    <a class="but_play animate__animated animate__pulse animate__infinite animate__slow"
+                       href="../index.html"><img
                             src="../img/buttons/home.png" alt="boton_play" class="img_buttonGameOver"/>
-                </a>
-                <a class="but_play animate__animated animate__pulse animate__infinite animate__slow" href="game.html"><img
+                    </a>
+                    <a class="but_play animate__animated animate__pulse animate__infinite animate__slow"
+                       href="game.html"><img
                             src="../img/buttons/restart.png" alt="boton_play" class="img_button_restart"/>
-                </a>
-                <a id="botonSettings_gameOver"
-                   class="but_play animate__animated animate__pulse animate__infinite animate__slow" href="settings.html"><img
+                    </a>
+                    <a id="botonSettings_gameOver"
+                       class="but_play animate__animated animate__pulse animate__infinite animate__slow"><img
                             src="../img/buttons/settings.png" alt="boton_play" class="img_buttonGameOver"/>
-                </a>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</dialog>
+    </dialog>
 
-<dialog class="modal" id="modalPause" tabindex="-1">
-    <div class="modal-dialog d-flex align-items-center justify-content-center">
-        <div class="modal-content modalGameOver d-flex align-items-center justify-content-center">
-            <header class="modal-header">
-                <img src="../img/headers/PAUSA.png" alt="boton_info" class="titulo_game_over"/>
-            </header>
-            <div class="modal-body d-flex align-items-center justify-content-center">
-                <a class="but_play animate__animated animate__pulse animate__infinite animate__slow" href="../index.html"><img
+    <dialog class="modal" id="modalPause" tabindex="-1">
+        <div class="modal-dialog d-flex align-items-center justify-content-center">
+            <div class="modal-content modalGameOver d-flex align-items-center justify-content-center">
+                <header class="modal-header">
+                    <img src="../img/headers/PAUSA.png" alt="boton_info" class="titulo_game_over"/>
+                </header>
+                <div class="modal-body d-flex align-items-center justify-content-center">
+                    <a class="but_play animate__animated animate__pulse animate__infinite animate__slow"
+                       href="../index.html"><img
                             src="../img/buttons/home.png" alt="boton_play" class="img_buttonGameOver"/>
-                </a>
-                <a class="but_play animate__animated animate__pulse animate__infinite animate__slow" href="game.html"><img
+                    </a>
+                    <a class="but_play animate__animated animate__pulse animate__infinite animate__slow"
+                       href="game.html"><img
                             src="../img/buttons/restart.png" alt="boton_play" class="img_button_restart"/>
-                </a>
-                <a id="botonPlay"
-                   class="but_play animate__animated animate__pulse animate__infinite animate__slow" href="#"><img
-                        src="../img/buttons/play.png" alt="boton_play" class="img_button_restart"/>
-                </a>
-                <a id="botonSettings_pause"
-                   class="but_play animate__animated animate__pulse animate__infinite animate__slow"
-                   href="settings.html">
-                    <img src="../img/buttons/settings.png" alt="boton_play" class="img_buttonGameOver"/>
-                </a>
+                    </a>
+                    <a id="botonPlay"
+                       class="but_play animate__animated animate__pulse animate__infinite animate__slow" href="#"><img
+                            src="../img/buttons/play.png" alt="boton_play" class="img_button_restart"/>
+                    </a>
+                    <a id="botonSettings_pause"
+                       class="but_play animate__animated animate__pulse animate__infinite animate__slow">
+                        <img src="../img/buttons/settings.png" alt="boton_play" class="img_buttonGameOver"/>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</dialog>
+    </dialog>
+
+    <dialog class="modal" id="modalSettings" tabindex="-1">
+        <div class="modal-dialog d-flex align-items-center justify-content-center">
+            <div class="modal-content modalSettings d-flex align-items-center justify-content-center">
+                <header class="modal-header">
+                    <img src="../img/headers/AJUSTES.png" alt="boton_info" class="titulo_game_over"/>
+                </header>
+                <div class="modalSettings-inner">
+                    <div class="row align-items-center">
+                        <div class="col-6 d-flex align-items-center justify-content-start ps-5">
+                            <p class="texto_ajustes">Volumen de Música</p>
+                        </div>
+                        <div class="col-6 container d-flex justify-content-end align-items-center pe-5">
+                            <div class="bauble_box d-flex align-items-center justify-content-center">
+                                <input class="bauble_input" id="bauble_check_musica" name="bauble" type="checkbox">
+                                <label class="bauble_label" for="bauble_check_musica">Toggle</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center pt-3">
+                        <div class="col-6 d-flex align-items-center justify-content-start ps-5">
+                            <p class="texto_ajustes">Volumen de Sonido</p>
+                        </div>
+                        <div class="col-6 container d-flex justify-content-end align-items-center pe-5">
+                            <div class="bauble_box d-flex align-items-center justify-content-center">
+                                <input class="bauble_input" id="bauble_check_sonido" name="bauble" type="checkbox">
+                                <label class="bauble_label" for="bauble_check_sonido">Toggle</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center pt-3">
+                        <div class="col-6 d-flex align-items-center justify-content-start ps-5">
+                            <p class="texto_ajustes">Pantalla completa</p>
+                        </div>
+                        <div class="col-6 container d-flex justify-content-end align-items-center pe-5">
+                            <div class="bauble_box d-flex align-items-center justify-content-center">
+                                <input class="bauble_input" id="bauble_check_pantalla_completa" name="bauble"
+                                       type="checkbox">
+                                <label class="bauble_label" for="bauble_check_pantalla_completa">Toggle</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer row w-100">
+                        <div class="d-flex justify-content-end align-items-center pt-4 pe-3">
+                            <a class="animate__animated animate__pulse animate__infinite animate__slow but_cancelar_ajustes"
+                               id="but_cancelar_ajustes"><img src="../img/buttons/close.png"
+                                                              alt="Cancelar ajustes"
+                                                              class="img_button"/></a>
+                            <a class="animate__animated animate__pulse animate__infinite animate__slow but_aceptar_ajustes"
+                               id="but_aceptar_ajustes"><img src="../img/buttons/ok.png"
+                                                             alt="Guardar ajustes" class="img_button"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+</main>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src=" https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript" src="../js/game/gameScene.js"></script>
 <script type="text/javascript" src="../js/game/game.js"></script>
 <script type="text/javascript" src="../js/index.js"></script>

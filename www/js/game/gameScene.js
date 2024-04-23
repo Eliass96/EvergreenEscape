@@ -12,6 +12,13 @@ class gameScene extends Phaser.Scene {
         this.load.image("botonPausa", "../../img/buttons/pause.png");
         botonPlay = document.getElementById('botonPlay');
         botonPausa = document.getElementById('botonPausa');
+        botonAjustesPausa = document.getElementById('botonSettings_pause');
+        botonAjustesGameOver = document.getElementById('botonSettings_gameOver');
+        botonAceptarAjustes = document.getElementById('but_aceptar_ajustes');
+        botonCancelarAjustes = document.getElementById('but_cancelar_ajustes');
+        checkboxMusica = document.getElementById('bauble_check_musica');
+        checkboxSonido = document.getElementById('bauble_check_sonido');
+        checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
 
         this.load.spritesheet("jugador", "../../assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
         this.load.spritesheet("muerteJugador", "../../assets/character/main/Dead.png", {
@@ -69,8 +76,10 @@ class gameScene extends Phaser.Scene {
                 usuario = await resp.json();
                 if (usuario.fondoClaro) {
                     fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosque").setOrigin(0);
+                    colorTexto = "#000000FF"
                 } else {
                     fondo = this.add.tileSprite(0, 0, 0, 0, "fondoBosqueNoche").setOrigin(0);
+                    colorTexto = "#FFFFFFFF"
                 }
 
                 if (usuario.musica) {
@@ -172,9 +181,6 @@ class gameScene extends Phaser.Scene {
         });
 
         // Fondo
-
-
-        // Definimos el fondo desde el punto de origen 0,0
         fondo.displayWidth = game.config.width;
         fondo.displayHeight = game.config.height;
         fondo.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
@@ -208,7 +214,7 @@ class gameScene extends Phaser.Scene {
         // Delay para moverse
         this.time.delayedCall(1150, enableMovement, [], this);
         this.time.delayedCall(1200, enableAnimation, [], this);
-        this.time.delayedCall(0, sumarPuntos, [], this);
+        this.time.delayedCall(1470, sumarPuntos, [], this);
         this.time.delayedCall(0, generarMonedas, [], this);
         this.time.delayedCall(0, generarObstaculos, [], this);
 
@@ -228,11 +234,11 @@ class gameScene extends Phaser.Scene {
         $('#botonPausa').show();
         botonPausa.addEventListener('click', async function () {
             $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
+            context.physics.pause();
             flechasJugador.forEach(function (flecha) {
                 flecha.setVelocityY(0);
             });
             canMove = false;
-
             // Detener la animación del jugador
             jugador.anims.stop();
 
@@ -249,14 +255,11 @@ class gameScene extends Phaser.Scene {
             monedero.forEach(function (moneda) {
                 moneda.anims.stop();
             });
-
-            // Pausar el juego
-            game.paused = true;
         }, this);
-
 
         botonPlay.addEventListener('click', async function () {
             if (estaVivo) {
+                context.physics.resume();
                 $('#modalPause').modal('hide');
                 enableMovement();
                 enableAnimation();
@@ -273,6 +276,36 @@ class gameScene extends Phaser.Scene {
                     moneda.anims.play('moneda');
                 });
                 await Promise.all([generarObstaculos(), generarMonedas(), sumarPuntos()]);
+            }
+        }, this);
+
+        botonAjustesPausa.addEventListener('click', function () {
+            if (estaVivo) {
+                cargarAjustes();
+                modalAMostrar = 1;
+                $('#modalPause').modal('hide');
+                $('#modalSettings').modal({backdrop: 'static', keyboard: false}).modal('show');
+            }
+        }, this);
+
+        botonAjustesGameOver.addEventListener('click', function () {
+            if (estaVivo) {
+                cargarAjustes();
+                modalAMostrar = 2;
+                $('#modalGameOver').modal('hide');
+                $('#modalSettings').modal({backdrop: 'static', keyboard: false}).modal('show');
+            }
+        }, this);
+
+        botonAceptarAjustes.addEventListener('click', function () {
+            if (estaVivo) {
+                confirmarAjustes();
+            }
+        }, this);
+
+        botonCancelarAjustes.addEventListener('click', function () {
+            if (estaVivo) {
+                cancelarAjustes();
             }
         }, this);
 
@@ -302,14 +335,14 @@ class gameScene extends Phaser.Scene {
         txtPuntos = this.add.text(50, 30, ``, {
             fontFamily: "Turtles",
             fontSize: "30px",
-            fill: "#000000"
+            fill: colorTexto
         });
 
         // Monedas
         txtMonedas = this.add.text(50, 80, ``, {
             fontFamily: "Turtles",
             fontSize: "30px",
-            fill: "#000000"
+            fill: colorTexto
         });
     }
 
@@ -352,11 +385,11 @@ function enableAnimation() {
 }
 
 async function sumarPuntos() {
-    await new Promise(resolve => setTimeout(resolve, 1470));
+    //await new Promise(resolve => setTimeout(resolve, 1470));
     while (canMove && estaVivo) {
-        await new Promise(resolve => setTimeout(resolve, 100));
         puntos += 1;
         if (puntos % 100 === 0) velocidad += 0.85;
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
 }
 
@@ -376,7 +409,7 @@ async function dispararFlechas() {
             jugador.anims.play('run');
             flechaJugador.setVelocityX(700);
             disparando = false
-            if(usuario.sonido) {
+            if (usuario.sonido) {
                 arcoSound.play();
             }
 
@@ -407,7 +440,7 @@ function cogerMonedas(jugador, moneda) {
     puntos += 10; //suma puntos
     monedas += 5; //suma monedas
     txtPuntos.setText("Puntos: " + puntos)
-    if(usuario.sonido) {
+    if (usuario.sonido) {
         monedaSound.play();
     }
 }
@@ -431,7 +464,7 @@ async function generarObstaculos() {
             if (enemigoGenerado === 1) {
                 let x = Phaser.Math.RND.between(game.config.width + 500, game.config.width + 800);
                 let y = Phaser.Math.RND.between(875, 875);
-                if(usuario.sonido) {
+                if (usuario.sonido) {
                     enemigoSound.play();
                 }
                 orco = context.physics.add.sprite(x, y, "orcoRojo").setScale(1.75);
@@ -466,7 +499,7 @@ async function generarObstaculos() {
             } else if (enemigoGenerado === 2) {
                 let x = Phaser.Math.RND.between(game.config.width + 500, game.config.width + 800);
                 let y = Phaser.Math.RND.between(770, 770);
-                if(usuario.sonido) {
+                if (usuario.sonido) {
                     orcoVerdeSound.play();
                 }
                 orcoVerde = context.physics.add.sprite(x, y, "orcoVerde").setScale(4);
@@ -595,7 +628,7 @@ async function morir() {
     }
     txtPuntos.setText("")
     txtMonedas.setText("")
-    if(usuario.sonido) {
+    if (usuario.sonido) {
         fondoSound.stop();
     }
     jugador.anims.stop();
@@ -623,7 +656,7 @@ async function morir() {
     jugador.once('animationcomplete', () => {
         jugador.anims.stop();
     })
-    if(usuario.sonido) {
+    if (usuario.sonido) {
         defeatSound.play();
         defeatSound.volume = 0.2;
     }
@@ -631,12 +664,12 @@ async function morir() {
     document.getElementById("textoCantidadMonedas").textContent = "Monedas: " + monedas.toString();
     await new Promise(resolve => setTimeout(resolve, 1500));
     $('#modalPause').modal('hide');
+    $('#modalSettings').modal('hide');
     $('#modalGameOver').modal({backdrop: 'static', keyboard: false}).modal('show');
 
-    actualizarPuntuacion(puntos);
-    actualizarMonedas(monedas);
+    await actualizarPuntuacion(puntos);
+    await actualizarMonedas(monedas);
 }
-
 
 const actualizarPuntuacion = async (nuevaPuntuacion) => {
     const url = '/usuarios/puntuaciones/usuario';
@@ -687,9 +720,112 @@ const actualizarMonedas = async (monedasObtenidas) => {
         console.error('Hubo un error al actualizar la puntuación:', error);
         throw error;
     }
-
-
 };
 
+function confirmarAjustes() {
+    Swal.fire({
+        title: "¿Quieres guardar los ajustes?",
+        icon: "question",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Guardar",
+        denyButtonText: "Salir sin guardar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "lightgreen",
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            await guardarAjustes();
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "¡Ajustes guardados!",
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+            }).then(() => {
+                $('#modalSettings').modal('hide');
+                if (modalAMostrar === 1) $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
+                else if (modalAMostrar === 2) $('#modalGameOver').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }).modal('show');
+            })
+        } else if (result.isDenied) {
+            $('#modalSettings').modal('hide');
+            if (modalAMostrar === 1) $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
+            else if (modalAMostrar === 2) $('#modalGameOver').modal({
+                backdrop: 'static',
+                keyboard: false
+            }).modal('show');
+        }
 
+    });
+}
 
+function cancelarAjustes() {
+    Swal.fire({
+        title: "¿Quieres salir sin guardar los ajustes?",
+        icon: "warning",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Guardar",
+        denyButtonText: "Salir sin guardar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "lightgreen",
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            await guardarAjustes();
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "¡Ajustes guardados!",
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+            }).then(() => {
+                $('#modalSettings').modal('hide');
+                if (modalAMostrar === 1) $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
+                else if (modalAMostrar === 2) $('#modalGameOver').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }).modal('show');
+            })
+        } else if (result.isDenied) {
+            $('#modalSettings').modal('hide');
+            if (modalAMostrar === 1) $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
+            else if (modalAMostrar === 2) $('#modalGameOver').modal({
+                backdrop: 'static',
+                keyboard: false
+            }).modal('show');
+        }
+    });
+}
+
+async function guardarAjustes() {
+    const data = {
+        valorMusica: !checkboxMusica.checked,
+        valorSonido: !checkboxSonido.checked,
+        valorPantallaCompleta: !checkboxPantallaCompleta.checked
+    };
+    console.log(data);
+    const response = await fetch('/usuarios/ajustes/usuario', {
+        credentials: 'include',
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+}
+
+async function cargarAjustes() {
+    const respUsuario = await fetch('/usuarios/usuario');
+    if (respUsuario.status !== 200) {
+        throw new Error("Error al cargar");
+    }
+    let usuario = await respUsuario.json();
+
+    checkboxMusica.checked = !usuario.musica;
+    checkboxSonido.checked = !usuario.sonido;
+    checkboxPantallaCompleta.checked = !usuario.pantallaCompleta;
+}
