@@ -19,6 +19,7 @@ class gameScene extends Phaser.Scene {
         checkboxMusica = document.getElementById('bauble_check_musica');
         checkboxSonido = document.getElementById('bauble_check_sonido');
         checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
+        $('#botonPausa').hide();
 
         this.load.spritesheet("jugador", "../../assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
         this.load.spritesheet("muerteJugador", "../../assets/character/main/Dead.png", {
@@ -231,7 +232,6 @@ class gameScene extends Phaser.Scene {
         this.physics.add.collider(suelo, orcoVerde);
 
         // Botones
-        $('#botonPausa').show();
         botonPausa.addEventListener('click', async function () {
             $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
             context.physics.pause();
@@ -377,6 +377,7 @@ class gameScene extends Phaser.Scene {
 function enableMovement() {
     // Empezar a mover el personaje
     canMove = true;
+    $('#botonPausa').show();
 }
 
 function enableAnimation() {
