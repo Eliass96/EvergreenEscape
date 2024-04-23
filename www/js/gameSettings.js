@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         Swal.fire({
             icon: "error",
             title: "Ups...",
-            text: "Error inesperado al cargar los ajustes... Pruebe a reiniciar la página",
+            text: "Error inesperado al cargar los ajustes de fondo... Pruebe a reiniciar la página",
         });
     }
 
