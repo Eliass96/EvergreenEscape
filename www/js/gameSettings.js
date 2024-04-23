@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', async function () {
     let fondo;
 
@@ -15,12 +17,28 @@ document.addEventListener('DOMContentLoaded', async function () {
     botonFondoClaro.addEventListener('click', function () {
         fondo = true;
         guardarFondo();
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Fondo claro guardado correctamente!",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true
+        });
 
     })
 
     botonFondoOscuro.addEventListener('click', function () {
         fondo = false;
         guardarFondo();
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Fondo oscuro guardado correctamente!",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true
+        });
 
     })
 

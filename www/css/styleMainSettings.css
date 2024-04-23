@@ -181,16 +181,19 @@
 }
 
 .backgroundImg {
-    border-radius: 35px;
+    border-radius: 75px;
     width: 35vw;
     padding: 15px;
 }
 
+
 .card-outer_fondo {
-    width: 35vw;
+    width: 35.5vw;
 }
 
 .card-inner {
-    border-radius: 35px;
+    border-radius: 75px;
 }
+
+
 
