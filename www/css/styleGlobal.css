@@ -259,12 +259,14 @@ footer p {
 
 /*** ANIMACIONES ***/
 .btnComprar:hover,
+.botonPausa:hover,
 .botonCerrarSesion:hover,
 .botonenviar:hover {
     transform: scale(1.1);
 }
 
 .btnComprar:active,
+.botonPausa:active,
 .botonCerrarSesion:active,
 .botonenviar:active {
     transform: scale(0.9);

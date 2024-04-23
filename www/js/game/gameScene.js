@@ -89,12 +89,12 @@ class gameScene extends Phaser.Scene {
                     fondoSound.loop = true;
                 }
 
-
+                hightScore = Math.max(...usuario.puntuaciones);
             } else {
                 Swal.fire({
                     icon: "warning",
-                    title: "No estás logueado",
-                    text: "¡Tienes que iniciar sesión para poder acceder a las puntuaciones!",
+                    title: "No has iniciado sesión",
+                    text: "¡Tienes que iniciar sesión para poder acceder al juego!",
                     confirmButtonText: "Aceptar"
                 }).then(() => {
                     document.location.href = "../html/login.html";
@@ -104,7 +104,7 @@ class gameScene extends Phaser.Scene {
             Swal.fire({
                 icon: "error",
                 title: "Ups...",
-                text: "Error inesperado al cargar las puntuaciones... Pruebe a reiniciar la página",
+                text: "Error inesperado al cargar el juego... Pruebe a reiniciar la página",
             });
         }
 
@@ -289,24 +289,18 @@ class gameScene extends Phaser.Scene {
         }, this);
 
         botonAjustesGameOver.addEventListener('click', function () {
-            if (estaVivo) {
-                cargarAjustes();
-                modalAMostrar = 2;
-                $('#modalGameOver').modal('hide');
-                $('#modalSettings').modal({backdrop: 'static', keyboard: false}).modal('show');
-            }
+            cargarAjustes();
+            modalAMostrar = 2;
+            $('#modalGameOver').modal('hide');
+            $('#modalSettings').modal({backdrop: 'static', keyboard: false}).modal('show');
         }, this);
 
         botonAceptarAjustes.addEventListener('click', function () {
-            if (estaVivo) {
-                confirmarAjustes();
-            }
+            confirmarAjustes();
         }, this);
 
         botonCancelarAjustes.addEventListener('click', function () {
-            if (estaVivo) {
-                cancelarAjustes();
-            }
+            cancelarAjustes();
         }, this);
 
         // Teclas
@@ -338,6 +332,13 @@ class gameScene extends Phaser.Scene {
             fill: colorTexto
         });
 
+        // Hight score
+        txtHightScore = this.add.text(300, 30, ``, {
+            fontFamily: "Turtles",
+            fontSize: "30px",
+            fill: colorTexto
+        });
+
         // Monedas
         txtMonedas = this.add.text(50, 80, ``, {
             fontFamily: "Turtles",
@@ -349,6 +350,8 @@ class gameScene extends Phaser.Scene {
     update() {
         if (canMove && estaVivo) {
             txtPuntos.setText("Puntos: " + puntos)
+            if (puntos < hightScore) txtHightScore.setText("Mejor puntuación: " + hightScore)
+            else txtHightScore.setText("Mejor puntuación: " + puntos)
             txtMonedas.setText("Monedas: " + monedas)
             fondo.tilePositionX += velocidad;
             if (disparando) flechaJugador.enableBody(true, jugador.x + 30, jugador.y + 60, true, true);
@@ -628,6 +631,7 @@ async function morir() {
         return;
     }
     txtPuntos.setText("")
+    txtHightScore.setText("")
     txtMonedas.setText("")
     if (usuario.sonido) {
         fondoSound.stop();
@@ -663,6 +667,7 @@ async function morir() {
     }
     document.getElementById("textoCantidadPuntos").textContent = "Puntuación: " + puntos.toString();
     document.getElementById("textoCantidadMonedas").textContent = "Monedas: " + monedas.toString();
+    document.getElementById("textoHightScore").textContent = "Mejor puntuación: " + hightScore.toString();
     await new Promise(resolve => setTimeout(resolve, 1500));
     $('#modalPause').modal('hide');
     $('#modalSettings').modal('hide');
@@ -809,7 +814,7 @@ async function guardarAjustes() {
         valorPantallaCompleta: !checkboxPantallaCompleta.checked
     };
     console.log(data);
-    const response = await fetch('/usuarios/ajustes/usuario', {
+    await fetch('/usuarios/ajustes/usuario', {
         credentials: 'include',
         method: 'PATCH',
         headers: {
