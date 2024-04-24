@@ -893,6 +893,7 @@ async function efectoDeItemX2() {
         puntosASumar = 2;
         let x = 15;
         while (x >= 0) {
+            if (x <= 3) contadorTiempoPuntuacionx2.style.color = "red"
             contadorTiempoPuntuacionx2.textContent = x + "s";
             await new Promise(resolve => setTimeout(resolve, 1000));
             x--;
@@ -905,11 +906,11 @@ async function efectoDeItemX2() {
 async function efectoDeItemSuperSalto() {
 
     if (cantidadSuperSalto > 0) {
-
         cantidadSuperSalto--;
         alturaSalto = -1000;
         let x = 15;
         while (x >= 0) {
+            if (x <= 3) contadorTiempoSuperSalto.style.color = "red"
             contadorTiempoSuperSalto.textContent = x + "s";
             await new Promise(resolve => setTimeout(resolve, 1000));
             x--;
@@ -926,6 +927,7 @@ async function efectoDeItemInmunidad() {
         puedeMorir = false;
         let x = 15;
         while (x >= 0) {
+            if (x <= 3) contadorTiempoAntiObstaculos.style.color = "red"
             contadorTiempoAntiObstaculos.textContent = x + "s";
             await new Promise(resolve => setTimeout(resolve, 1000));
             x--;
@@ -938,26 +940,45 @@ async function efectoDeItemInmunidad() {
 async function efectoDeItemRevivir() {
 
     if (cantidadRevivir > 0) {
-        cantidadRevivir--;
-        $('#modalGameOver').modal('hide');
+        Swal.fire({
+            title: "¿Quieres gastar una vida?",
+            icon: "question",
+            showDenyButton: true,
+            confirmButtonText: "Sí",
+            denyButtonText: "No",
+            confirmButtonColor: "lightgreen",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                cantidadRevivir--;
+                $('#modalGameOver').modal('hide');
 
-        jugador.anims.play('revivir');
-        jugador.once('animationcomplete', async () => {
-            jugador.anims.play('run');
-            puedeMorir = false;
-            canMove = true;
-            estaVivo = true;
-            await Promise.all([generarObstaculos(), generarMonedas(), sumarPuntos()]);
+                jugador.anims.play('revivir');
+                jugador.once('animationcomplete', async () => {
+                    jugador.anims.play('run');
+                    puedeMorir = false;
+                    canMove = true;
+                    estaVivo = true;
+                    await Promise.all([generarObstaculos(), generarMonedas(), sumarPuntos()]);
+                });
+
+                let x = 6;
+                while (x >= 0) {
+                    if (x <= 3) contadorTiempoAntiObstaculos.style.color = "red"
+                    contadorTiempoAntiObstaculos.textContent = x + "s";
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    x--;
+                }
+                contadorTiempoAntiObstaculos.textContent = "";
+                puedeMorir = true;
+            }
         });
-
-        let x = 6;
-        while (x >= 0) {
-            contadorTiempoAntiObstaculos.textContent = x + "s";
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            x--;
-        }
-        contadorTiempoAntiObstaculos.textContent = "";
-        puedeMorir = true;
+    } else {
+        Swal.fire({
+            icon: "warning",
+            title: "No te quedan vidas",
+            text: "¡Compra vidas en la tienda para poder revivir después de una partida!",
+            confirmButtonText: "De acuerdo"
+        });
     }
 }
 

@@ -67,7 +67,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             } else if (result.isDenied) {
                 window.location.href = "/";
             }
-
         });
     }
 
