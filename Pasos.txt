@@ -2,7 +2,7 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Revisar HTML para hacerlo semántico
-*** Revisar CSS para eliminar lo que sobre
-*** SEGUIR LA DOCUMENTACION
+*** Hacer responsive los botones de los items
+*** Revisar cada fichero
+*** Seguir la documentación (ya está corregida entera)
 *** Hacer para poder jugar en el móvil
