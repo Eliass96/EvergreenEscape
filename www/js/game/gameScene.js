@@ -12,10 +12,21 @@ class gameScene extends Phaser.Scene {
         this.load.image("botonPausa", "../../img/buttons/pause.png");
         botonPlay = document.getElementById('botonPlay');
         botonPausa = document.getElementById('botonPausa');
+        botonRevivir = document.getElementById('botonRevivir');
         botonAjustesPausa = document.getElementById('botonSettings_pause');
         botonAjustesGameOver = document.getElementById('botonSettings_gameOver');
         botonAceptarAjustes = document.getElementById('but_aceptar_ajustes');
         botonCancelarAjustes = document.getElementById('but_cancelar_ajustes');
+        contadorTiempoPuntuacionx2 = document.getElementById('contadorTiempoPuntuacionx2');
+        contadorTiempoAntiObstaculos = document.getElementById('contadorTiempoAntiObstaculos');
+        contadorTiempoSuperSalto = document.getElementById('contadorTiempoSuperSalto');
+        textoPuntuacionx2 = document.getElementById('cantidadPuntuacionx2');
+        textoAntiObstaculos = document.getElementById('cantidadAntiObstaculos');
+        textoSuperSalto = document.getElementById('cantidadSuperSalto');
+        textoRevivir = document.getElementById("cantidadRevivir");
+        puntx2 = document.getElementById('botonx2');
+        antiObstaculos = document.getElementById('botonAntiObstaculos');
+        botonSuperSalto = document.getElementById('botonSuperSalto');
         checkboxMusica = document.getElementById('bauble_check_musica');
         checkboxSonido = document.getElementById('bauble_check_sonido');
         checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
@@ -68,7 +79,6 @@ class gameScene extends Phaser.Scene {
     }
 
     async create() {
-
         fondoSound = this.sound.add("sonidofondo");
         try {
             let urlUsuario = '/usuarios/usuario';
@@ -90,6 +100,10 @@ class gameScene extends Phaser.Scene {
                 }
 
                 hightScore = Math.max(...usuario.puntuaciones);
+                cantidadPuntuacionx2 = usuario.puntuacionExtra;
+                cantidadSuperSalto = usuario.superSalto;
+                cantidadAntiObstaculos = usuario.inmunidad;
+                cantidadRevivir = usuario.revivir;
             } else {
                 Swal.fire({
                     icon: "warning",
@@ -128,6 +142,12 @@ class gameScene extends Phaser.Scene {
         this.anims.create({
             key: 'dead',
             frames: this.anims.generateFrameNumbers("muerteJugador", {start: 0, end: 2}),
+            frameRate: 2
+        });
+
+        this.anims.create({
+            key: 'revivir',
+            frames: this.anims.generateFrameNumbers("muerteJugador", {start: 2, end: 0}),
             frameRate: 2
         });
 
@@ -303,13 +323,30 @@ class gameScene extends Phaser.Scene {
             cancelarAjustes();
         }, this);
 
+
+        puntx2.addEventListener('click', function () {
+            efectoDeItemX2();
+        }, this);
+
+        antiObstaculos.addEventListener('click', function () {
+            efectoDeItemInmunidad();
+        }, this);
+
+        botonSuperSalto.addEventListener('click', function () {
+            efectoDeItemSuperSalto();
+        }, this);
+
+        botonRevivir.addEventListener('click', function () {
+            efectoDeItemRevivir();
+        }, this);
+
         // Teclas
         cursors = this.input.keyboard.createCursorKeys();
         this.input.keyboard.on('keydown-SPACE', function (event) {
             if (jugador.body.touching.down && canMove) {
                 disparando = false;
                 if (flechaJugador.x === jugador.x + 30) flechaJugador.disableBody(true, true);
-                jugador.setVelocityY(-725);
+                jugador.setVelocityY(alturaSalto);
                 jugador.anims.play('jump');
                 jugador.once('animationcomplete', () => {
                     jugador.anims.play('run');
@@ -348,7 +385,14 @@ class gameScene extends Phaser.Scene {
     }
 
     update() {
+
         if (canMove && estaVivo) {
+
+            textoSuperSalto.textContent = cantidadSuperSalto.toString();
+            textoPuntuacionx2.textContent = cantidadPuntuacionx2.toString();
+            textoAntiObstaculos.textContent = cantidadAntiObstaculos.toString();
+            textoRevivir.textContent = cantidadRevivir.toString();
+
             txtPuntos.setText("Puntos: " + puntos)
             if (puntos < hightScore) txtHightScore.setText("Mejor puntuación: " + hightScore)
             else txtHightScore.setText("Mejor puntuación: " + puntos)
@@ -373,6 +417,7 @@ class gameScene extends Phaser.Scene {
             pinchos.forEach(function (pincho) {
                 pincho.x -= velocidad / 2; // Mover cada pincho junto con el fondo
             });
+
         }
     }
 }
@@ -391,7 +436,7 @@ function enableAnimation() {
 async function sumarPuntos() {
     //await new Promise(resolve => setTimeout(resolve, 1470));
     while (canMove && estaVivo) {
-        puntos += 1;
+        puntos += puntosASumar;
         if (puntos % 100 === 0) velocidad += 0.85;
         await new Promise(resolve => setTimeout(resolve, 100));
     }
@@ -627,54 +672,58 @@ async function matarOrco() {
 }
 
 async function morir() {
-    if (!estaVivo) {
-        return;
-    }
-    txtPuntos.setText("")
-    txtHightScore.setText("")
-    txtMonedas.setText("")
-    if (usuario.sonido) {
-        fondoSound.stop();
-    }
-    jugador.anims.stop();
-    enemigos.forEach(function (orco) {
-        if (orco.x <= game.config.width / 3) {
-            orco.anims.play('ataqueOrcoRojo');
-            /*orco.once('animationcomplete', () => {
-                orco.anims.stop();
-            })*/
+    if (puedeMorir) {
+        if (!estaVivo) {
+            return;
         }
-    });
-    orcosVerdes.forEach(function (orco) {
-        if (orco.x <= game.config.width / 3) {
-            orco.anims.play('ataqueOrcoVerde');
-            /*orco.once('animationcomplete', () => {
-                orco.anims.stop();
-            })*/
+        txtPuntos.setText("")
+        txtHightScore.setText("")
+        txtMonedas.setText("")
+        if (usuario.sonido) {
+            fondoSound.stop();
         }
-    });
-    canMove = false;
-    estaVivo = false;
-    jugador.setVelocity(0);
-    await new Promise(resolve => setTimeout(resolve, 400));
-    jugador.anims.play('dead');
-    jugador.once('animationcomplete', () => {
         jugador.anims.stop();
-    })
-    if (usuario.sonido) {
-        defeatSound.play();
-        defeatSound.volume = 0.2;
-    }
-    document.getElementById("textoCantidadPuntos").textContent = "Puntuación: " + puntos.toString();
-    document.getElementById("textoCantidadMonedas").textContent = "Monedas: " + monedas.toString();
-    document.getElementById("textoHightScore").textContent = "Mejor puntuación: " + hightScore.toString();
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    $('#modalPause').modal('hide');
-    $('#modalSettings').modal('hide');
-    $('#modalGameOver').modal({backdrop: 'static', keyboard: false}).modal('show');
+        enemigos.forEach(function (orco) {
+            if (orco.x <= game.config.width / 3) {
+                orco.anims.play('ataqueOrcoRojo');
+                /*orco.once('animationcomplete', () => {
+                    orco.anims.stop();
+                })*/
+            }
+        });
+        orcosVerdes.forEach(function (orco) {
+            if (orco.x <= game.config.width / 3) {
+                orco.anims.play('ataqueOrcoVerde');
+                /*orco.once('animationcomplete', () => {
+                    orco.anims.stop();
+                })*/
+            }
+        });
+        canMove = false;
+        estaVivo = false;
+        jugador.setVelocity(0);
+        await new Promise(resolve => setTimeout(resolve, 400));
+        jugador.anims.play('dead');
+        jugador.once('animationcomplete', () => {
+            jugador.anims.stop();
+        })
+        if (usuario.sonido) {
+            defeatSound.play();
+            defeatSound.volume = 0.2;
+        }
+        document.getElementById("textoCantidadPuntos").textContent = "Puntuación: " + puntos.toString();
+        document.getElementById("textoCantidadMonedas").textContent = "Monedas: " + monedas.toString();
+        document.getElementById("textoHightScore").textContent = "Mejor puntuación: " + hightScore.toString();
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        $('#modalPause').modal('hide');
+        $('#modalSettings').modal('hide');
+        $('#modalGameOver').modal({backdrop: 'static', keyboard: false}).modal('show');
 
-    await actualizarPuntuacion(puntos);
-    await actualizarMonedas(monedas);
+        await actualizarPuntuacion(puntos);
+        await actualizarMonedas(monedas);
+
+    }
+
 }
 
 const actualizarPuntuacion = async (nuevaPuntuacion) => {
@@ -813,7 +862,7 @@ async function guardarAjustes() {
         valorSonido: !checkboxSonido.checked,
         valorPantallaCompleta: !checkboxPantallaCompleta.checked
     };
-    console.log(data);
+
     await fetch('/usuarios/ajustes/usuario', {
         credentials: 'include',
         method: 'PATCH',
@@ -835,3 +884,81 @@ async function cargarAjustes() {
     checkboxSonido.checked = !usuario.sonido;
     checkboxPantallaCompleta.checked = !usuario.pantallaCompleta;
 }
+
+async function efectoDeItemX2() {
+
+    if (cantidadPuntuacionx2 > 0) {
+
+        cantidadPuntuacionx2--;
+        puntosASumar = 2;
+        let x = 15;
+        while (x >= 0) {
+            contadorTiempoPuntuacionx2.textContent = x + "s";
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            x--;
+        }
+        contadorTiempoPuntuacionx2.textContent = "";
+        puntosASumar = 1;
+    }
+}
+
+async function efectoDeItemSuperSalto() {
+
+    if (cantidadSuperSalto > 0) {
+
+        cantidadSuperSalto--;
+        alturaSalto = -1000;
+        let x = 15;
+        while (x >= 0) {
+            contadorTiempoSuperSalto.textContent = x + "s";
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            x--;
+        }
+        contadorTiempoSuperSalto.textContent = "";
+        alturaSalto = -725;
+    }
+}
+
+async function efectoDeItemInmunidad() {
+
+    if (cantidadAntiObstaculos > 0) {
+        cantidadAntiObstaculos--;
+        puedeMorir = false;
+        let x = 15;
+        while (x >= 0) {
+            contadorTiempoAntiObstaculos.textContent = x + "s";
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            x--;
+        }
+        contadorTiempoAntiObstaculos.textContent = "";
+        puedeMorir = true;
+    }
+}
+
+async function efectoDeItemRevivir() {
+
+    if (cantidadRevivir > 0) {
+        cantidadRevivir--;
+        $('#modalGameOver').modal('hide');
+
+        jugador.anims.play('revivir');
+        jugador.once('animationcomplete', async () => {
+            jugador.anims.play('run');
+            puedeMorir = false;
+            canMove = true;
+            estaVivo = true;
+            await Promise.all([generarObstaculos(), generarMonedas(), sumarPuntos()]);
+        });
+
+        let x = 6;
+        while (x >= 0) {
+            contadorTiempoAntiObstaculos.textContent = x + "s";
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            x--;
+        }
+        contadorTiempoAntiObstaculos.textContent = "";
+        puedeMorir = true;
+    }
+}
+
+

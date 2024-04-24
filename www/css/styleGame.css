@@ -23,50 +23,111 @@
 }
 
 .modal-footer {
-border-top: none;
+    border-top: none;
 }
 
 .modal-header {
-border-bottom: none !important;
+    border-bottom: none !important;
 }
 
 .row {
---bs-gutter-x: 0 !important;
+    --bs-gutter-x: 0 !important;
 }
 
 
 .botonPausa {
-padding: 5px;
-background: transparent;
-border: none;
-transition: transform 0.3s ease;
-position: absolute;
-right: 15px;
-top: 15px;
+    padding: 5px;
+    background: transparent;
+    border: none;
+    transition: transform 0.3s ease;
+    position: absolute;
+    right: 15px;
+    top: 15px;
 }
 
 .img_buttonPause {
-width: 1vw;
-min-width: 60px;
+    width: 1vw;
+    min-width: 60px;
 }
 
 .textoGameOver {
-font-family: 'turtles', sans-serif;
-color: white;
-font-size: clamp(1.75em, 4vh, 4em);
+    font-family: 'turtles', sans-serif;
+    color: white;
+    font-size: clamp(1.75em, 4vh, 4em);
 }
 
 .img_button_restart {
-width: 10vw;
-min-width: 100px;
-margin: 20px;
+    width: 10vw;
+    min-width: 100px;
+    margin: 20px;
 }
 
 .img_buttonGameOver {
-margin: 15px;
-width: 7vw;
+    margin: 15px;
+    width: 7vw;
 }
 
 .titulo_game_over {
-width: 30vw;
+    width: 30vw;
+}
+
+.img_buttonItem {
+    width: 3vw;
+    min-width: 60px;
+}
+
+.botonx2,
+.botonAntiObstaculos,
+.botonSuperSalto {
+    padding: 5px;
+    border: none;
+    transition: transform 0.3s ease;
+    position: absolute;
+    background-color: rgba(0, 0, 0, .4);
+    height: 8vh;
+    min-height: 70px;
+    margin-top: 15px;
+    border-radius: 25px;
+}
+
+.botonRevivir {
+    padding: 5px;
+    border: none;
+    transition: transform 0.3s ease;
+    background-color: rgba(255, 0, 0, .4);
+    height: 8vh;
+    min-height: 70px;
+    border-radius: 25px;
+    position: absolute;
+    left: 150px;
+    bottom: 15px;
+}
+
+.botonx2 {
+    right: 9vw;
+}
+
+.botonAntiObstaculos {
+    right: 16vw;
+}
+
+.botonSuperSalto {
+    right: 23vw;
+}
+
+#cantidadPuntuacionx2, #contadorTiempoPuntuacionx2, #cantidadAntiObstaculos, #contadorTiempoAntiObstaculos,
+#cantidadSuperSalto, #contadorTiempoSuperSalto,#cantidadRevivir {
+    color: white;
+    background-color: transparent;
+    font-size: clamp(0.5em, 1.5vw, 1em);
+    font-family: 'turtles', sans-serif;
+}
+
+#contadorTiempoPuntuacionx2, #contadorTiempoAntiObstaculos, #contadorTiempoSuperSalto {
+    margin-top: 60px;
+}
+
+.contenedor_revivir{
+    display: flex;
+    position: relative;
 }
