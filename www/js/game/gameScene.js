@@ -31,6 +31,9 @@ class gameScene extends Phaser.Scene {
         checkboxSonido = document.getElementById('bauble_check_sonido');
         checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
         $('#botonPausa').hide();
+        $('#botonAntiObstaculos').hide();
+        $('#botonSuperSalto').hide();
+        $('#botonx2').hide();
 
         this.load.spritesheet("jugador", "../../assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
         this.load.spritesheet("muerteJugador", "../../assets/character/main/Dead.png", {
@@ -426,6 +429,9 @@ function enableMovement() {
     // Empezar a mover el personaje
     canMove = true;
     $('#botonPausa').show();
+    $('#botonAntiObstaculos').show();
+    $('#botonSuperSalto').show();
+    $('#botonx2').show();
 }
 
 function enableAnimation() {
