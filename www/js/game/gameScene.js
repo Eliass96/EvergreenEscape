@@ -638,19 +638,19 @@ async function morir() {
     }
     jugador.anims.stop();
     enemigos.forEach(function (orco) {
-        if (orco.x <= 600) {
+        if (orco.x <= game.config.width / 3) {
             orco.anims.play('ataqueOrcoRojo');
-            orco.once('animationcomplete', () => {
+            /*orco.once('animationcomplete', () => {
                 orco.anims.stop();
-            })
+            })*/
         }
     });
     orcosVerdes.forEach(function (orco) {
-        if (orco.x <= 600) {
+        if (orco.x <= game.config.width / 3) {
             orco.anims.play('ataqueOrcoVerde');
-            orco.once('animationcomplete', () => {
+            /*orco.once('animationcomplete', () => {
                 orco.anims.stop();
-            })
+            })*/
         }
     });
     canMove = false;
