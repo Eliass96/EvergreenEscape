@@ -11,7 +11,7 @@ const HTTP_OK = 200;
 const HTTP_CREATED = 201;
 const HTTP_NO_CONTENT = 204;
 const HTTP_BAD_REQUEST = 400;
-const HTTP_UNAUTHORIZED=401;
+const HTTP_UNAUTHORIZED = 401;
 const HTTP_NOT_FOUND = 404;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 
@@ -70,7 +70,7 @@ app.post('/usuarios/cerrarSesion', async (req, res) => {
         } else {
             res.status(HTTP_UNAUTHORIZED).send({message: 'No estás logueado'});
         }
-    }catch (error) {
+    } catch (error) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({message: 'Error inesperado al cerrar sesión'});
     }
 });
@@ -150,6 +150,28 @@ app.patch('/usuarios/items/usuario', async (req, res) => { //funciona
         res.status(HTTP_OK).json(usuarioActualizado);
     } catch (error) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: 'Hubo un error al comprar el item'});
+    }
+});
+
+app.patch('/usuarios/postpartida/items/usuario', async (req, res) => { //funciona
+    const userId = req.session.usuario;
+    const {
+        cantidadSuperSalto,
+        cantidadPuntuacionx2,
+        cantidadAntiObstaculos,
+        cantidadRevivir
+    } = req.body;
+
+    try {
+        const usuarioActualizado = await db.utilizarItems(
+            userId,
+            cantidadSuperSalto,
+            cantidadPuntuacionx2,
+            cantidadAntiObstaculos,
+            cantidadRevivir);
+        res.status(HTTP_OK).json(usuarioActualizado);
+    } catch (error) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: 'Hubo un error al actualizar los items'});
     }
 });
 

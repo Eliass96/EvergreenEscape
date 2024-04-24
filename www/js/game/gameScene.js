@@ -727,9 +727,8 @@ async function morir() {
 
         await actualizarPuntuacion(puntos);
         await actualizarMonedas(monedas);
-
+        await actualizarItemsPostPartida();
     }
-
 }
 
 const actualizarPuntuacion = async (nuevaPuntuacion) => {
@@ -986,6 +985,28 @@ async function efectoDeItemRevivir() {
             confirmButtonText: "De acuerdo"
         });
     }
+}
+
+async function actualizarItemsPostPartida() {
+    console.log(cantidadSuperSalto);
+    console.log(cantidadPuntuacionx2);
+    console.log(cantidadAntiObstaculos);
+    console.log(cantidadRevivir);
+    const data = {
+        cantidadSuperSalto,
+        cantidadPuntuacionx2,
+        cantidadAntiObstaculos,
+        cantidadRevivir
+    };
+
+    await fetch('/usuarios/postpartida/items/usuario', {
+        credentials: 'include',
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
 }
 
 

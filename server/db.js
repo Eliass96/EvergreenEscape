@@ -149,7 +149,7 @@ exports.guardarFondo = async function (userId, fondoJuego) {
             throw new Error('Usuario no encontrado');
         }
 
-        usuario.fondoClaro= fondoJuego;
+        usuario.fondoClaro = fondoJuego;
 
         await usuario.save();
         return usuario;
@@ -169,19 +169,19 @@ exports.comprarItems = async function (userId, itemComprado, cantidadComprada) {
         switch (itemComprado) {
             case 1: // Supersalto
                 costoItem = cantidadComprada * 20;
-                usuario.superSalto+=cantidadComprada;
+                usuario.superSalto += cantidadComprada;
                 break;
             case 2: // X2
                 costoItem = cantidadComprada * 30;
-                usuario.puntuacionExtra+=cantidadComprada;
+                usuario.puntuacionExtra += cantidadComprada;
                 break;
             case 3: // Inmunidad
                 costoItem = cantidadComprada * 40;
-                usuario.inmunidad+=cantidadComprada;
+                usuario.inmunidad += cantidadComprada;
                 break;
             case 4: // Revivir
                 costoItem = cantidadComprada * 50;
-                usuario.revivir+=cantidadComprada;
+                usuario.revivir += cantidadComprada;
                 break;
             default:
                 throw new Error('Item no válido');
@@ -196,6 +196,37 @@ exports.comprarItems = async function (userId, itemComprado, cantidadComprada) {
         throw new Error('Hubo un error al comprar el item');
     }
 }
+
+// ACTUALIZAR ITEMS DESPUÉS DE UNA PARTIDA
+// ACTUALIZAR ITEMS AL UTILIZARLOS
+exports.utilizarItems = async function (userId, superSaltoDespuesDePartida, puntuacionExtraDespuesDePartida, inmunidadDespuesDePartida, revivirDespuesDePartida) {
+    try {
+        const usuario = await Usuario.findById(userId);
+        if (!usuario) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        // Verificar si el usuario tiene suficientes elementos antes de actualizar
+        if (superSaltoDespuesDePartida < 0 ||
+            puntuacionExtraDespuesDePartida < 0 ||
+            inmunidadDespuesDePartida < 0 ||
+            revivirDespuesDePartida < 0) {
+            throw new Error('No puedes tener items negativos');
+        }
+
+        // Actualizar elementos
+        usuario.superSalto = superSaltoDespuesDePartida;
+        usuario.puntuacionExtra = puntuacionExtraDespuesDePartida;
+        usuario.inmunidad = inmunidadDespuesDePartida;
+        usuario.revivir = revivirDespuesDePartida;
+
+        await usuario.save();
+        return usuario;
+    } catch (error) {
+        throw new Error('Hubo un error al actualizar los items: ' + error.message);
+    }
+}
+
 
 //EDITAR MONEDAS
 exports.sumarMonedas = async function (userId, monedasObtenidas) {
@@ -222,7 +253,7 @@ exports.altaUsuario = async function (datosDeUsuario) {
 
 exports.listarPuntuacionesPorPais = async function (nacionalidad) {
     try {
-        const usuarios = await Usuario.find({ nacionalidad: nacionalidad });
+        const usuarios = await Usuario.find({nacionalidad: nacionalidad});
 
         if (usuarios.length === 0) {
             throw new Error('No se encontraron usuarios para el país especificado');
