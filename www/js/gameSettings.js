@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Fondo claro guardado correctamente!",
+                    title: "Fondo claro aplicado correctamente!",
                     showConfirmButton: false,
                     timer: 1000,
                     timerProgressBar: true
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Fondo oscuro guardado correctamente!",
+                    title: "Fondo oscuro aplicado correctamente!",
                     showConfirmButton: false,
                     timer: 1000,
                     timerProgressBar: true
