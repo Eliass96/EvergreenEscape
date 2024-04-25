@@ -2,6 +2,13 @@
   "appId": "com.game.evergreenescape",
   "appName": "EvergreenEscape",
   "webDir": "www",
+  "android": {
+    "permissions": [
+      {
+        "name": "android.permission.INTERNET"
+      }
+    ]
+  },
   "server": {
     "androidScheme": "https",
     "hostname": "localhost",
