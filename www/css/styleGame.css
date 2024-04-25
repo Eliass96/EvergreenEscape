@@ -1,9 +1,31 @@
 /*GAME OVER MODAL*/
 .modalGameOver {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: rgba(0, 0, 0, .4);
     border: none;
     width: 70vw;
     border-radius: 15px;
+    max-height: 80vh;
+}
+
+.modal-header {
+    padding: 0 !important;
+}
+
+.modal-body {
+    padding: 0 !important;
+}
+
+.modalPause {
+    background-color: rgba(0, 0, 0, .4);
+    border: none;
+    width: 70vw;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modalSettings {
@@ -33,7 +55,6 @@
 .row {
     --bs-gutter-x: 0 !important;
 }
-
 
 .botonPausa {
     padding: 5px;
@@ -71,13 +92,13 @@
 .textoGameOver {
     font-family: 'turtles', sans-serif;
     color: white;
-    font-size: clamp(1.75em, 4vh, 4em);
+    font-size: clamp(1.4em, 3vh, 3.5em);
 }
 
 .img_button_restart {
     width: 10vw;
     min-width: 100px;
-    margin: 20px;
+    margin: 10px;
 }
 
 .img_buttonGameOver {
@@ -86,7 +107,7 @@
 }
 
 .titulo_game_over {
-    width: 30vw;
+    width: 25vw;
 }
 
 .img_buttonItem {
@@ -122,19 +143,19 @@
 }
 
 .botonx2 {
-    right: 9vw;
+    right: 100px;
 }
 
 .botonAntiObstaculos {
-    right: 16vw;
+    right: 200px;
 }
 
 .botonSuperSalto {
-    right: 23vw;
+    right: 300px;
 }
 
 #cantidadPuntuacionx2, #contadorTiempoPuntuacionx2, #cantidadAntiObstaculos, #contadorTiempoAntiObstaculos,
-#cantidadSuperSalto, #contadorTiempoSuperSalto,#cantidadRevivir {
+#cantidadSuperSalto, #contadorTiempoSuperSalto, #cantidadRevivir {
     color: white;
     background-color: transparent;
     font-size: clamp(0.5em, 1.5vw, 1em);
@@ -145,7 +166,7 @@
     margin-top: 60px;
 }
 
-.contenedor_revivir{
+.contenedor_revivir {
     display: flex;
     position: relative;
 }

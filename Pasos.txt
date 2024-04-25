@@ -2,6 +2,5 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Hacer responsive los botones de los items
 *** Revisar cada fichero
 *** Seguir la documentación (ya está corregida entera)
