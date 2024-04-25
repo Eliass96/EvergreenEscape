@@ -1030,5 +1030,3 @@ async function actualizarItemsPostPartida() {
         body: JSON.stringify(data)
     });
 }
-
-
