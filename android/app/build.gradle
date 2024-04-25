@@ -25,9 +25,7 @@ android {
 }
 
 repositories {
-    flatDir{
-        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
-    }
+    mavenCentral() // o jcenter() u otro repositorio de dependencias válido
 }
 
 dependencies {
