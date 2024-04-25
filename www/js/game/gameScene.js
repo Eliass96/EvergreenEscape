@@ -363,6 +363,7 @@ class gameScene extends Phaser.Scene {
                 if (!disparando) {
                     if (pointer.leftButtonDown()) {
                         await dispararFlechas();
+                        await new Promise(resolve => setTimeout(resolve, 500));
                     }
                 }
             });
@@ -382,6 +383,7 @@ class gameScene extends Phaser.Scene {
             botonDisparar.addEventListener('click', async function () {
                 if (!disparando) {
                     await dispararFlechas();
+                    await new Promise(resolve => setTimeout(resolve, 500));
                 }
             }, this);
         }
@@ -441,7 +443,9 @@ class gameScene extends Phaser.Scene {
             pinchos.forEach(function (pincho) {
                 pincho.x -= velocidad / 2; // Mover cada pincho junto con el fondo
             });
-
+            flechasJugador.forEach(function (flecha) {
+                if (!disparando && jugador.x >= flecha.body.velocity.x < 700) flecha.body.setVelocityX(700);
+            });
         }
     }
 }
@@ -489,7 +493,6 @@ async function dispararFlechas() {
             if (usuario.sonido) {
                 arcoSound.play();
             }
-
         });
     }
 }
