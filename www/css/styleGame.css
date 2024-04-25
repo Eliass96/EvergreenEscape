@@ -85,7 +85,7 @@
 }
 
 .img_buttonPause {
-    width: 1vw;
+    width: 4vw;
     min-width: 60px;
 }
 
@@ -129,6 +129,12 @@
     border-radius: 25px;
 }
 
+.botonItemX2,
+.botonItemAntiObstaculos,
+.botonItemSuperSalto {
+    cursor: pointer;
+}
+
 .botonRevivir {
     padding: 5px;
     border: none;
@@ -138,7 +144,7 @@
     min-height: 70px;
     border-radius: 25px;
     position: absolute;
-    left: 150px;
+    right: 150px;
     bottom: 15px;
 }
 

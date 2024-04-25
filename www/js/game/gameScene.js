@@ -25,9 +25,9 @@ class gameScene extends Phaser.Scene {
         textoAntiObstaculos = document.getElementById('cantidadAntiObstaculos');
         textoSuperSalto = document.getElementById('cantidadSuperSalto');
         textoRevivir = document.getElementById("cantidadRevivir");
-        puntx2 = document.getElementById('botonx2');
-        antiObstaculos = document.getElementById('botonAntiObstaculos');
-        botonSuperSalto = document.getElementById('botonSuperSalto');
+        puntx2 = document.getElementById('botonItemX2');
+        antiObstaculos = document.getElementById('botonItemAntiObstaculos');
+        botonSuperSalto = document.getElementById('botonItemSuperSalto');
         checkboxMusica = document.getElementById('bauble_check_musica');
         checkboxSonido = document.getElementById('bauble_check_sonido');
         checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
