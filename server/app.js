@@ -6,6 +6,7 @@ const db = require("./db.js");
 const bcryptjs = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 const session = require('express-session');
+const cors = require('cors');
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
@@ -30,6 +31,7 @@ app.use(session({
 }));
 app.use(express.json());
 app.use(cookieParser())
+app.use(cors());
 app.use(express.static("www"));
 db.conectar().then(() => {
     console.log("Conectado con la base de datos.");
