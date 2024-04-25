@@ -187,6 +187,7 @@
 }
 
 .cardBackground-inner {
+    font-size: clamp(0.75em, 4vh, 1.25em);
     border-radius: 75px;
     background-color: rgba(0, 0, 0, .5);
     color: white;

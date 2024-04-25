@@ -272,6 +272,10 @@ footer p {
     .dropdown_mainScreen li {
         min-width: 60px !important;
     }
+
+    .backgroundImg {
+        width: 27vw;
+    }
 }
 
 /*** SCROLLBARS ***/
