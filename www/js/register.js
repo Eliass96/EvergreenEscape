@@ -138,55 +138,76 @@ document.addEventListener('DOMContentLoaded', function () {
                 password: password.value.trim(),
                 nacionalidad: dropdownMenuButton.textContent.trim()
             }
-            console.log(data);
-            const resp = await fetch("/usuarios/register", {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
+
+            const res = await fetch(`/usuarios/${data.nombre}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
-            console.log(resp);
-            if (!resp.ok) {
-                Swal.fire({
-                    position: "center",
-                    icon: "error",
-                    title: "¡Error al registrarte!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                })
+
+            let usuarioEncontrado = await res.json();
+
+            if (usuarioEncontrado === null) {
+                const resp = await fetch("/usuarios/register", {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+
+                if (!resp.ok) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "¡Error al registrarte!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    })
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Te has registrado correctamente!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(async () => {
+                        let dataLogin = {
+                            nombre: usuario.value.trim(),
+                            password: password.value.trim()
+                        };
+                        try {
+                            let respLogin = await fetch("/usuarios/login", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(dataLogin)
+                            });
+
+                            if (!respLogin.ok) {
+                                throw new Error("Error en la solicitud");
+                            }
+
+                            let respJson = await respLogin.json();
+
+                            document.location.href = "/";
+                        } catch (error) {
+                            console.error("Se produjo un error al iniciar sesión:", error);
+                        }
+                    });
+                }
             } else {
                 Swal.fire({
                     position: "center",
-                    icon: "success",
-                    title: "¡Te has registrado correctamente!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                }).then(async () => {
-                    let dataLogin = {
-                        nombre: usuario.value.trim(),
-                        password: password.value.trim()
-                    };
-                    try {
-                        let respLogin = await fetch("/usuarios/login", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify(dataLogin)
-                        });
+                    icon: "error",
+                    title: "¡El usuario ya existe!",
+                    showConfirmButton: true,
+                    confirmButtonText: "De acuerdo",
+                    confirmButtonColor: "lightgreen"
+                })
 
-                        if (!respLogin.ok) {
-                            throw new Error("Error en la solicitud");
-                        }
-
-                        let respJson = await respLogin.json();
-                        console.log(respJson.usuario._id);
-                        document.location.href = "/";
-                    } catch (error) {
-                        console.error("Se produjo un error al iniciar sesión:", error);
-                    }
-                });
             }
         }
     }

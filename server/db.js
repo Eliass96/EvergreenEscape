@@ -123,6 +123,14 @@ exports.getUsuario = async function (userId) {
     }
 };
 
+exports.getUsuarioByName = async function (userName) {
+    try {
+        return await Usuario.findOne({nombre: userName});
+    } catch (error) {
+        throw new Error('Error al buscar el usuario: ' + error.message);
+    }
+};
+
 //CAMBIAR AJUSTES
 exports.cambiarAjustes = async function (userId, valorMusica, valorSonido, valorPantallaCompleta) {
     try {

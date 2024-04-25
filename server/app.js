@@ -13,6 +13,7 @@ const HTTP_CREATED = 201;
 const HTTP_NO_CONTENT = 204;
 const HTTP_BAD_REQUEST = 400;
 const HTTP_UNAUTHORIZED = 401;
+const HTTP_FORBIDDEN = 403;
 const HTTP_NOT_FOUND = 404;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 
@@ -94,6 +95,17 @@ app.get("/usuarios/usuario", async function (req, resp) { // funciona
         const userId = req.session.usuario;
         let usuarioEncontrado = await db.getUsuario(userId);
         resp.status(HTTP_OK).send(usuarioEncontrado);
+    } catch (err) {
+        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+    }
+});
+
+app.get("/usuarios/:id", async function (req, resp) { // funciona
+    try {
+        const userName = req.params.id;
+        let usuarioEncontrado = await db.getUsuarioByName(userName);
+        let usuarioParseado=JSON.stringify(usuarioEncontrado);
+        resp.status(HTTP_OK).send(usuarioParseado);
     } catch (err) {
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
     }
@@ -208,7 +220,6 @@ app.patch('/usuarios/partida/usuario', async (req, res) => { //funciona
     const {fondoJuego} = req.body;
 
     try {
-
         const usuarioActualizado = await db.guardarFondo(userId, fondoJuego);
         res.status(HTTP_OK).json(usuarioActualizado);
     } catch (error) {
@@ -238,36 +249,40 @@ app.post("/usuarios/register", async (req, res) => {
             return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Este usuario ya existe"});
         }
     } catch (err) {
-        console.log(err)
+
         return res.status(HTTP_INTERNAL_SERVER_ERROR).send({status: "error", message: `Error al crear el usuario.`})
     }
 });
 
 app.post("/usuarios/login", async (req, res) => {
+    try {
+        const nombre = req.body.nombre;
+        const password = req.body.password;
 
-    const nombre = req.body.nombre;
-    const password = req.body.password;
+        if (!nombre || !password) {
+            return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"});
+        }
 
-    if (!nombre || !password) {
-        return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"});
+        const usuarioAResvisar = await db.existeUsuario(nombre);
+        if (!usuarioAResvisar) {
+            return res.status(HTTP_UNAUTHORIZED).send({status: "Error", message: "El usuario no existe"});
+        }
+
+        const loginCorrecto = await bcryptjs.compare(password, usuarioAResvisar.password);
+        if (!loginCorrecto) {
+            return res.status(HTTP_FORBIDDEN).send({status: "Error", message: "Contraseña incorrecta"});
+        }
+
+        req.session.usuario = usuarioAResvisar._id.toString();
+
+        return res
+            .location(`/usuarios/${usuarioAResvisar._id}`)
+            .status(HTTP_OK)
+            .send({usuario: usuarioAResvisar, mensaje: "Usuario logueado"});
+
+    } catch (err) {
+
+        return res.status(HTTP_INTERNAL_SERVER_ERROR).send({status: "error", message: `Error al iniciar sesión.`})
     }
-
-    const usuarioAResvisar = await db.existeUsuario(nombre);
-    if (!usuarioAResvisar) {
-        return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Error durante login"});
-    }
-
-    const loginCorrecto = await bcryptjs.compare(password, usuarioAResvisar.password);
-    if (!loginCorrecto) {
-        return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Error durante login"});
-    }
-
-    req.session.usuario = usuarioAResvisar._id.toString();
-    console.log(req.session)
-
-    res
-        .location(`/usuarios/${usuarioAResvisar._id}`)
-        .status(HTTP_OK)
-        .send({usuario: usuarioAResvisar, mensaje: "Usuario logueado"});
 });
 

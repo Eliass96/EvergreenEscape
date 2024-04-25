@@ -55,35 +55,86 @@ document.addEventListener('DOMContentLoaded', function () {
                     nombre: usuario.value.trim(),
                     password: password.value.trim()
                 }
-                const resp = await fetch("/usuarios/login", {
-                    method: "POST",
+                console.log(data.nombre);
+                const res = await fetch(`/usuarios/${data.nombre}`, {
+                    method: "GET",
                     headers: {
                         "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
+                    }
                 });
-                if (!resp.ok) {
-                    console.log(resp)
+
+                let usuarioEncontrado = await res.json();
+
+                if (usuarioEncontrado !== null) {
+
+                    const resp = await fetch("/usuarios/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    if (!resp.ok) {
+
+                        if (resp.status === 400) {
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "¡Faltan datos por introducir!",
+                                showConfirmButton: true,
+                                confirmButtonText: "De acuerdo",
+                                confirmButtonColor: "lightgreen"
+                            })
+                        } else if (resp.status === 401) {
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "¡El usuario no existe!",
+                                showConfirmButton: true,
+                                confirmButtonText: "De acuerdo",
+                                confirmButtonColor: "lightgreen"
+                            })
+
+                        } else if (resp.status === 403) {
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "¡La contraseña es incorrecta!",
+                                showConfirmButton: true,
+                                confirmButtonText: "De acuerdo",
+                                confirmButtonColor: "lightgreen"
+                            })
+                        } else {
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "¡Error al iniciar sesión!",
+                                showConfirmButton: false,
+                                timer: 1000,
+                                timerProgressBar: true,
+                            })
+                        }
+                    } else {
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "¡Has iniciado sesión!",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true,
+                        }).then(() => {
+                            document.location.href = "/"
+                        })
+                    }
+
+                } else {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: "¡Error al iniciar sesión!",
-                        showConfirmButton: false,
-                        timer: 1000,
-                        timerProgressBar: true,
-                    })
-                } else {
-                    let respJson = await resp.json();
-                    console.log(respJson.usuario._id);
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "¡Has iniciado sesión!",
-                        showConfirmButton: false,
-                        timer: 1000,
-                        timerProgressBar: true,
-                    }).then(() => {
-                        document.location.href = "/"
+                        title: "¡El usuario no existe!",
+                        showConfirmButton: true,
+                        confirmButtonText: "De acuerdo",
+                        confirmButtonColor: "lightgreen"
                     })
                 }
             }
