@@ -1014,10 +1014,6 @@ async function efectoDeItemRevivir() {
 }
 
 async function actualizarItemsPostPartida() {
-    console.log(cantidadSuperSalto);
-    console.log(cantidadPuntuacionx2);
-    console.log(cantidadAntiObstaculos);
-    console.log(cantidadRevivir);
     const data = {
         cantidadSuperSalto,
         cantidadPuntuacionx2,
