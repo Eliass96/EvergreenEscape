@@ -240,6 +240,38 @@ footer p {
         height: 90vh;
         min-height: 350px;
     }
+
+    .img_button_play {
+        width: 13vw;
+        min-width: 90px;
+    }
+
+    .img_button {
+        width: 4vw;
+        min-width: 60px;
+    }
+
+    .img_button_back {
+        width: 4vw;
+        min-width: 60px;
+    }
+
+    .titulo_settings {
+        width: 20vw;
+        min-width: 250px;
+    }
+
+    .dropdown_mainScreen ul {
+        min-width: 80px !important;
+    }
+
+    .dropdown_mainScreen a {
+        min-width: 60px !important;
+    }
+
+    .dropdown_mainScreen li {
+        min-width: 60px !important;
+    }
 }
 
 /*** SCROLLBARS ***/
