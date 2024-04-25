@@ -60,6 +60,7 @@ let disparando = false;
 let botonPausa;
 let botonPlay;
 let botonRevivir;
+let botonDisparar;
 let botonAjustesPausa;
 let botonAjustesGameOver;
 let botonAceptarAjustes;

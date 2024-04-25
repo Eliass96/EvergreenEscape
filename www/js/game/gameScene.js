@@ -17,6 +17,7 @@ class gameScene extends Phaser.Scene {
         botonAjustesGameOver = document.getElementById('botonSettings_gameOver');
         botonAceptarAjustes = document.getElementById('but_aceptar_ajustes');
         botonCancelarAjustes = document.getElementById('but_cancelar_ajustes');
+        botonDisparar = document.getElementById('botonDisparar');
         contadorTiempoPuntuacionx2 = document.getElementById('contadorTiempoPuntuacionx2');
         contadorTiempoAntiObstaculos = document.getElementById('contadorTiempoAntiObstaculos');
         contadorTiempoSuperSalto = document.getElementById('contadorTiempoSuperSalto');
@@ -34,6 +35,7 @@ class gameScene extends Phaser.Scene {
         $('#botonAntiObstaculos').hide();
         $('#botonSuperSalto').hide();
         $('#botonx2').hide();
+        $('#botonDisparar').hide();
 
         this.load.spritesheet("jugador", "../../assets/character/main/Run.png", {frameWidth: 128, frameHeight: 128});
         this.load.spritesheet("muerteJugador", "../../assets/character/main/Dead.png", {
@@ -132,7 +134,6 @@ class gameScene extends Phaser.Scene {
         defeatSound = this.sound.add("muertesonido");
         orcoVerdeSound = this.sound.add("orcoverdesonido");
         arcoSound = this.sound.add("arcosonido");
-
 
         // Animaciones
         this.anims.create({
@@ -345,25 +346,45 @@ class gameScene extends Phaser.Scene {
 
         // Teclas
         cursors = this.input.keyboard.createCursorKeys();
-        this.input.keyboard.on('keydown-SPACE', function (event) {
-            if (jugador.body.touching.down && canMove) {
-                disparando = false;
-                if (flechaJugador.x === jugador.x + 30) flechaJugador.disableBody(true, true);
-                jugador.setVelocityY(alturaSalto);
-                jugador.anims.play('jump');
-                jugador.once('animationcomplete', () => {
-                    jugador.anims.play('run');
-                });
-            }
-        });
+        if (window.matchMedia('(pointer: fine)').matches) {
+            this.input.keyboard.on('keydown-SPACE', function (event) {
+                if (jugador.body.touching.down && canMove) {
+                    disparando = false;
+                    if (flechaJugador.x === jugador.x + 30) flechaJugador.disableBody(true, true);
+                    jugador.setVelocityY(alturaSalto);
+                    jugador.anims.play('jump');
+                    jugador.once('animationcomplete', () => {
+                        jugador.anims.play('run');
+                    });
+                }
+            });
 
-        this.input.on('pointerdown', async function (pointer) {
-            if (!disparando) {
-                if (pointer.leftButtonDown()) {
+            this.input.on('pointerdown', async function (pointer) {
+                if (!disparando) {
+                    if (pointer.leftButtonDown()) {
+                        await dispararFlechas();
+                    }
+                }
+            });
+        } else {
+            this.input.on('pointerdown', async function () {
+                if (jugador.body.touching.down && canMove) {
+                    disparando = false;
+                    if (flechaJugador.x === jugador.x + 30) flechaJugador.disableBody(true, true);
+                    jugador.setVelocityY(alturaSalto);
+                    jugador.anims.play('jump');
+                    jugador.once('animationcomplete', () => {
+                        jugador.anims.play('run');
+                    });
+                }
+            });
+
+            botonDisparar.addEventListener('click', async function () {
+                if (!disparando) {
                     await dispararFlechas();
                 }
-            }
-        });
+            }, this);
+        }
 
         // Puntos
         txtPuntos = this.add.text(50, 30, ``, {
@@ -432,6 +453,7 @@ function enableMovement() {
     $('#botonAntiObstaculos').show();
     $('#botonSuperSalto').show();
     $('#botonx2').show();
+    if (!window.matchMedia('(pointer: fine)').matches) $('#botonDisparar').show();
 }
 
 function enableAnimation() {

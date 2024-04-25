@@ -45,6 +45,24 @@
     top: 15px;
 }
 
+.botonDisparar {
+    background-color: rgba(0, 0, 0, .4);
+    padding: 5px;
+    border: none;
+    transition: transform 0.3s ease;
+    position: absolute;
+    left: 15px;
+    bottom: 40vh;
+    border-radius: 25px;
+    width: 5vw;
+    min-width: 80px;
+}
+
+.img_buttonDisparar {
+    width: 3vw;
+    min-width: 60px;
+}
+
 .img_buttonPause {
     width: 1vw;
     min-width: 60px;
