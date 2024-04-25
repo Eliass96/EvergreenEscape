@@ -397,8 +397,8 @@ class gameScene extends Phaser.Scene {
             textoRevivir.textContent = cantidadRevivir.toString();
 
             txtPuntos.setText("Puntos: " + puntos)
-            if (puntos < hightScore) txtHightScore.setText("Mejor puntuación: " + hightScore)
-            else txtHightScore.setText("Mejor puntuación: " + puntos)
+            if (puntos >= hightScore) hightScore = puntos
+            txtHightScore.setText("Mejor puntuación: " + hightScore)
             txtMonedas.setText("Monedas: " + monedas)
             fondo.tilePositionX += velocidad;
             if (disparando) flechaJugador.enableBody(true, jugador.x + 30, jugador.y + 60, true, true);
@@ -719,7 +719,8 @@ async function morir() {
         }
         document.getElementById("textoCantidadPuntos").textContent = "Puntuación: " + puntos.toString();
         document.getElementById("textoCantidadMonedas").textContent = "Monedas: " + monedas.toString();
-        document.getElementById("textoHightScore").textContent = "Mejor puntuación: " + hightScore.toString();
+        if (puntos >= hightScore) document.getElementById("textoHightScore").textContent = "Mejor puntuación: " + puntos.toString();
+        else document.getElementById("textoHightScore").textContent = "Mejor puntuación: " + hightScore.toString();
         await new Promise(resolve => setTimeout(resolve, 1500));
         $('#modalPause').modal('hide');
         $('#modalSettings').modal('hide');
