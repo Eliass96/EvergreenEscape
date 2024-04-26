@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 nacionalidad: dropdownMenuButton.textContent.trim()
             }
 
-            const res = await fetch(`/usuarios/${data.nombre}/${data.password}`, {
+            const res = await fetch(`/usuarios/usuario/${data.nombre}/${data.password}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

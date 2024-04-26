@@ -101,9 +101,8 @@ app.get("/usuarios/usuario", async function (req, resp) { // funciona
     }
 });
 
-app.get("/usuarios/:user/:password", async function (req, resp) { // funciona
+app.get("/usuarios/usuario/:user/:password", async function (req, resp) { // funciona
     try {
-        console.log("jesusgay")
         const userName = req.params.user;
         const userPassword = req.params.password;
         let usuarioEncontrado = await db.getUsuarioByName(userName);

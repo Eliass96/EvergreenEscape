@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     nombre: usuario.value.trim(),
                     password: password.value.trim()
                 }
-                const res = await fetch(`/usuarios/${data.nombre}/${data.password}`, {
+                const res = await fetch(`/usuarios/usuario/${data.nombre}/${data.password}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
