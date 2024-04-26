@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 throw new Error("Error al cargar");
             }
             const datosPuntuacion = await resp.json();
-            console.log(datosPuntuacion);
             outputRankingGlobal.innerHTML = crearPuntuacionesGlobales({jugadores: datosPuntuacion});
 
         } catch (error) {
@@ -68,11 +67,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         try {
-            const resp = await fetch('/usuarios/usuario/puntuaciones');
+            const resp = await fetch('/usuarios/usuario/puntuacion');
             if (!resp.ok) {
                 throw new Error("Error al cargar");
             }
             const datosPuntuacion = await resp.json();
+            console.log(datosPuntuacion)
             outputRanking.innerHTML = crearPuntuaciones({puntuaciones: datosPuntuacion});
         } catch (error) {
             console.log(error);

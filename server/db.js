@@ -101,7 +101,7 @@ exports.listarPuntuaciones = async function (userId) {
             throw new Error('Usuario no encontrado');
         }
         usuario.puntuaciones.sort((a, b) => b - a);
-
+        console.log(usuario.puntuaciones.slice(0, 10));
         // Obtiene las primeras 10 puntuaciones
         return usuario.puntuaciones.slice(0, 10);
     } catch (error) {

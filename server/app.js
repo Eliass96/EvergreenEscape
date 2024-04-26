@@ -103,6 +103,7 @@ app.get("/usuarios/usuario", async function (req, resp) { // funciona
 
 app.get("/usuarios/:user/:password", async function (req, resp) { // funciona
     try {
+        console.log("jesusgay")
         const userName = req.params.user;
         const userPassword = req.params.password;
         let usuarioEncontrado = await db.getUsuarioByName(userName);
@@ -119,9 +120,10 @@ app.get("/usuarios/:user/:password", async function (req, resp) { // funciona
     }
 });
 
-app.get("/usuarios/usuario/puntuaciones", async function (req, resp) { // funciona
+app.get("/usuarios/usuario/puntuacion", async function (req, resp) { // funciona
     try {
         const idUsuario = req.session.usuario;
+        console.log(idUsuario)
         let usuarioEncontrado = await db.listarPuntuaciones(idUsuario);
         resp.status(HTTP_OK).send(usuarioEncontrado);
     } catch (err) {
@@ -237,6 +239,7 @@ app.patch('/usuarios/partida/usuario', async (req, res) => { //funciona
 
 app.post("/usuarios/register", async (req, res) => {
     try {
+        debugger;
         const nombre = req.body.nombre;
         const password = req.body.password;
         const nacionalidad = req.body.nacionalidad;
@@ -245,6 +248,7 @@ app.post("/usuarios/register", async (req, res) => {
         }
 
         const usuarioAResvisar = await db.existeUsuario(nombre);
+        console.log(usuarioAResvisar);
         if (!usuarioAResvisar) {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);

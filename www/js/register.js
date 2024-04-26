@@ -149,7 +149,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let respuesta = await res.json();
             let mensaje = respuesta.message;
 
-            if (mensaje === "CORRECTO") {
+
+            if (mensaje === "USER") {
                 const resp = await fetch("/usuarios/register", {
                     method: "POST",
                     headers: {'Content-Type': 'application/json'},
