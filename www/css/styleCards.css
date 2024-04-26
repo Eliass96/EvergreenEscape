@@ -76,6 +76,7 @@
 
 .cardPerfil {
     width: 23vw;
+    min-width: 300px;
     height: 55vh;
     border-radius: 15px;
     overflow-y: hidden;

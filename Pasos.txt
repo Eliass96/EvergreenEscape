@@ -2,6 +2,5 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 
-*** Queda hacer lo mismo que con el nombre en password en login y register
 *** Revisar cada fichero
 *** Seguir la documentación (ya está corregida entera)

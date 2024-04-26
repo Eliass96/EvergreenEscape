@@ -15,6 +15,7 @@ const HTTP_BAD_REQUEST = 400;
 const HTTP_UNAUTHORIZED = 401;
 const HTTP_FORBIDDEN = 403;
 const HTTP_NOT_FOUND = 404;
+const HTTP_CONFLICT = 409;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 
 
@@ -100,13 +101,20 @@ app.get("/usuarios/usuario", async function (req, resp) { // funciona
     }
 });
 
-app.get("/usuarios/:id", async function (req, resp) { // funciona
+app.get("/usuarios/:user/:password", async function (req, resp) { // funciona
     try {
-        const userName = req.params.id;
+        const userName = req.params.user;
+        const userPassword = req.params.password;
         let usuarioEncontrado = await db.getUsuarioByName(userName);
-        let usuarioParseado=JSON.stringify(usuarioEncontrado);
-        resp.status(HTTP_OK).send(usuarioParseado);
+        let usuarioParseado = JSON.stringify(usuarioEncontrado);
+        if (usuarioEncontrado != null) {
+            let esCorrecto = await bcryptjs.compare(userPassword, usuarioEncontrado.password);
+            if (!esCorrecto) return resp.status(HTTP_OK).send({message: "PASSWORD", data: usuarioParseado});
+            return resp.status(HTTP_OK).send({message: "CORRECTO", data: usuarioParseado});
+        }
+        return resp.status(HTTP_OK).send({message: "USER", data: usuarioParseado});
     } catch (err) {
+        console.log(err)
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
     }
 });
@@ -246,11 +254,10 @@ app.post("/usuarios/register", async (req, res) => {
             await db.altaUsuario(nuevoUsuario);
             return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
         } else {
-            return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Este usuario ya existe"});
+            return res.status(HTTP_CONFLICT).send({status: "Error", message: "Este usuario ya existe"});
         }
     } catch (err) {
-
-        return res.status(HTTP_INTERNAL_SERVER_ERROR).send({status: "error", message: `Error al crear el usuario.`})
+        return res.status(HTTP_INTERNAL_SERVER_ERROR).send({status: "Error", message: `Error al crear el usuario.`})
     }
 });
 
@@ -281,7 +288,6 @@ app.post("/usuarios/login", async (req, res) => {
             .send({usuario: usuarioAResvisar, mensaje: "Usuario logueado"});
 
     } catch (err) {
-
         return res.status(HTTP_INTERNAL_SERVER_ERROR).send({status: "error", message: `Error al iniciar sesión.`})
     }
 });

@@ -139,16 +139,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 nacionalidad: dropdownMenuButton.textContent.trim()
             }
 
-            const res = await fetch(`/usuarios/${data.nombre}`, {
+            const res = await fetch(`/usuarios/${data.nombre}/${data.password}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
 
-            let usuarioEncontrado = await res.json();
+            let respuesta = await res.json();
+            let mensaje = respuesta.message;
 
-            if (usuarioEncontrado === null) {
+            if (mensaje === "CORRECTO") {
                 const resp = await fetch("/usuarios/register", {
                     method: "POST",
                     headers: {'Content-Type': 'application/json'},
@@ -156,14 +157,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 if (!resp.ok) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "¡Error al registrarte!",
-                        showConfirmButton: false,
-                        timer: 1000,
-                        timerProgressBar: true,
-                    })
+                    if (resp.status === 400) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "¡Faltan datos por introducir!",
+                            showConfirmButton: true,
+                            confirmButtonText: "De acuerdo",
+                            confirmButtonColor: "lightgreen"
+                        })
+                    } else if (resp.status === 409) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "¡Este usuario ya existe!",
+                            showConfirmButton: true,
+                            confirmButtonText: "De acuerdo",
+                            confirmButtonColor: "lightgreen"
+                        })
+                    } else {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "¡Error al registrarte!",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true,
+                        })
+                    }
                 } else {
                     Swal.fire({
                         position: "center",

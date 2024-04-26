@@ -55,18 +55,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     nombre: usuario.value.trim(),
                     password: password.value.trim()
                 }
-                console.log(data.nombre);
-                const res = await fetch(`/usuarios/${data.nombre}`, {
+                const res = await fetch(`/usuarios/${data.nombre}/${data.password}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
                     }
                 });
 
-                let usuarioEncontrado = await res.json();
+                let respuesta = await res.json();
+                let mensaje = respuesta.message;
 
-                if (usuarioEncontrado !== null) {
-
+                if (mensaje === "CORRECTO") {
                     const resp = await fetch("/usuarios/login", {
                         method: "POST",
                         headers: {
@@ -75,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         body: JSON.stringify(data)
                     });
                     if (!resp.ok) {
-
                         if (resp.status === 400) {
                             Swal.fire({
                                 position: "center",
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             Swal.fire({
                                 position: "center",
                                 icon: "error",
-                                title: "¡El usuario no existe!",
+                                title: "¡Este usuario no existe!",
                                 showConfirmButton: true,
                                 confirmButtonText: "De acuerdo",
                                 confirmButtonColor: "lightgreen"
@@ -99,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             Swal.fire({
                                 position: "center",
                                 icon: "error",
-                                title: "¡La contraseña es incorrecta!",
+                                title: "¡Contraseña incorrecta!",
                                 showConfirmButton: true,
                                 confirmButtonText: "De acuerdo",
                                 confirmButtonColor: "lightgreen"
@@ -127,11 +125,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         })
                     }
 
-                } else {
+                } else if (mensaje === "USER") {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: "¡El usuario no existe!",
+                        title: "¡Este usuario no existe!",
+                        showConfirmButton: true,
+                        confirmButtonText: "De acuerdo",
+                        confirmButtonColor: "lightgreen"
+                    })
+                } else if (mensaje === "PASSWORD") {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "¡Contraseña incorrecta!",
                         showConfirmButton: true,
                         confirmButtonText: "De acuerdo",
                         confirmButtonColor: "lightgreen"
