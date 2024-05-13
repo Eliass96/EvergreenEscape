@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const comprarItem = async (itemComprado, cantidadComprada) => {
-        const url = '/usuarios/items/usuario';
+        const url = '/usuarios/usuario/items';
         const data = {itemComprado, cantidadComprada};
 
         try {

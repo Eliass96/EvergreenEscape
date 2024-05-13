@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function cargarPuntuaciones() {
         try {
-            const resp = await fetch(`/puntuaciones`);
+            const resp = await fetch(`/usuarios/puntuaciones`);
             if (!resp.ok) {
                 throw new Error("Error al cargar");
             }
@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 throw new Error("Error al cargar");
             }
             let usuario = await respUsuario.json();
-            let pais = usuario.nacionalidad;
-            const resp = await fetch(`/puntuaciones/pais/${pais}`);
+            let nacionalidad = usuario.nacionalidad;
+            const resp = await fetch(`usuarios/puntuaciones/${nacionalidad}`);
             if (resp.status !== 200) {
                 throw new Error("Error al cargar");
             }
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         try {
-            const resp = await fetch('/usuarios/usuario/puntuacion');
+            const resp = await fetch('/usuarios/usuario/puntuaciones');
             if (!resp.ok) {
                 throw new Error("Error al cargar");
             }

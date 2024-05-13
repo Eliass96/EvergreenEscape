@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             if (mensaje === "USER") {
-                const resp = await fetch("/usuarios/register", {
+                const resp = await fetch("/usuarios/registro", {
                     method: "POST",
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             password: password.value.trim()
                         };
                         try {
-                            let respLogin = await fetch("/usuarios/login", {
+                            let respLogin = await fetch("/usuarios/logueo", {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
@@ -229,7 +229,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     confirmButtonText: "De acuerdo",
                     confirmButtonColor: "lightgreen"
                 })
-
             }
         }
     }

@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 valorSonido: !checkboxSonido.checked,
                 valorPantallaCompleta: !checkboxPantallaCompleta.checked
             };
-            const response = await fetch('/usuarios/ajustes/usuario', {
+            const response = await fetch('/usuarios/usuario/ajustes', {
                 credentials: 'include',
                 method: 'PATCH',
                 headers: {

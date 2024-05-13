@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let mensaje = respuesta.message;
 
                 if (mensaje === "CORRECTO") {
-                    const resp = await fetch("/usuarios/login", {
+                    const resp = await fetch("/usuarios/logueo", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
