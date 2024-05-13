@@ -273,7 +273,7 @@ app.post("/usuarios/registro", async (req, res) => {
 });
 
 // INICIO DE SESIÓN
-app.post("/usuarios/login", async (req, res) => {
+app.post("/usuarios/logueo", async (req, res) => {
     try {
         const nombre = req.body.nombre;
         const password = req.body.password;
