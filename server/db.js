@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
 require("dotenv").config();
+const mongoose = require("mongoose");
 
 //CREACION DEL ESQUEMA
 // USUARIO-≥ nombre required unique, contraseña required, nacionalidad required, array de puntuaciones vacio,
@@ -66,19 +66,7 @@ const UsuarioSchema = new mongoose.Schema(
 
 const Usuario = mongoose.model('Usuario', UsuarioSchema);
 
-exports.conectar = async function () {
-    try {
-        const uri = process.env.MONGODB_URI;
-        await mongoose.connect(uri);
-    } catch (error) {
-        console.error("Error al conectar a la base de datos:", error);
-    }
-};
-
-exports.desconectar = mongoose.disconnect;
-
 //METODOS
-
 //AÑADIR PUNTUACIÓN AL USUARIO
 exports.agregarPuntuacion = async function (userId, nuevaPuntuacion) {
     try {
@@ -356,5 +344,17 @@ exports.existeUsuario = async function (nombreUsuario) {
         throw new Error('Error al listar todas las puntuaciones: ' + error.message);
     }
 };
+
+exports.conectar = async function () {
+    try {
+        const uri = process.env.MONGODB_URI;
+        console.log(process.env);
+        await mongoose.connect(uri);
+    } catch (error) {
+        console.error("Error al conectar a la base de datos:", error);
+    }
+};
+
+exports.desconectar = mongoose.disconnect;
 
 
