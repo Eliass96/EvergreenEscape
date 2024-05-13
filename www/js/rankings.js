@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
             let usuario = await respUsuario.json();
             let nacionalidad = usuario.nacionalidad;
-            const resp = await fetch(`usuarios/puntuaciones/${nacionalidad}`);
+            const resp = await fetch(`/usuarios/puntuaciones/${nacionalidad}`);
             if (resp.status !== 200) {
                 throw new Error("Error al cargar");
             }
