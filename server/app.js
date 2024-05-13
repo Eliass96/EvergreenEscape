@@ -42,8 +42,9 @@ db.conectar().then(() => {
     );
 });
 
-// INICIO DE SESIÓN Y REGISTRO
-app.get('/usuarios/sesion/estado', async (req, res) => {
+//METODOS
+// COMPROBACIÓN DE SESIÓN
+app.get('/usuarios/estado', async (req, res) => {
     try {
         if (req.session) {
             const usuarioId = req.session.usuario;
@@ -66,6 +67,7 @@ app.get('/usuarios/sesion/estado', async (req, res) => {
     }
 });
 
+// CERRAR SESIÓN
 app.post('/usuarios/cerrarSesion', async (req, res) => {
     try {
         if (req.session) {
@@ -79,7 +81,6 @@ app.post('/usuarios/cerrarSesion', async (req, res) => {
     }
 });
 
-//METODOS
 // GET DE USUARIOS
 app.get("/usuarios", async function (req, resp) { // funciona
     try {
@@ -101,6 +102,7 @@ app.get("/usuarios/usuario", async function (req, resp) { // funciona
     }
 });
 
+// ¿?
 app.get("/usuarios/usuario/:user/:password", async function (req, resp) { // funciona
     try {
         const userName = req.params.user;
@@ -119,7 +121,8 @@ app.get("/usuarios/usuario/:user/:password", async function (req, resp) { // fun
     }
 });
 
-app.get("/usuarios/usuario/puntuacion", async function (req, resp) { // funciona
+// LISTAR LAS MEJORES PUNTUACIONES DEL USUARIO
+app.get("/usuarios/usuario/puntuaciones", async function (req, resp) { // funciona
     try {
         const idUsuario = req.session.usuario;
         console.log(idUsuario)
@@ -130,9 +133,10 @@ app.get("/usuarios/usuario/puntuacion", async function (req, resp) { // funciona
     }
 });
 
-app.get("/puntuaciones/pais/:id", async function (req, resp) {
+// LISTAR LAS PUNTUACIONES POR PAIS
+app.get("/usuarios/puntuaciones/:nacionalidad", async function (req, resp) {
     try {
-        const pais = req.params.id;
+        const pais = req.params.nacionalidad;
         const paisDec = decodeURIComponent(pais);
         let puntuacionesPorPais = await db.listarPuntuacionesPorPais(paisDec);
         resp.status(HTTP_OK).send(puntuacionesPorPais);
@@ -141,7 +145,8 @@ app.get("/puntuaciones/pais/:id", async function (req, resp) {
     }
 });
 
-app.get("/puntuaciones", async function (req, resp) {
+// LISTAR TODAS LAS PUNTUACIONES
+app.get("/usuarios/puntuaciones", async function (req, resp) {
     try {
         const todasLasPuntuaciones = await db.listarTodasLasPuntuaciones();
         resp.status(HTTP_OK).send(todasLasPuntuaciones);
@@ -151,7 +156,7 @@ app.get("/puntuaciones", async function (req, resp) {
 });
 
 // PATCH PUNTUACION
-app.patch('/usuarios/puntuaciones/usuario', async (req, res) => { //funciona
+app.patch('/usuarios/usuario/nuevaPuntuacion', async (req, res) => { //funciona
     const userId = req.session.usuario;
     const {nuevaPuntuacion} = req.body;
 
@@ -164,7 +169,7 @@ app.patch('/usuarios/puntuaciones/usuario', async (req, res) => { //funciona
 });
 
 //PATCH A ITEMS
-app.patch('/usuarios/items/usuario', async (req, res) => { //funciona
+app.patch('/usuarios/usuario/items', async (req, res) => { //funciona
     const userId = req.session.usuario;
     const {itemComprado, cantidadComprada} = req.body;
 
@@ -176,7 +181,8 @@ app.patch('/usuarios/items/usuario', async (req, res) => { //funciona
     }
 });
 
-app.patch('/usuarios/postpartida/items/usuario', async (req, res) => { //funciona
+// GUARDAR OBJETOS DESPUÉS DE LA PARTIDA
+app.patch('/usuarios/usuario/itemsDespuesDePartida', async (req, res) => { //funciona
     const userId = req.session.usuario;
     const {
         cantidadSuperSalto,
@@ -199,7 +205,7 @@ app.patch('/usuarios/postpartida/items/usuario', async (req, res) => { //funcion
 });
 
 //PATCH A MONEDAS
-app.patch('/usuarios/monedas/usuario', async (req, res) => { //funciona
+app.patch('/usuarios/usuario/monedas', async (req, res) => { //funciona
     const userId = req.session.usuario;
     const {monedasObtenidas} = req.body;
 
@@ -212,7 +218,7 @@ app.patch('/usuarios/monedas/usuario', async (req, res) => { //funciona
 });
 
 //CAMBIAR AJUSTES
-app.patch('/usuarios/ajustes/usuario', async (req, res) => { //funciona
+app.patch('/usuarios/usuario/ajustes', async (req, res) => { //funciona
     const userId = req.session.usuario;
     const {valorMusica, valorSonido, valorPantallaCompleta} = req.body;
 
@@ -224,7 +230,8 @@ app.patch('/usuarios/ajustes/usuario', async (req, res) => { //funciona
     }
 });
 
-app.patch('/usuarios/partida/usuario', async (req, res) => { //funciona
+// GUARDAR FONDO DE PARTIDA
+app.patch('/usuarios/usuario/fondoPartida', async (req, res) => { //funciona
     const userId = req.session.usuario;
     const {fondoJuego} = req.body;
 
@@ -236,7 +243,8 @@ app.patch('/usuarios/partida/usuario', async (req, res) => { //funciona
     }
 });
 
-app.post("/usuarios/register", async (req, res) => {
+// REGISTRO
+app.post("/usuarios/registro", async (req, res) => {
     try {
         debugger;
         const nombre = req.body.nombre;
@@ -264,6 +272,7 @@ app.post("/usuarios/register", async (req, res) => {
     }
 });
 
+// INICIO DE SESIÓN
 app.post("/usuarios/login", async (req, res) => {
     try {
         const nombre = req.body.nombre;

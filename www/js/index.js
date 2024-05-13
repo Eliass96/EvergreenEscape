@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (document.getElementById('butUser')) {
         try {
 
-            let resp = await fetch('/usuarios/sesion/estado', {
+            let resp = await fetch('/usuarios/estado', {
                 credentials: 'include',
                 method: 'GET',
                 headers: {

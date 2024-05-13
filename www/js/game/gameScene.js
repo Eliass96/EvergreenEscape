@@ -758,7 +758,7 @@ async function morir() {
 }
 
 const actualizarPuntuacion = async (nuevaPuntuacion) => {
-    const url = '/usuarios/puntuaciones/usuario';
+    const url = '/usuarios/usuario/nuevaPuntuacion';
     const data = {nuevaPuntuacion};
 
     try {
@@ -783,7 +783,7 @@ const actualizarPuntuacion = async (nuevaPuntuacion) => {
 };
 
 const actualizarMonedas = async (monedasObtenidas) => {
-    const url = '/usuarios/monedas/usuario';
+    const url = '/usuarios/usuario/monedas';
     const data = {monedasObtenidas};
 
     try {
@@ -894,7 +894,7 @@ async function guardarAjustes() {
         valorPantallaCompleta: !checkboxPantallaCompleta.checked
     };
 
-    await fetch('/usuarios/ajustes/usuario', {
+    await fetch('/usuarios/usuario/ajustes', {
         credentials: 'include',
         method: 'PATCH',
         headers: {
@@ -1021,7 +1021,7 @@ async function actualizarItemsPostPartida() {
         cantidadRevivir
     };
 
-    await fetch('/usuarios/postpartida/items/usuario', {
+    await fetch('/usuarios/usuario/itemsDespuesDePartida', {
         credentials: 'include',
         method: 'PATCH',
         headers: {

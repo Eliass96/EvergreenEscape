@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             const data = {
                 fondoJuego: fondo
             };
-            const response = await fetch('/usuarios/partida/usuario', {
+            const response = await fetch('/usuarios/usuario/fondoPartida', {
                 credentials: 'include',
                 method: 'PATCH',
                 headers: {
