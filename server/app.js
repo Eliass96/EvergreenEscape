@@ -1,4 +1,3 @@
-const cookieParser = require("cookie-parser");
 const bcrypt = require('bcryptjs');
 require("dotenv").config();
 const express = require("express");
@@ -32,7 +31,6 @@ app.use(session({
     }
 }));
 app.use(express.json());
-app.use(cookieParser())
 app.use(cors());
 app.use(express.static("www"));
 db.conectar().then(() => {
