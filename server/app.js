@@ -101,7 +101,7 @@ app.get("/usuarios/usuario", async function (req, resp) { // funciona
 });
 
 // ¿?
-app.get("/usuarios/usuario/:user/:password", async function (req, resp) { // funciona
+/*app.get("/usuarios/usuario/:user/:password", async function (req, resp) { // funciona
     try {
         const userName = req.params.user;
         const userPassword = req.params.password;
@@ -117,7 +117,7 @@ app.get("/usuarios/usuario/:user/:password", async function (req, resp) { // fun
         console.log(err)
         resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
     }
-});
+});*/
 
 // LISTAR LAS MEJORES PUNTUACIONES DEL USUARIO
 app.get("/usuarios/usuario/puntuaciones", async function (req, resp) { // funciona

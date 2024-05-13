@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     nombre: usuario.value.trim(),
                     password: password.value.trim()
                 }
-                const res = await fetch(`/usuarios/usuario/${data.nombre}/${data.password}`, {
+                /*const res = await fetch(`/usuarios/usuario/${data.nombre}/${data.password}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
@@ -65,67 +65,67 @@ document.addEventListener('DOMContentLoaded', function () {
                 let respuesta = await res.json();
                 let mensaje = respuesta.message;
 
-                if (mensaje === "CORRECTO") {
-                    const resp = await fetch("/usuarios/logueo", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(data)
-                    });
-                    if (!resp.ok) {
-                        if (resp.status === 400) {
-                            Swal.fire({
-                                position: "center",
-                                icon: "error",
-                                title: "¡Faltan datos por introducir!",
-                                showConfirmButton: true,
-                                confirmButtonText: "De acuerdo",
-                                confirmButtonColor: "lightgreen"
-                            })
-                        } else if (resp.status === 401) {
-                            Swal.fire({
-                                position: "center",
-                                icon: "error",
-                                title: "¡Este usuario no existe!",
-                                showConfirmButton: true,
-                                confirmButtonText: "De acuerdo",
-                                confirmButtonColor: "lightgreen"
-                            })
+                if (mensaje === "CORRECTO") {*/
+                const resp = await fetch("/usuarios/logueo", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (!resp.ok) {
+                    if (resp.status === 400) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "¡Faltan datos por introducir!",
+                            showConfirmButton: true,
+                            confirmButtonText: "De acuerdo",
+                            confirmButtonColor: "lightgreen"
+                        })
+                    } else if (resp.status === 401) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "¡Este usuario no existe!",
+                            showConfirmButton: true,
+                            confirmButtonText: "De acuerdo",
+                            confirmButtonColor: "lightgreen"
+                        })
 
-                        } else if (resp.status === 403) {
-                            Swal.fire({
-                                position: "center",
-                                icon: "error",
-                                title: "¡Contraseña incorrecta!",
-                                showConfirmButton: true,
-                                confirmButtonText: "De acuerdo",
-                                confirmButtonColor: "lightgreen"
-                            })
-                        } else {
-                            Swal.fire({
-                                position: "center",
-                                icon: "error",
-                                title: "¡Error al iniciar sesión!",
-                                showConfirmButton: false,
-                                timer: 1000,
-                                timerProgressBar: true,
-                            })
-                        }
+                    } else if (resp.status === 403) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "¡Contraseña incorrecta!",
+                            showConfirmButton: true,
+                            confirmButtonText: "De acuerdo",
+                            confirmButtonColor: "lightgreen"
+                        })
                     } else {
                         Swal.fire({
                             position: "center",
-                            icon: "success",
-                            title: "¡Has iniciado sesión!",
+                            icon: "error",
+                            title: "¡Error al iniciar sesión!",
                             showConfirmButton: false,
                             timer: 1000,
                             timerProgressBar: true,
-                        }).then(() => {
-                            document.location.href = "/"
                         })
                     }
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Has iniciado sesión!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        document.location.href = "/"
+                    })
+                }
 
-                } else if (mensaje === "USER") {
+                /*} else if (mensaje === "USER") {
                     Swal.fire({
                         position: "center",
                         icon: "error",
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         confirmButtonText: "De acuerdo",
                         confirmButtonColor: "lightgreen"
                     })
-                }
+                }*/
             }
         }
     }

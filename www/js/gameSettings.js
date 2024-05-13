@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1000,
                     timerProgressBar: true
                 });
-
             })
 
             botonFondoOscuro.addEventListener('click', function () {
@@ -61,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             const data = {
                 fondoJuego: fondo
             };
-            const response = await fetch('/usuarios/usuario/fondoPartida', {
+            await fetch('/usuarios/usuario/fondoPartida', {
                 credentials: 'include',
                 method: 'PATCH',
                 headers: {
@@ -78,5 +77,4 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
     }
-
 });
