@@ -1,6 +1,11 @@
 **************************************
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
+LIMITAR PUNTUACIONES DEL USUARIO COMO MAXIMO 10.
+MODELO DE DATOS PARA LA TIENDA.
+Revisar cookie parser.
+Decir recursos
+Comprobar el metodo de usuario y contraseña.
 
 *** Revisar cada fichero
 *** Seguir la documentación (ya está corregida entera)
