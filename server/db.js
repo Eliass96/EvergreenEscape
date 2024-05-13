@@ -86,13 +86,30 @@ exports.agregarPuntuacion = async function (userId, nuevaPuntuacion) {
         if (!usuario) {
             throw new Error('Usuario no encontrado');
         }
-        usuario.puntuaciones.push(nuevaPuntuacion);
-        await usuario.save();
+        if (usuario.puntuaciones.length >= 10) {
+            usuario.puntuaciones.sort((a, b) => b - a);
+            const algunaPuntuacionMenor = usuario.puntuaciones.some(puntuacion => nuevaPuntuacion > puntuacion);
+
+            if (algunaPuntuacionMenor) {
+                // Eliminar la primera puntuación menor encontrada
+                usuario.puntuaciones.splice(usuario.puntuaciones.length - 1, 1);
+                usuario.puntuaciones.push(nuevaPuntuacion);
+                await usuario.save();
+            }
+        } else {
+            usuario.puntuaciones.push(nuevaPuntuacion);
+            await usuario.save();
+        }
+
+        console.log(usuario);
         return usuario;
-    } catch (error) {
+
+    } catch
+        (error) {
         throw new Error('Error al agregar puntuación: ' + error.message);
     }
-};
+}
+;
 //LISTAR PUNTUACIONES DEL USUARIO
 exports.listarPuntuaciones = async function (userId) {
     try {
@@ -101,8 +118,6 @@ exports.listarPuntuaciones = async function (userId) {
             throw new Error('Usuario no encontrado');
         }
         usuario.puntuaciones.sort((a, b) => b - a);
-        console.log(usuario.puntuaciones.slice(0, 10));
-        // Obtiene las primeras 10 puntuaciones
         return usuario.puntuaciones.slice(0, 10);
     } catch (error) {
         throw new Error('Error al listar puntuaciones: ' + error.message);
