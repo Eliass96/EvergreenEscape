@@ -79,7 +79,6 @@ exports.agregarPuntuacion = async function (userId, nuevaPuntuacion) {
             const algunaPuntuacionMenor = usuario.puntuaciones.some(puntuacion => nuevaPuntuacion > puntuacion);
 
             if (algunaPuntuacionMenor) {
-                // Eliminar la primera puntuación menor encontrada
                 usuario.puntuaciones.splice(usuario.puntuaciones.length - 1, 1);
                 usuario.puntuaciones.push(nuevaPuntuacion);
                 await usuario.save();
@@ -88,10 +87,7 @@ exports.agregarPuntuacion = async function (userId, nuevaPuntuacion) {
             usuario.puntuaciones.push(nuevaPuntuacion);
             await usuario.save();
         }
-
-        console.log(usuario);
         return usuario;
-
     } catch
         (error) {
         throw new Error('Error al agregar puntuación: ' + error.message);
