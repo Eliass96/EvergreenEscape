@@ -1,6 +1,5 @@
 **************************************
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
-MODELO DE DATOS PARA LA TIENDA.
 *** Revisar cada fichero
 *** Seguir la documentación (ya está corregida entera)

@@ -26,61 +26,10 @@
 
 </header>
 <main class="container-fluid d-flex justify-content-around align-items-center">
-    <div class="cardShop">
-        <div class="card-inner d-flex flex-column align-items-center justify-content-between">
-            <header>
-                <h2 class="titulo_card_ranking">Super salto</h2>
-            </header>
-            <div class="d-flex align-items-center justify-content-center">
-                <img src="../img/shopItems/supersalto.webp" alt="supersalto" class="items"/>
-            </div>
-            <button class="btnComprar" id="btnComprarSalto">Comprar por 20 <img class="monedaShop"
-                                                                                src="../img/shopItems/monedaShop.webp"
-                                                                                alt="moneda"></button>
-        </div>
-    </div>
-
-    <div class="cardShop">
-        <div class="card-inner d-flex flex-column align-items-center justify-content-between">
-            <header>
-                <h2 class="titulo_card_ranking">Puntuacion x2</h2>
-            </header>
-            <div class="d-flex align-items-center justify-content-center">
-                <img src="../img/shopItems/x2.png" alt="x2" class="items"/>
-            </div>
-            <button class="btnComprar" id="btnComprarPuntuacionDoble">Comprar por 30 <img class="monedaShop"
-                                                                                          src="../img/shopItems/monedaShop.webp"
-                                                                                          alt="moneda"></button>
-        </div>
-    </div>
-
-    <div class="cardShop">
-        <div class="card-inner d-flex flex-column align-items-center justify-content-between">
-            <header>
-                <h2 class="titulo_card_ranking">Inmunidad</h2>
-            </header>
-            <div class="d-flex align-items-center justify-content-center">
-                <img src="../img/shopItems/antiobstaculos.png" alt="inmunidad" class="items"/>
-            </div>
-            <button class="btnComprar" id="btnComprarInmunidad">Comprar por 40 <img class="monedaShop"
-                                                                                    src="../img/shopItems/monedaShop.webp"
-                                                                                    alt="moneda"></button>
-        </div>
-    </div>
-
-    <div class="cardShop">
-        <div class="card-inner d-flex flex-column align-items-center justify-content-between">
-            <header>
-                <h2 class="titulo_card_ranking">Revivir</h2>
-            </header>
-            <div class="d-flex align-items-center justify-content-center">
-                <img src="../img/shopItems/revivir.png" alt="revivir" class="items"/>
-            </div>
-            <button class="btnComprar" id="btnComprarRevivir">Comprar por 50 <img class="monedaShop"
-                                                                                  src="../img/shopItems/monedaShop.webp"
-                                                                                  alt="moneda"></button>
-        </div>
-    </div>
+    <output class="cardShop" id="outputSuperSalto"></output>
+    <output class="cardShop" id="outputPuntuacionDoble"></output>
+    <output class="cardShop" id="outputInmunidad"></output>
+    <output class="cardShop" id="outputRevivir"></output>
 </main>
 <footer class="d-flex align-items-center justify-content-start ps-4">
     <p>&copy; 2024 Todos los derechos reservados</p>
@@ -88,6 +37,10 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/shop.js"></script>
+<script src="../js/pug/superSalto.js"></script>
+<script src="../js/pug/inmunidad.js"></script>
+<script src="../js/pug/revivir.js"></script>
+<script src="../js/pug/puntuacionDoble.js"></script>
 <script type="text/javascript" src="../js/index.js"></script>
 </body>
 </html>

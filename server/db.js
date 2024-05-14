@@ -64,9 +64,21 @@ const UsuarioSchema = new mongoose.Schema(
     }
 );
 
-const Usuario = mongoose.model('Usuario', UsuarioSchema);
+const ObjetoSchema = new mongoose.Schema( {
+    nombre: {
+        type: String,
+        required: true
+    },
+    precio: {
+        type: Number,
+        required: true
+    }
+});
 
-//METODOS
+const Usuario = mongoose.model('Usuario', UsuarioSchema);
+const Objeto = mongoose.model('Objeto', ObjetoSchema);
+
+//METODOS DE USUARIO
 //AÑADIR PUNTUACIÓN AL USUARIO
 exports.agregarPuntuacion = async function (userId, nuevaPuntuacion) {
     try {
@@ -166,37 +178,34 @@ exports.guardarFondo = async function (userId, fondoJuego) {
 }
 
 //EDITAR ITEMS AL COMPRAR
-exports.comprarItems = async function (userId, itemComprado, cantidadComprada) {
+exports.comprarItems = async function (userId, objetoId, cantidadComprada) {
     try {
         const usuario = await Usuario.findById(userId);
+        const objeto = await Objeto.findById(objetoId);
         if (!usuario) {
             throw new Error('Usuario no encontrado');
         }
-        let costoItem = 0;
-        switch (itemComprado) {
-            case 1: // Supersalto
-                costoItem = cantidadComprada * 20;
+        let costoItem = cantidadComprada * objeto.precio;
+        if (usuario.monedas < costoItem) {
+            throw new Error('El usuario no tiene suficientes monedas para comprar este item');
+        }
+        usuario.monedas -= costoItem;
+        switch (objeto.nombre) {
+            case 'Súper salto':
                 usuario.superSalto += cantidadComprada;
                 break;
-            case 2: // X2
-                costoItem = cantidadComprada * 30;
+            case 'Puntuación x2':
                 usuario.puntuacionExtra += cantidadComprada;
                 break;
-            case 3: // Inmunidad
-                costoItem = cantidadComprada * 40;
+            case 'Inmunidad':
                 usuario.inmunidad += cantidadComprada;
                 break;
-            case 4: // Revivir
-                costoItem = cantidadComprada * 50;
+            case 'Revivir':
                 usuario.revivir += cantidadComprada;
                 break;
             default:
                 throw new Error('Item no válido');
         }
-        if (usuario.monedas < costoItem) {
-            throw new Error('El usuario no tiene suficientes monedas para comprar este item');
-        }
-        usuario.monedas -= costoItem;
         await usuario.save();
         return usuario;
     } catch (error) {
@@ -252,12 +261,14 @@ exports.sumarMonedas = async function (userId, monedasObtenidas) {
 
 //CREAR USUARIO
 exports.altaUsuario = async function (datosDeUsuario) {
-    return Usuario.create(datosDeUsuario);
+    try {
+        return Usuario.create(datosDeUsuario);
+    } catch (error) {
+        throw new Error('Error al añadir el usuario: ' + error.message);
+    }
 }
 
-
-//LISTAR PUNTUACIONES POR PAIS ----------
-
+//LISTAR PUNTUACIONES POR PAIS
 exports.listarPuntuacionesPorPais = async function (nacionalidad) {
     try {
         const usuarios = await Usuario.find({nacionalidad: nacionalidad});
@@ -356,10 +367,53 @@ exports.existeUsuario = async function (nombreUsuario) {
     }
 };
 
+//METODOS DE OBJETO
+// AGREGAR OBJETO
+exports.agregarObjetos = async function () {
+    try {
+        let objetoSuperSalto = await Objeto.findOne({ nombre: "Súper salto" });
+        if (!objetoSuperSalto) {
+            await Objeto.create({ nombre: "Súper salto", precio: 20 });
+        }
+
+        let objetoPuntuacionX2 = await Objeto.findOne({ nombre: "Puntuación x2" });
+        if (!objetoPuntuacionX2) {
+            await Objeto.create({ nombre: "Puntuación x2", precio: 30 });
+        }
+
+        let objetoInmunidad = await Objeto.findOne({ nombre: "Inmunidad" });
+        if (!objetoInmunidad) {
+            await Objeto.create({ nombre: "Inmunidad", precio: 40 });
+        }
+
+        let objetoRevivir = await Objeto.findOne({ nombre: "Revivir" });
+        if (!objetoRevivir) {
+            await Objeto.create({ nombre: "Revivir", precio: 50 });
+        }
+    } catch (error) {
+        throw new Error('Error al cargar los objetos de la tienda: ' + error.message);
+    }
+}
+
+exports.getObjeto = async function (nombreObjeto) {
+    try {
+        return await Objeto.findOne({nombre: nombreObjeto});
+    } catch (error) {
+        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+    }
+};
+
+exports.listarObjetos = async function () {
+    try {
+        let objetos = await Objeto.find();
+    } catch (error) {
+        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+    }
+};
+
 exports.conectar = async function () {
     try {
         const uri = process.env.MONGODB_URI;
-        console.log(process.env);
         await mongoose.connect(uri);
     } catch (error) {
         console.error("Error al conectar a la base de datos:", error);

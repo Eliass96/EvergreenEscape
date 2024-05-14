@@ -33,11 +33,12 @@ app.use(session({
 app.use(express.json());
 app.use(cors());
 app.use(express.static("www"));
-db.conectar().then(() => {
+db.conectar().then(async () => {
     console.log("Conectado con la base de datos.");
     app.listen(PORT, () =>
         console.log("Servicio escuchando en el puerto " + PORT)
     );
+    await db.agregarObjetos();
 });
 
 //METODOS
@@ -169,10 +170,10 @@ app.patch('/usuarios/usuario/nuevaPuntuacion', async (req, res) => { //funciona
 //PATCH A ITEMS
 app.patch('/usuarios/usuario/items', async (req, res) => { //funciona
     const userId = req.session.usuario;
-    const {itemComprado, cantidadComprada} = req.body;
+    const {objetoId, cantidadComprada} = req.body;
 
     try {
-        const usuarioActualizado = await db.comprarItems(userId, itemComprado, cantidadComprada);
+        const usuarioActualizado = await db.comprarItems(userId, objetoId, cantidadComprada);
         res.status(HTTP_OK).json(usuarioActualizado);
     } catch (error) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: 'Hubo un error al comprar el item'});
@@ -302,3 +303,20 @@ app.post("/usuarios/logueo", async (req, res) => {
     }
 });
 
+// CARGAR OBJETOS DE LA TIENDA
+app.get("/tienda/objeto/:nombreObjeto", async function (req, resp) { // funciona
+    try {
+        let nombreObjeto = req.params.nombreObjeto;
+        let nombre;
+        if (nombreObjeto === "superSalto") nombre = "Súper salto"
+        if (nombreObjeto === "puntuacionX2") nombre = "Puntuación x2"
+        if (nombreObjeto === "inmunidad") nombre = "Inmunidad"
+        if (nombreObjeto === "revivir") nombre = "Revivir"
+        let objetoEncontrado = await db.getObjeto(nombre);
+        console.log(objetoEncontrado)
+        resp.status(HTTP_OK).send(objetoEncontrado);
+    } catch (err) {
+        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
+        console.log(err)
+    }
+});
