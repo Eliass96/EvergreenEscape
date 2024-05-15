@@ -23,6 +23,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@capacitor-community/http": "^1.4.1",
+    "@capacitor-community/native-market": "^5.0.0",
     "@capacitor/android": "^5.7.4",
     "@capacitor/app": "^5.0.0",
     "@capacitor/filesystem": " ^5.0.0",
@@ -50,7 +51,6 @@
     "phaser": "^3.80.1",
     "phaser3-rex-plugins": "^1.80.1",
     "pug": "^3.0.2",
-    "selenium-webdriver": "^4.20.0",
     "sweetalert2": "^11.10.7"
   },
   "cordova": {

@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             icon: "error",
             title: "Ups...",
             text: "Error inesperado al cargar los ajustes de fondo... Pruebe a reiniciar la página",
+        }).then(() => {
+            document.location.href = "/"
         });
     }
 

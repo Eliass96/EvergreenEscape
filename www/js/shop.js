@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 icon: "error",
                 title: "Ups...",
                 text: "Error inesperado al cargar la tienda... Pruebe a reiniciar la página",
+            }).then(() => {
+                document.location.href = "/"
             });
         }
     }
@@ -51,6 +53,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     title: "No se puede cargar el objeto",
                     text: "¡Error al cargar el objeto de super salto! Pruebe a reiniciar la página",
                     confirmButtonText: "Aceptar"
+                }).then(() => {
+                    document.location.href = "/"
                 });
             }
 
@@ -65,6 +69,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     title: "No se puede cargar el objeto",
                     text: "¡Error al cargar el objeto de puntuación doble! Pruebe a reiniciar la página",
                     confirmButtonText: "Aceptar"
+                }).then(() => {
+                    document.location.href = "/"
                 });
             }
 
@@ -79,6 +85,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     title: "No se puede cargar el objeto",
                     text: "¡Error al cargar el objeto de inmunidad! Pruebe a reiniciar la página",
                     confirmButtonText: "Aceptar"
+                }).then(() => {
+                    document.location.href = "/"
                 });
             }
 
@@ -93,6 +101,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     title: "No se puede cargar el objeto",
                     text: "¡Error al cargar el objeto de revivir! Pruebe a reiniciar la página",
                     confirmButtonText: "Aceptar"
+                }).then(() => {
+                    document.location.href = "/"
                 });
             }
         } catch (error) {
@@ -101,6 +111,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 icon: "error",
                 title: "Ups...",
                 text: "¡Error al cargar el objeto de super salto! Pruebe a reiniciar la página"
+            }).then(() => {
+                document.location.href = "/"
             });
         }
     }
@@ -120,6 +132,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 icon: "error",
                 title: "Oops...",
                 text: "Algo ha fallado, pruebe a reiniciar la página"
+            }).then(() => {
+                document.location.href = "/"
             });
         }
     }
@@ -143,6 +157,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     icon: "error",
                     title: "Oops...",
                     text: "Algo ha fallado, pruebe a reiniciar la página"
+                }).then(() => {
+                    document.location.href = "/"
                 });
             } else {
                 Swal.fire({
@@ -161,6 +177,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 icon: "error",
                 title: "Oops...",
                 text: "Algo ha fallado, pruebe a reiniciar la página"
+            }).then(() => {
+                document.location.href = "/"
             });
         }
     };

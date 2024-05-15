@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             icon: "error",
             title: "Ups...",
             text: "Error inesperado al cargar las puntuaciones... Pruebe a reiniciar la página",
+        }).then(() => {
+            document.location.href = "/"
         });
     }
 
@@ -41,6 +43,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 icon: "error",
                 title: "Oops...",
                 text: "Algo ha fallado, pruebe a reiniciar la página"
+            }).then(() => {
+                document.location.href = "/"
             });
         }
 
@@ -63,6 +67,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 icon: "error",
                 title: "Oops...",
                 text: "Algo ha fallado, pruebe a reiniciar la página"
+            }).then(() => {
+                document.location.href = "/"
             });
         }
 
@@ -80,6 +86,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 icon: "error",
                 title: "Oops...",
                 text: "Algo ha fallado, pruebe a reiniciar la página"
+            }).then(() => {
+                document.location.href = "/"
             });
         }
     }

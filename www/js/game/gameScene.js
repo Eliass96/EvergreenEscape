@@ -124,6 +124,8 @@ class gameScene extends Phaser.Scene {
                 icon: "error",
                 title: "Ups...",
                 text: "Error inesperado al cargar el juego... Pruebe a reiniciar la página",
+            }).then(() => {
+                document.location.href = "/"
             });
         }
 

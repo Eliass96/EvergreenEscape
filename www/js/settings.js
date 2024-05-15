@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             icon: "error",
             title: "Ups...",
             text: "Error inesperado al cargar los ajustes... Pruebe a reiniciar la página",
+        }).then(() => {
+            document.location.href = "/"
         });
     }
 
