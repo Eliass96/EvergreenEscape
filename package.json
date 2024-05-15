@@ -49,6 +49,7 @@
     "phaser": "^3.80.1",
     "phaser3-rex-plugins": "^1.80.1",
     "pug": "^3.0.2",
+    "selenium-webdriver": "^4.20.0",
     "sweetalert2": "^11.10.7"
   },
   "cordova": {
