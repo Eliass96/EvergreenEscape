@@ -7,7 +7,6 @@ const jsonwebtoken = require("jsonwebtoken");
 const session = require('express-session');
 const cors = require('cors');
 const bodyParser = require("body-parser");
-const {router} = require("express/lib/application"); router.use(bodyParser.json());
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;

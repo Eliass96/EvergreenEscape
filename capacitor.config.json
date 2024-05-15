@@ -7,11 +7,16 @@
       {
         "name": "android.permission.INTERNET"
       }
-    ]
+    ],
+    "plugins": {
+      "CapacitorHttp": {
+        "enabled": true
+      }
+    }
   },
   "server": {
     "androidScheme": "http",
-    "hostname": "192.168.1.177:30000",
+    "hostname": "localhost:30000",
     "androidPort": 30000
   },
   "cordova": {
