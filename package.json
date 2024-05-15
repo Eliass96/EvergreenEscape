@@ -22,7 +22,7 @@
   "author": "Elías Botía García y Jesús Robles García",
   "license": "Apache-2.0",
   "dependencies": {
-    "@capacitor-community/native-market": "^5.0.0",
+    "@capacitor-community/http": "^1.4.1",
     "@capacitor/android": "^5.7.4",
     "@capacitor/app": "^5.0.0",
     "@capacitor/filesystem": " ^5.0.0",
@@ -42,6 +42,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "gradle": "^1.2.4",
+    "jetifier": "^2.0.0",
     "jquery": "^3.7.1",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",

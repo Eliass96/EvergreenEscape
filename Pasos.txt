@@ -3,3 +3,5 @@
 **************************************
 *** Revisar cada fichero
 *** Seguir la documentación (ya está corregida entera)
+*** Al dar error 500 debe redirigir al index
+*** Hacer el fichero animations
