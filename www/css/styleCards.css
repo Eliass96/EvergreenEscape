@@ -8,10 +8,11 @@
 }
 
 .cardRanking {
-    width: 27vw;
-    height: 60vh;
-    border-radius: 15px;
+    color: white;
     overflow-y: hidden;
+    height: 60vh;
+    min-width: 30vw;
+    border-radius: 15px;
 }
 
 .lista_ranking {
@@ -29,7 +30,7 @@
 
 /*** INFO ***/
 .card-outer {
-    width: 25vw;
+    min-width: 30vw;
     height: 60vh;
     border-radius: 15px;
     overflow: hidden;
@@ -39,8 +40,11 @@
     background-color: rgba(0, 0, 0, .5);
     color: white;
     overflow-y: auto;
-    height: 100%;
+    height: 60vh;
+    min-width: 30vw;
+    border-radius: 15px;
 }
+
 
 .texto_info {
     padding: 20px;
@@ -74,10 +78,19 @@
 }
 
 .cardShop {
-    width: 23vw;
+    min-width: 22.5vw;
     height: 60vh;
     border-radius: 15px;
     overflow-y: hidden;
+}
+
+.card-innerShop {
+    background-color: rgba(0, 0, 0, .5);
+    color: white;
+    overflow-y: auto;
+    height: 60vh;
+    min-width: 22.5vw;
+    border-radius: 15px;
 }
 
 .items {
