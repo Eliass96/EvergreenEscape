@@ -50,9 +50,10 @@
 
 .img_button_rrss {
     width: 4vw;
+    min-width: 50px;
 }
 
-.titulo_card_info {
+.titulo_card_info{
     font-family: 'jackpot', sans-serif;
     font-size: clamp(0.75em, 4vh, 1.25em);
     padding-top: 2em;
