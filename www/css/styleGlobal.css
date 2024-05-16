@@ -287,7 +287,23 @@ footer p {
 
 @media (max-width: 450px) {
     .titulo_shop {
-        padding-top: 75px;
+        padding-top: 50px;
+    }
+    .titulo_settings {
+        padding-left: 75px;
+    }
+    .img_button {
+        width: 0.1vw !important;
+    }
+    .img_button_play {
+        width: 5vw !important;
+        min-width: 80px;
+    }
+    .img_button_back {
+        width: 3vw !important;
+    }
+    .img_button_ajustes_partida {
+        width: 3vw !important;
     }
 }
 

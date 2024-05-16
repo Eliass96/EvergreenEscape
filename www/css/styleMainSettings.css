@@ -1,7 +1,7 @@
 /*** PANTALLA PRINCIPAL Y AJUSTES ***/
 .titulo {
     font-family: 'jackpot', sans-serif;
-    font-size: 3.25rem;
+    font-size: clamp(1em, 3vw, 5rem) !important;
     text-align: center;
     line-height: 1.5;
 }
@@ -33,7 +33,6 @@
 
 .img_button_ajustes_partida {
     width: 6vw;
-    min-width: 80px;
     margin-left: 12px;
 }
 
@@ -71,7 +70,7 @@
     border-radius: 15px;
     width: 50vw;
     max-height: 45vh;
-    min-width: 450px;
+    min-width: 300px;
     overflow-y: hidden;
     padding-right: 0 !important;
     padding-left: 0 !important;
@@ -81,6 +80,9 @@
     color: white;
     overflow-y: auto;
     height: 100%;
+    width: 50vw;
+    max-height: 45vh;
+    min-width: 300px;
     border-radius: 15px;
 }
 
