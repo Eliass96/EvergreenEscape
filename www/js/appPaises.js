@@ -61,7 +61,6 @@ const buscarPaises = (data, dataTraducido) => {
             if (a.translations.es > b.translations.es) return 1;
             return 0;
         });
-        //listaPaises(listaOrdenada);
         let elementos = ``
         listaOrdenada.forEach(itemEsp => {
             if (itemEsp.translations.es !== null && itemEsp.translations.es !== undefined) {
