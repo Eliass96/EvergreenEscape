@@ -142,9 +142,9 @@
 
 /*** PERFIL ***/
 .cardPerfil {
-    width: 23vw;
-    min-width: 300px;
-    height: 55vh;
+    height: 60vh;
+    min-height: 100px;
+    min-width: 30vw;
     border-radius: 15px;
     overflow-y: hidden;
     font-family: 'turtles', sans-serif;
