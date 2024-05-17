@@ -2,4 +2,4 @@
 ***** OBJETIVOS PARA ESTA SEMANA *****
 **************************************
 *** Revisar cada fichero
-*** Seguir la documentación (ya está corregida entera)
+*** Seguir la documentación parte de pruebas (ya está corregida entera)
