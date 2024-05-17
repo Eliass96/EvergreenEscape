@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (evt.target.classList.contains("botonCerrarSesion")) {
             let resp = await fetch('/usuarios/cerrarSesion', {
                 credentials: 'include',
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }

@@ -64,7 +64,7 @@ const UsuarioSchema = new mongoose.Schema(
     }
 );
 
-const ObjetoSchema = new mongoose.Schema( {
+const ObjetoSchema = new mongoose.Schema({
     nombre: {
         type: String,
         required: true
@@ -371,24 +371,24 @@ exports.existeUsuario = async function (nombreUsuario) {
 // AGREGAR OBJETO
 exports.agregarObjetos = async function () {
     try {
-        let objetoSuperSalto = await Objeto.findOne({ nombre: "Súper salto" });
+        let objetoSuperSalto = await Objeto.findOne({nombre: "Súper salto"});
         if (!objetoSuperSalto) {
-            await Objeto.create({ nombre: "Súper salto", precio: 20 });
+            await Objeto.create({nombre: "Súper salto", precio: 20});
         }
 
-        let objetoPuntuacionX2 = await Objeto.findOne({ nombre: "Puntuación x2" });
+        let objetoPuntuacionX2 = await Objeto.findOne({nombre: "Puntuación x2"});
         if (!objetoPuntuacionX2) {
-            await Objeto.create({ nombre: "Puntuación x2", precio: 30 });
+            await Objeto.create({nombre: "Puntuación x2", precio: 30});
         }
 
-        let objetoInmunidad = await Objeto.findOne({ nombre: "Inmunidad" });
+        let objetoInmunidad = await Objeto.findOne({nombre: "Inmunidad"});
         if (!objetoInmunidad) {
-            await Objeto.create({ nombre: "Inmunidad", precio: 40 });
+            await Objeto.create({nombre: "Inmunidad", precio: 40});
         }
 
-        let objetoRevivir = await Objeto.findOne({ nombre: "Revivir" });
+        let objetoRevivir = await Objeto.findOne({nombre: "Revivir"});
         if (!objetoRevivir) {
-            await Objeto.create({ nombre: "Revivir", precio: 50 });
+            await Objeto.create({nombre: "Revivir", precio: 50});
         }
     } catch (error) {
         throw new Error('Error al agregar los objetos a la tienda: ' + error.message);
