@@ -116,7 +116,7 @@ exports.listarPuntuaciones = async function (userId) {
         usuario.puntuaciones.sort((a, b) => b - a);
         return usuario.puntuaciones.slice(0, 10);
     } catch (error) {
-        throw new Error('Error al listar puntuaciones: ' + error.message);
+        throw new Error('Error al listar las puntuaciones: ' + error.message);
     }
 };
 
@@ -138,7 +138,7 @@ exports.getUsuarioByName = async function (userName) {
     try {
         return await Usuario.findOne({nombre: userName});
     } catch (error) {
-        throw new Error('Error al buscar el usuario: ' + error.message);
+        throw new Error('Error al buscar el usuario por nombre: ' + error.message);
     }
 };
 
@@ -209,7 +209,7 @@ exports.comprarItems = async function (userId, objetoId, cantidadComprada) {
         await usuario.save();
         return usuario;
     } catch (error) {
-        throw new Error('Hubo un error al comprar el item');
+        throw new Error('Hubo un error al comprar el objeto');
     }
 }
 
@@ -227,7 +227,7 @@ exports.utilizarItems = async function (userId, superSaltoDespuesDePartida, punt
             puntuacionExtraDespuesDePartida < 0 ||
             inmunidadDespuesDePartida < 0 ||
             revivirDespuesDePartida < 0) {
-            throw new Error('No puedes tener items negativos');
+            throw new Error('No puedes tener objetos negativos');
         }
 
         // Actualizar elementos
@@ -239,7 +239,7 @@ exports.utilizarItems = async function (userId, superSaltoDespuesDePartida, punt
         await usuario.save();
         return usuario;
     } catch (error) {
-        throw new Error('Hubo un error al actualizar los items: ' + error.message);
+        throw new Error('Hubo un error al actualizar los objetos: ' + error.message);
     }
 }
 
@@ -264,7 +264,7 @@ exports.altaUsuario = async function (datosDeUsuario) {
     try {
         return Usuario.create(datosDeUsuario);
     } catch (error) {
-        throw new Error('Error al añadir el usuario: ' + error.message);
+        throw new Error('Error al agregar el usuario: ' + error.message);
     }
 }
 
@@ -302,7 +302,7 @@ exports.listarPuntuacionesPorPais = async function (nacionalidad) {
 
         return mejoresPuntuacionesConUsuarios;
     } catch (error) {
-        throw new Error('Error al listar usuarios con mejores puntuaciones por país: ' + error.message);
+        throw new Error('Error al listar las mejores puntuaciones por país: ' + error.message);
     }
 };
 
@@ -340,7 +340,7 @@ exports.listarTodasLasPuntuaciones = async function () {
 
         return mejoresPuntuacionesConUsuarios;
     } catch (error) {
-        throw new Error('Error al listar todas las puntuaciones con nombres: ' + error.message);
+        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
     }
 };
 
@@ -355,7 +355,7 @@ exports.listarTodosLosUsuarios = async function () {
         }
         return usuarios;
     } catch (error) {
-        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+        throw new Error('Error al listar todos los usuarios: ' + error.message);
     }
 };
 
@@ -363,7 +363,7 @@ exports.existeUsuario = async function (nombreUsuario) {
     try {
         return await Usuario.findOne({nombre: nombreUsuario});
     } catch (error) {
-        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+        throw new Error('Error al comprobar la existencia del usuario: ' + error.message);
     }
 };
 
@@ -391,7 +391,7 @@ exports.agregarObjetos = async function () {
             await Objeto.create({ nombre: "Revivir", precio: 50 });
         }
     } catch (error) {
-        throw new Error('Error al cargar los objetos de la tienda: ' + error.message);
+        throw new Error('Error al agregar los objetos a la tienda: ' + error.message);
     }
 }
 
@@ -399,7 +399,7 @@ exports.getObjeto = async function (nombreObjeto) {
     try {
         return await Objeto.findOne({nombre: nombreObjeto});
     } catch (error) {
-        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+        throw new Error('Error al cargar el objeto: ' + error.message);
     }
 };
 
@@ -407,7 +407,7 @@ exports.listarObjetos = async function () {
     try {
         let objetos = await Objeto.find();
     } catch (error) {
-        throw new Error('Error al listar todas las puntuaciones: ' + error.message);
+        throw new Error('Error al listar todos los objetos: ' + error.message);
     }
 };
 

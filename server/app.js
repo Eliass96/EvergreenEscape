@@ -63,7 +63,7 @@ app.get('/usuarios/estado', async (req, res) => {
             res.status(HTTP_UNAUTHORIZED).send({message: 'No estás logueado'});
         }
     } catch (error) {
-        res.status(HTTP_UNAUTHORIZED).send({message: 'No estás logueado'});
+        res.status(HTTP_UNAUTHORIZED).send({message: 'No has iniciado sesión'});
     }
 });
 
@@ -177,7 +177,7 @@ app.patch('/usuarios/usuario/items', async (req, res) => { //funciona
         const usuarioActualizado = await db.comprarItems(userId, objetoId, cantidadComprada);
         res.status(HTTP_OK).json(usuarioActualizado);
     } catch (error) {
-        res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: 'Hubo un error al comprar el item'});
+        res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: 'Hubo un error al comprar el objeto'});
     }
 });
 
@@ -200,7 +200,7 @@ app.patch('/usuarios/usuario/itemsDespuesDePartida', async (req, res) => { //fun
             cantidadRevivir);
         res.status(HTTP_OK).json(usuarioActualizado);
     } catch (error) {
-        res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: 'Hubo un error al actualizar los items'});
+        res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: 'Hubo un error al actualizar los objetos'});
     }
 });
 
