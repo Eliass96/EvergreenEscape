@@ -1,14 +1,14 @@
 /*** PANTALLA PRINCIPAL Y AJUSTES ***/
 .titulo {
     font-family: 'jackpot', sans-serif;
-    font-size: clamp(1em, 3vw, 5rem) !important;
+    font-size: clamp(1.25rem, 3vw, 5rem);
     text-align: center;
     line-height: 1.5;
 }
 
 .txtNotLogged {
     font-family: 'Turtles', sans-serif;
-    font-size: 1.75rem;
+    font-size: clamp(0.75em, 1.5vw, 1rem);
     text-align: center;
     line-height: 1;
     visibility: hidden;
@@ -70,6 +70,7 @@
     border-radius: 15px;
     width: 50vw;
     max-height: 45vh;
+    min-height: 100px;
     min-width: 300px;
     overflow-y: hidden;
     padding-right: 0 !important;
@@ -81,6 +82,7 @@
     overflow-y: auto;
     height: 100%;
     width: 50vw;
+    min-height: 100px;
     max-height: 45vh;
     min-width: 300px;
     border-radius: 15px;
