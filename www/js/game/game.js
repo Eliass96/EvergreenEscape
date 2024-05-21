@@ -67,7 +67,6 @@ let botonAceptarAjustes;
 let botonCancelarAjustes;
 let checkboxMusica;
 let checkboxSonido;
-let checkboxPantallaCompleta;
 let modalAMostrar;
 let colorTexto;
 let puntx2;

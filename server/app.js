@@ -356,12 +356,11 @@ app.patch('/usuarios/usuario/ajustes', async (req, res) => { //funciona
     try {
         const userId = req.session.usuario;
         if (userId) {
-            const {valorMusica, valorSonido, valorPantallaCompleta} = req.body;
+            const {valorMusica, valorSonido} = req.body;
             if (valorMusica != null &&
-                valorSonido != null &&
-                valorPantallaCompleta != null
+                valorSonido != null
             ) {
-                const usuarioActualizado = await db.cambiarAjustes(userId, valorMusica, valorSonido, valorPantallaCompleta);
+                const usuarioActualizado = await db.cambiarAjustes(userId, valorMusica, valorSonido);
                 res.status(HTTP_OK).json(usuarioActualizado);
             } else {
                 res.status(HTTP_NOT_FOUND).json({message: 'No se han podido actualizar los ajustes porque una o más opciones son inválidas.'})

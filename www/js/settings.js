@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const checkboxMusica = document.getElementById('bauble_check_musica');
     const checkboxSonido = document.getElementById('bauble_check_sonido');
-    const checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
 
     if (document.getElementById('but_cancelar_ajustes')) {
         let but_cancelar_ajustes = document.getElementById('but_cancelar_ajustes');
@@ -64,10 +63,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1000,
                     timerProgressBar: true,
                 }).then(() => {
-                    document.location.href = "/"
+                    //document.location.href = "/"
                 })
             } else if (result.isDenied) {
-                window.location.href = "/";
+                //window.location.href = "/";
             }
         });
     }
@@ -93,10 +92,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1000,
                     timerProgressBar: true,
                 }).then(() => {
-                    document.location.href = "/"
+                    //document.location.href = "/"
                 })
             } else if (result.isDenied) {
-                window.location.href = "/";
+                //window.location.href = "/";
             }
 
         });
@@ -106,10 +105,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         try {
             const data = {
                 valorMusica: !checkboxMusica.checked,
-                valorSonido: !checkboxSonido.checked,
-                valorPantallaCompleta: !checkboxPantallaCompleta.checked
+                valorSonido: !checkboxSonido.checked
             };
-            const response = await fetch('/usuarios/usuario/ajustes', {
+            await fetch('/usuarios/usuario/ajustes', {
                 credentials: 'include',
                 method: 'PATCH',
                 headers: {
@@ -137,7 +135,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             checkboxMusica.checked = !usuario.musica;
             checkboxSonido.checked = !usuario.sonido;
-            checkboxPantallaCompleta.checked = !usuario.pantallaCompleta;
         } catch (error) {
             console.error('Error al intentar cargar los ajustes:', error);
             Swal.fire({

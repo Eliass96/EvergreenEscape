@@ -30,7 +30,6 @@ class gameScene extends Phaser.Scene {
         botonSuperSalto = document.getElementById('botonItemSuperSalto');
         checkboxMusica = document.getElementById('bauble_check_musica');
         checkboxSonido = document.getElementById('bauble_check_sonido');
-        checkboxPantallaCompleta = document.getElementById('bauble_check_pantalla_completa');
         $('#botonPausa').hide();
         $('#botonAntiObstaculos').hide();
         $('#botonSuperSalto').hide();
@@ -895,8 +894,7 @@ function cancelarAjustes() {
 async function guardarAjustes() {
     const data = {
         valorMusica: !checkboxMusica.checked,
-        valorSonido: !checkboxSonido.checked,
-        valorPantallaCompleta: !checkboxPantallaCompleta.checked
+        valorSonido: !checkboxSonido.checked
     };
 
     let resp = await fetch('/usuarios/usuario/ajustes', {
@@ -934,7 +932,6 @@ async function cargarAjustes() {
 
     checkboxMusica.checked = !usuario.musica;
     checkboxSonido.checked = !usuario.sonido;
-    checkboxPantallaCompleta.checked = !usuario.pantallaCompleta;
 }
 
 async function efectoDeItemX2() {

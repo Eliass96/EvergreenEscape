@@ -53,10 +53,6 @@ const UsuarioSchema = new mongoose.Schema(
             type: Boolean,
             default: true
         },
-        pantallaCompleta: {
-            type: Boolean,
-            default: true
-        },
         fondoClaro: {
             type: Boolean,
             default: true
@@ -143,7 +139,7 @@ exports.getUsuarioByName = async function (userName) {
 };
 
 //CAMBIAR AJUSTES
-exports.cambiarAjustes = async function (userId, valorMusica, valorSonido, valorPantallaCompleta) {
+exports.cambiarAjustes = async function (userId, valorMusica, valorSonido) {
     try {
         const usuario = await Usuario.findById(userId);
         if (!usuario) {
@@ -152,7 +148,6 @@ exports.cambiarAjustes = async function (userId, valorMusica, valorSonido, valor
 
         usuario.musica = valorMusica;
         usuario.sonido = valorSonido;
-        usuario.pantallaCompleta = valorPantallaCompleta;
 
         await usuario.save();
         return usuario;
