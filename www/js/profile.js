@@ -38,11 +38,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             });
             if (!resp.ok) {
-                console.log(resp);
                 throw new Error("Error al cargar");
             } else {
                 const data = await resp.json();
-                console.log(data)
                 if (data.message === 'Sesión cerrada') {
                     document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
                     Swal.fire({

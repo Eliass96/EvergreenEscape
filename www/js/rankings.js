@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             outputRankingGlobal.innerHTML = crearPuntuacionesGlobales({jugadores: datosPuntuacion});
 
         } catch (error) {
-            console.log(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -62,7 +61,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             const datosPuntuacion = await resp.json();
             outputRankingPorPais.innerHTML = crearPuntuacionesPorPais({jugadores: datosPuntuacion});
         } catch (error) {
-            console.log(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -78,10 +76,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 throw new Error("Error al cargar");
             }
             const datosPuntuacion = await resp.json();
-            console.log(datosPuntuacion)
             outputRanking.innerHTML = crearPuntuaciones({puntuaciones: datosPuntuacion});
         } catch (error) {
-            console.log(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",

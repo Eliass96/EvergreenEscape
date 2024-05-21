@@ -77,7 +77,6 @@ app.post("/usuarios/registro", async (req, res) => {
         }
 
         const usuarioAResvisar = await db.existeUsuario(nombre);
-        console.log(usuarioAResvisar);
         if (!usuarioAResvisar) {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);
@@ -244,7 +243,6 @@ app.get("/usuarios/puntuaciones", async function (req, res) {
 app.patch('/usuarios/usuario/nuevaPuntuacion', async (req, res) => { //funciona
     try {
         let userId = req.session.usuario;
-        console.log(userId)
         if (userId != null) {
             const {nuevaPuntuacion} = req.body;
             if (nuevaPuntuacion != null) {

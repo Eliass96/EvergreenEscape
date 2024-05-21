@@ -909,8 +909,6 @@ async function guardarAjustes() {
     if (resp.ok) {
         let usuarioActualizado = await resp.json();
         sonidoActivo = usuarioActualizado.sonido;
-        console.log(musicaActiva)
-        console.log(usuarioActualizado.musica)
         if (!musicaActiva && usuarioActualizado.musica) {
             musicaActiva = usuarioActualizado.musica;
             fondoSound.play();
