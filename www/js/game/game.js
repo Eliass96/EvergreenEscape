@@ -87,3 +87,5 @@ let textoPuntuacionx2;
 let textoRevivir;
 let textoAntiObstaculos;
 let textoSuperSalto;
+let musicaActiva;
+let sonidoActivo;

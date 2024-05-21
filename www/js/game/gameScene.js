@@ -98,7 +98,10 @@ class gameScene extends Phaser.Scene {
                     colorTexto = "#FFFFFFFF"
                 }
 
-                if (usuario.musica) {
+                musicaActiva = usuario.musica;
+                sonidoActivo = usuario.sonido;
+
+                if (musicaActiva) {
                     fondoSound.play();
                     fondoSound.volume = 0.2;
                     fondoSound.loop = true;
@@ -492,7 +495,7 @@ async function dispararFlechas() {
             jugador.anims.play('run');
             flechaJugador.setVelocityX(700);
             disparando = false
-            if (usuario.sonido) {
+            if (sonidoActivo) {
                 arcoSound.play();
             }
         });
@@ -522,7 +525,7 @@ function cogerMonedas(jugador, moneda) {
     puntos += 10; //suma puntos
     monedas += 5; //suma monedas
     txtPuntos.setText("Puntos: " + puntos)
-    if (usuario.sonido) {
+    if (sonidoActivo) {
         monedaSound.play();
     }
 }
@@ -546,7 +549,7 @@ async function generarObstaculos() {
             if (enemigoGenerado === 1) {
                 let x = Phaser.Math.RND.between(game.config.width + 500, game.config.width + 800);
                 let y = Phaser.Math.RND.between(875, 875);
-                if (usuario.sonido) {
+                if (sonidoActivo) {
                     enemigoSound.play();
                 }
                 orco = context.physics.add.sprite(x, y, "orcoRojo").setScale(1.75);
@@ -581,7 +584,7 @@ async function generarObstaculos() {
             } else if (enemigoGenerado === 2) {
                 let x = Phaser.Math.RND.between(game.config.width + 500, game.config.width + 800);
                 let y = Phaser.Math.RND.between(770, 770);
-                if (usuario.sonido) {
+                if (sonidoActivo) {
                     orcoVerdeSound.play();
                 }
                 orcoVerde = context.physics.add.sprite(x, y, "orcoVerde").setScale(4);
@@ -712,7 +715,7 @@ async function morir() {
         txtPuntos.setText("")
         txtHightScore.setText("")
         txtMonedas.setText("")
-        if (usuario.sonido) {
+        if (sonidoActivo) {
             fondoSound.stop();
         }
         jugador.anims.stop();
@@ -740,7 +743,7 @@ async function morir() {
         jugador.once('animationcomplete', () => {
             jugador.anims.stop();
         })
-        if (usuario.sonido) {
+        if (sonidoActivo) {
             defeatSound.play();
             defeatSound.volume = 0.2;
         }
@@ -896,7 +899,7 @@ async function guardarAjustes() {
         valorPantallaCompleta: !checkboxPantallaCompleta.checked
     };
 
-    await fetch('/usuarios/usuario/ajustes', {
+    let resp = await fetch('/usuarios/usuario/ajustes', {
         credentials: 'include',
         method: 'PATCH',
         headers: {
@@ -904,6 +907,22 @@ async function guardarAjustes() {
         },
         body: JSON.stringify(data)
     });
+
+    if (resp.ok) {
+        let usuarioActualizado = await resp.json();
+        sonidoActivo = usuarioActualizado.sonido;
+        console.log(musicaActiva)
+        console.log(usuarioActualizado.musica)
+        if (!musicaActiva && usuarioActualizado.musica) {
+            musicaActiva = usuarioActualizado.musica;
+            fondoSound.play();
+            fondoSound.volume = 0.2;
+            fondoSound.loop = true;
+        } else if (musicaActiva && !usuarioActualizado.musica) {
+            musicaActiva = usuarioActualizado.musica;
+            fondoSound.stop();
+        }
+    }
 }
 
 async function cargarAjustes() {
