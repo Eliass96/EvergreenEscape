@@ -409,9 +409,7 @@ exports.listarObjetos = async function () {
 exports.conectar = async function () {
     try {
         const uri = process.env.MONGODB_URI;
-        if (!uri) {
-            throw new Error("La variable de entorno MONGODB_URI no está definida");
-        }
+        await mongoose.connect(uri);
     } catch (error) {
         console.error("Error al conectar a la base de datos:", error);
     }
