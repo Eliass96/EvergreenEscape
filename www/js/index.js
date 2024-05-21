@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             });
             if (!resp.ok) {
-                console.log(resp)
                 document.getElementById('butUser').setAttribute('href', '../html/login.html');
                 elementosA.forEach(elemento => {
                     elemento.style.visibility = 'hidden';
@@ -20,9 +19,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 document.getElementById('txtNotLogged').style.visibility = 'visible';
             } else {
                 const data = await resp.json();
-                console.log(data)
                 if (data.usuarioId) {
-                    console.log(data.usuarioId)
                     document.getElementById('butUser').setAttribute('href', '../html/profile.html');
                     elementosA.forEach(elemento => {
                         elemento.style.visibility = 'visible';
@@ -38,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             }
         } catch (error) {
-            console.log(error)
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
