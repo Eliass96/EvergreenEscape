@@ -415,7 +415,6 @@ class gameScene extends Phaser.Scene {
     }
 
     update() {
-
         if (canMove && estaVivo) {
 
             textoSuperSalto.textContent = cantidadSuperSalto.toString();
@@ -448,7 +447,7 @@ class gameScene extends Phaser.Scene {
                 pincho.x -= velocidad / 2; // Mover cada pincho junto con el fondo
             });
             flechasJugador.forEach(function (flecha) {
-                if (!disparando && jugador.x >= flecha.body.velocity.x < 700) flecha.body.setVelocityX(700);
+                if (!disparando && jugador.x >= flecha.body.velocity.x < 700) flecha.body.setVelocityX(900);
             });
         }
     }
@@ -700,10 +699,12 @@ async function generarObstaculos() {
 }
 
 async function matarOrco() {
+    if (!disparando) {
     orcoVerde.anims.play('matarOrco');
     orcoVerde.setSize(0.1, 0.1).setOffset(0, 5000);
     flechaJugador.disableBody(true, true);
     orcoVerde.setVelocityX(0);
+    }
 }
 
 async function morir() {
@@ -718,6 +719,7 @@ async function morir() {
             fondoSound.stop();
         }
         jugador.anims.stop();
+        flechaJugador.disableBody(true, true);
         enemigos.forEach(function (orco) {
             if (orco.x <= game.config.width / 3) {
                 orco.anims.play('ataqueOrcoRojo');
