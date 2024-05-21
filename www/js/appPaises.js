@@ -18,7 +18,13 @@ const fetchData = async () => {
         dataTraducido = await responseTrad.json();
         listaPaises(data, dataTraducido);
     } catch (error) {
-        console.log(error);
+        Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error inesperado al cargar los países... Pruebe a reiniciar la página",
+        }).then(() => {
+            document.location.href = "/"
+        });
     }
 }
 
