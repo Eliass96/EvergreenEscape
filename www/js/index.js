@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     const elementosA = document.querySelectorAll('a');
     if (document.getElementById('butUser')) {
         try {
-
             let resp = await fetch('/usuarios/estado', {
                 credentials: 'include',
                 method: 'GET',
@@ -35,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             }
         } catch (error) {
+            console.log("Error al cargar la aplicación: ", error.message)
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
