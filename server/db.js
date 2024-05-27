@@ -386,6 +386,7 @@ exports.agregarObjetos = async function () {
             await Objeto.create({nombre: "Revivir", precio: 50});
         }
     } catch (error) {
+        console.error(error);
         throw new Error('Error al agregar los objetos a la tienda: ' + error.message);
     }
 }
