@@ -22,6 +22,10 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 
 const app = express();
+app.use((req, res, next) => {
+    console.log(req);
+    next();
+});
 app.use(session({
     secret: 'EvergreenEscapeSecret',
     resave: false,
@@ -167,6 +171,7 @@ app.get("/usuarios/usuario", async function (req, res) { // funciona
             res.status(HTTP_NOT_FOUND).json({message: 'No hay ninguna sesión iniciada.'})
         }
     } catch (err) {
+        console.error('Error: :', err.message);
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({message: 'Error al buscar el usuario.', error: err.message});
     }
 });
