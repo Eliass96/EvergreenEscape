@@ -21,7 +21,15 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 
 const PORT = process.env.PORT || 40000;
 
+const corsOptions = {
+    origin: '*'/*['http://localhost:30000', 'https://localhost:30000']*/,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
+};
+
 const app = express();
+app.use(cors(corsOptions));
 app.use((req, res, next) => {
     console.log(req);
     next();
