@@ -267,12 +267,9 @@ class gameScene extends Phaser.Scene {
                 flecha.setVelocityY(0);
             });
             canMove = false;
-            // Detener la animación del jugador
             jugador.anims.stop();
-
-            // Detener la gravedad del jugador y establecer su velocidad vertical en 0
             jugador.setVelocityY(0);
-            jugador.setAccelerationY(0); // Asegúrate de que no haya aceleración que pueda hacer que el jugador caiga
+            jugador.setAccelerationY(0);
 
             enemigos.forEach(function (orco) {
                 orco.anims.stop();
@@ -416,7 +413,6 @@ class gameScene extends Phaser.Scene {
 
     update() {
         if (canMove && estaVivo) {
-
             textoSuperSalto.textContent = cantidadSuperSalto.toString();
             textoPuntuacionx2.textContent = cantidadPuntuacionx2.toString();
             textoAntiObstaculos.textContent = cantidadAntiObstaculos.toString();
@@ -448,6 +444,7 @@ class gameScene extends Phaser.Scene {
             });
             flechasJugador.forEach(function (flecha) {
                 if (!disparando && jugador.x >= flecha.body.velocity.x < 700) flecha.body.setVelocityX(900);
+                if (flecha.x >= 1850) flecha.disableBody(true, true);
             });
         }
     }
@@ -699,11 +696,11 @@ async function generarObstaculos() {
 }
 
 async function matarOrco() {
-    if (!disparando) {
-    orcoVerde.anims.play('matarOrco');
-    orcoVerde.setSize(0.1, 0.1).setOffset(0, 5000);
-    flechaJugador.disableBody(true, true);
-    orcoVerde.setVelocityX(0);
+    if (!disparando && estaVivo) {
+        orcoVerde.anims.play('matarOrco');
+        orcoVerde.setSize(0.1, 0.1).setOffset(0, 5000);
+        flechaJugador.disableBody(true, true);
+        orcoVerde.setVelocityX(0);
     }
 }
 
@@ -717,24 +714,25 @@ async function morir() {
         txtMonedas.setText("")
         if (sonidoActivo) {
             fondoSound.stop();
+            enemigoSound.stop();
+            orcoVerdeSound.stop();
+            arcoSound.stop();
         }
         jugador.anims.stop();
         flechaJugador.disableBody(true, true);
         enemigos.forEach(function (orco) {
             if (orco.x <= game.config.width / 3) {
                 orco.anims.play('ataqueOrcoRojo');
-                /*orco.once('animationcomplete', () => {
-                    orco.anims.stop();
-                })*/
             }
         });
         orcosVerdes.forEach(function (orco) {
             if (orco.x <= game.config.width / 3) {
                 orco.anims.play('ataqueOrcoVerde');
-                /*orco.once('animationcomplete', () => {
-                    orco.anims.stop();
-                })*/
             }
+        });
+        context.physics.pause();
+        flechasJugador.forEach(function (flecha) {
+            flecha.setVelocityY(0);
         });
         canMove = false;
         estaVivo = false;
