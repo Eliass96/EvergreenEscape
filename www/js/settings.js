@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const checkboxMusica = document.getElementById('bauble_check_musica');
     const checkboxSonido = document.getElementById('bauble_check_sonido');
+    let musicaCambiado = false;
+    let sonidoCambiado = false;
+    let usuario;
 
     if (document.getElementById('but_cancelar_ajustes')) {
         let but_cancelar_ajustes = document.getElementById('but_cancelar_ajustes');
@@ -13,6 +16,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         let but_aceptar_ajustes = document.getElementById('but_aceptar_ajustes');
         but_aceptar_ajustes.addEventListener('click', function () {
             confirmarAjustes();
+        });
+    }
+
+    if (document.getElementById('gameSettings')) {
+        let but_cambiar_fondo = document.getElementById('gameSettings');
+        but_cambiar_fondo.addEventListener('click', function () {
+            console.log("but_cambiar_fondo");
+            cambiarFondo();
         });
     }
 
@@ -62,10 +73,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1000,
                     timerProgressBar: true,
                 }).then(() => {
-                    //document.location.href = "/"
+                    document.location.href = "/"
                 })
             } else if (result.isDenied) {
-                //window.location.href = "/";
+                window.location.href = "/";
             }
         });
     }
@@ -91,10 +102,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1000,
                     timerProgressBar: true,
                 }).then(() => {
-                    //document.location.href = "/"
+                    document.location.href = "/"
                 })
             } else if (result.isDenied) {
-                //window.location.href = "/";
+                window.location.href = "/";
             }
 
         });
@@ -130,10 +141,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (respUsuario.status !== 200) {
                 throw new Error("Error al cargar");
             }
-            let usuario = await respUsuario.json();
+            usuario = await respUsuario.json();
 
             checkboxMusica.checked = !usuario.musica;
             checkboxSonido.checked = !usuario.sonido;
+
+            musicaCambiado = !usuario.musica;
+            sonidoCambiado = !usuario.sonido;
+
+
         } catch (error) {
             console.error('Error al intentar cargar los ajustes:', error);
             Swal.fire({
@@ -141,6 +157,40 @@ document.addEventListener('DOMContentLoaded', async function () {
                 title: "Oops...",
                 text: "Error inesperado al cargar los ajustes"
             });
+        }
+    }
+
+    async function cambiarFondo() {
+        if (musicaCambiado !== checkboxMusica.checked || sonidoCambiado !== checkboxSonido.checked) {
+            Swal.fire({
+                title: "¿Quieres guardar los cambios realizados?",
+                icon: "warning",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Guardar",
+                denyButtonText: "No guardar",
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "lightgreen",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await guardarAjustes();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Ajustes guardados!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        window.location.href = "../html/gameSettings.html";
+                    })
+                } else if (result.isDenied) {
+                    window.location.href = "../html/gameSettings.html";
+                }
+
+            });
+        } else {
+            window.location.href = "../html/gameSettings.html";
         }
     }
 });

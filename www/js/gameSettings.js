@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     showConfirmButton: false,
                     timer: 1000,
                     timerProgressBar: true
+                }).then(() => {
+                    document.location.href = "../html/settings.html";
                 });
             })
 
@@ -33,6 +35,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     showConfirmButton: false,
                     timer: 1000,
                     timerProgressBar: true
+                }).then(() => {
+                    document.location.href = "../html/settings.html";
                 });
 
             })
