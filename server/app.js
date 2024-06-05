@@ -146,7 +146,7 @@ app.get('/usuarios/cerrarSesion', async (req, res) => {
     try {
         if (req.session) {
             req.session.destroy();
-            res.status(HTTP_OK).send({message: 'Sesión cerrada.'});
+            res.status(HTTP_OK).send({message: 'Sesión cerrada'});
         } else {
             res.status(HTTP_UNAUTHORIZED).send({message: 'No has iniciado sesión.'});
         }
