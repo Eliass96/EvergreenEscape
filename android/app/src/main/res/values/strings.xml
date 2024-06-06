@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">EvergreenEscape</string>
-    <string name="title_activity_main">EvergreenEscape</string>
-    <string name="package_name">com.game.evergreenescape</string>
-    <string name="custom_url_scheme">com.game.evergreenescape</string>
-</resources>

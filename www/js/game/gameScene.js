@@ -126,12 +126,15 @@ class gameScene extends Phaser.Scene {
                 icon: "error",
                 title: "Ups...",
                 text: "Error inesperado al cargar el juego... Pruebe a reiniciar la página",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
             }).then(() => {
                 document.location.href = "/"
             });
         }
-
         context = this;
+
         // Sonidos
         enemigoSound = this.sound.add("orcosonido");
         monedaSound = this.sound.add("monedasonido");
@@ -168,9 +171,8 @@ class gameScene extends Phaser.Scene {
         this.anims.create({
             key: 'shot',
             frames: this.anims.generateFrameNumbers("disparoJugador", {start: 0, end: 13}),
-            frameRate: 30
+            frameRate: 40
         });
-
 
         this.anims.create({
             key: 'moneda',
@@ -221,6 +223,7 @@ class gameScene extends Phaser.Scene {
         jugador.body.setOffset(40, 53);
         jugador.setCollideWorldBounds(true);
         jugador.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        jugador.setDepth(999);
 
         // Flecha
         flechaJugador = context.physics.add.image(jugador.x, jugador.y, "flechaJugador").setScale(2.5);
@@ -328,7 +331,6 @@ class gameScene extends Phaser.Scene {
             cancelarAjustes();
         }, this);
 
-
         puntx2.addEventListener('click', function () {
             efectoDeItemX2();
         }, this);
@@ -425,22 +427,22 @@ class gameScene extends Phaser.Scene {
             fondo.tilePositionX += velocidad;
             if (disparando) flechaJugador.enableBody(true, jugador.x + 30, jugador.y + 60, true, true);
             monedero.forEach(function (moneda) {
-                moneda.x -= velocidad / 2; // Mover cada moneda junto con el fondo
+                moneda.x -= velocidad / 2;
             });
             enemigos.forEach(function (orco) {
-                orco.x -= velocidad / 1.36; // Mover cada orco junto con el fondo
+                orco.x -= velocidad / 1.36;
             });
             orcosVerdes.forEach(function (orco) {
-                orco.x -= velocidad / 1.36; // Mover cada orco junto con el fondo
+                orco.x -= velocidad / 1.36;
             });
             piedras.forEach(function (piedra) {
-                piedra.x -= velocidad / 2; // Mover cada piedra junto con el fondo
+                piedra.x -= velocidad / 2;
             });
             plataformas.forEach(function (plataforma) {
-                plataforma.x -= velocidad / 2; // Mover cada plataforma junto con el fondo
+                plataforma.x -= velocidad / 2;
             });
             pinchos.forEach(function (pincho) {
-                pincho.x -= velocidad / 2; // Mover cada pincho junto con el fondo
+                pincho.x -= velocidad / 2;
             });
             flechasJugador.forEach(function (flecha) {
                 if (!disparando && jugador.x >= flecha.body.velocity.x < 700) flecha.body.setVelocityX(900);
@@ -461,12 +463,10 @@ function enableMovement() {
 }
 
 function enableAnimation() {
-    // Reproducir la animación al iniciar el juego
     jugador.anims.play('run');
 }
 
 async function sumarPuntos() {
-    //await new Promise(resolve => setTimeout(resolve, 1470));
     while (canMove && estaVivo) {
         puntos += puntosASumar;
         if (puntos % 100 === 0) velocidad += 0.85;
@@ -518,7 +518,7 @@ async function generarMonedas() {
 function cogerMonedas(jugador, moneda) {
     moneda.disableBody(true, true);// desactiva las monedas
     puntos += 10; //suma puntos
-    monedas += 5; //suma monedas
+    monedas += 1; //suma monedas
     txtPuntos.setText("Puntos: " + puntos)
     if (sonidoActivo) {
         monedaSound.play();
@@ -730,7 +730,6 @@ async function morir() {
                 orco.anims.play('ataqueOrcoVerde');
             }
         });
-        context.physics.pause();
         flechasJugador.forEach(function (flecha) {
             flecha.setVelocityY(0);
         });
@@ -741,6 +740,9 @@ async function morir() {
         jugador.anims.play('dead');
         jugador.once('animationcomplete', () => {
             jugador.anims.stop();
+            let deadAnimation = jugador.anims.animationManager.get('dead');
+            let lastFrame = deadAnimation.frames[deadAnimation.frames.length - 1];
+            jugador.setTexture(lastFrame.textureKey, lastFrame.frame.name);
         })
         if (sonidoActivo) {
             defeatSound.play();
@@ -781,7 +783,6 @@ const actualizarPuntuacion = async (nuevaPuntuacion) => {
 
         return await response.json();
     } catch (error) {
-        console.error('Hubo un error al actualizar la puntuación:', error);
         throw error;
     }
 };
@@ -807,135 +808,220 @@ const actualizarMonedas = async (monedasObtenidas) => {
 
         return await response.json();
     } catch (error) {
-        console.error('Hubo un error al actualizar la puntuación:', error);
-        throw error;
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error inesperado al actualizar las monedas... Pruebe a reiniciar el juego",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+        });
     }
 };
 
 function confirmarAjustes() {
-    Swal.fire({
-        title: "¿Quieres guardar los ajustes?",
-        icon: "question",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Guardar",
-        denyButtonText: "Salir sin guardar",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "lightgreen",
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            await guardarAjustes();
+    try {
+        if (musicaCambiado !== checkboxMusica.checked || sonidoCambiado !== checkboxSonido.checked) {
             Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "¡Ajustes guardados!",
-                showConfirmButton: false,
-                timer: 1000,
-                timerProgressBar: true,
-            }).then(() => {
-                $('#modalSettings').modal('hide');
-                if (modalAMostrar === 1) $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
-                else if (modalAMostrar === 2) $('#modalGameOver').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                }).modal('show');
-            })
-        } else if (result.isDenied) {
+                title: "¿Quieres guardar los ajustes?",
+                icon: "question",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Guardar",
+                denyButtonText: "Salir sin guardar",
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "lightgreen",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await guardarAjustes();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Ajustes guardados!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        $('#modalSettings').modal('hide');
+                        if (modalAMostrar === 1) $('#modalPause').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }).modal('show');
+                        else if (modalAMostrar === 2) $('#modalGameOver').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }).modal('show');
+                    })
+                } else if (result.isDenied) {
+                    $('#modalSettings').modal('hide');
+                    if (modalAMostrar === 1) $('#modalPause').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }).modal('show');
+                    else if (modalAMostrar === 2) $('#modalGameOver').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }).modal('show');
+                }
+            });
+        } else {
             $('#modalSettings').modal('hide');
-            if (modalAMostrar === 1) $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
+            if (modalAMostrar === 1) $('#modalPause').modal({
+                backdrop: 'static',
+                keyboard: false
+            }).modal('show');
             else if (modalAMostrar === 2) $('#modalGameOver').modal({
                 backdrop: 'static',
                 keyboard: false
             }).modal('show');
         }
-
-    });
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error inesperado al guardar los ajustes... Pruebe a reiniciar el juego",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+        });
+    }
 }
 
 function cancelarAjustes() {
-    Swal.fire({
-        title: "¿Quieres salir sin guardar los ajustes?",
-        icon: "warning",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Guardar",
-        denyButtonText: "Salir sin guardar",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "lightgreen",
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            await guardarAjustes();
+    try {
+        if (musicaCambiado !== checkboxMusica.checked || sonidoCambiado !== checkboxSonido.checked) {
             Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "¡Ajustes guardados!",
-                showConfirmButton: false,
-                timer: 1000,
-                timerProgressBar: true,
-            }).then(() => {
-                $('#modalSettings').modal('hide');
-                if (modalAMostrar === 1) $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
-                else if (modalAMostrar === 2) $('#modalGameOver').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                }).modal('show');
-            })
-        } else if (result.isDenied) {
+                title: "¿Quieres salir sin guardar los ajustes?",
+                icon: "warning",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Guardar",
+                denyButtonText: "Salir sin guardar",
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "lightgreen",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await guardarAjustes();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Ajustes guardados!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        $('#modalSettings').modal('hide');
+                        if (modalAMostrar === 1) $('#modalPause').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }).modal('show');
+                        else if (modalAMostrar === 2) $('#modalGameOver').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }).modal('show');
+                    })
+                } else if (result.isDenied) {
+                    $('#modalSettings').modal('hide');
+                    if (modalAMostrar === 1) $('#modalPause').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }).modal('show');
+                    else if (modalAMostrar === 2) $('#modalGameOver').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }).modal('show');
+                }
+            });
+        } else {
             $('#modalSettings').modal('hide');
-            if (modalAMostrar === 1) $('#modalPause').modal({backdrop: 'static', keyboard: false}).modal('show');
+            if (modalAMostrar === 1) $('#modalPause').modal({
+                backdrop: 'static',
+                keyboard: false
+            }).modal('show');
             else if (modalAMostrar === 2) $('#modalGameOver').modal({
                 backdrop: 'static',
                 keyboard: false
             }).modal('show');
         }
-    });
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error inesperado en los ajustes... Pruebe a reiniciar el juego",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+        });
+    }
 }
 
 async function guardarAjustes() {
-    const data = {
-        valorMusica: !checkboxMusica.checked,
-        valorSonido: !checkboxSonido.checked
-    };
+    try {
+        const data = {
+            valorMusica: !checkboxMusica.checked,
+            valorSonido: !checkboxSonido.checked
+        };
 
-    let resp = await fetch('/usuarios/usuario/ajustes', {
-        credentials: 'include',
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
+        let resp = await fetch('/usuarios/usuario/ajustes', {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
 
-    if (resp.ok) {
-        let usuarioActualizado = await resp.json();
-        sonidoActivo = usuarioActualizado.sonido;
-        if (!musicaActiva && usuarioActualizado.musica) {
-            musicaActiva = usuarioActualizado.musica;
-            fondoSound.play();
-            fondoSound.volume = 0.2;
-            fondoSound.loop = true;
-        } else if (musicaActiva && !usuarioActualizado.musica) {
-            musicaActiva = usuarioActualizado.musica;
-            fondoSound.stop();
+        if (resp.ok) {
+            let usuarioActualizado = await resp.json();
+            sonidoActivo = usuarioActualizado.sonido;
+            if (!musicaActiva && usuarioActualizado.musica) {
+                musicaActiva = usuarioActualizado.musica;
+                fondoSound.play();
+                fondoSound.volume = 0.2;
+                fondoSound.loop = true;
+            } else if (musicaActiva && !usuarioActualizado.musica) {
+                musicaActiva = usuarioActualizado.musica;
+                fondoSound.stop();
+            }
         }
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error inesperado al guardar los ajustes... Pruebe a reiniciar el juego",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+        });
     }
 }
 
 async function cargarAjustes() {
-    const respUsuario = await fetch('/usuarios/usuario');
-    if (respUsuario.status !== 200) {
-        throw new Error("Error al cargar");
-    }
-    let usuario = await respUsuario.json();
+    try {
+        const respUsuario = await fetch('/usuarios/usuario');
+        if (respUsuario.status !== 200) {
+            throw new Error("Error al cargar");
+        }
+        let usuario = await respUsuario.json();
 
-    checkboxMusica.checked = !usuario.musica;
-    checkboxSonido.checked = !usuario.sonido;
+        checkboxMusica.checked = !usuario.musica;
+        checkboxSonido.checked = !usuario.sonido;
+        musicaCambiado = !usuario.musica;
+        sonidoCambiado = !usuario.sonido;
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error inesperado al cargar los ajustes... Pruebe a reiniciar el juego",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+        });
+    }
 }
 
 async function efectoDeItemX2() {
-
     if (cantidadPuntuacionx2 > 0) {
-
         cantidadPuntuacionx2--;
         puntosASumar = 2;
         let x = 15;
@@ -951,7 +1037,6 @@ async function efectoDeItemX2() {
 }
 
 async function efectoDeItemSuperSalto() {
-
     if (cantidadSuperSalto > 0) {
         cantidadSuperSalto--;
         alturaSalto = -1000;
@@ -968,7 +1053,6 @@ async function efectoDeItemSuperSalto() {
 }
 
 async function efectoDeItemInmunidad() {
-
     if (cantidadAntiObstaculos > 0) {
         cantidadAntiObstaculos--;
         puedeMorir = false;
@@ -985,7 +1069,6 @@ async function efectoDeItemInmunidad() {
 }
 
 async function efectoDeItemRevivir() {
-
     if (cantidadRevivir > 0) {
         Swal.fire({
             title: "¿Quieres gastar una vida?",
@@ -1030,19 +1113,30 @@ async function efectoDeItemRevivir() {
 }
 
 async function actualizarItemsPostPartida() {
-    const data = {
-        cantidadSuperSalto,
-        cantidadPuntuacionx2,
-        cantidadAntiObstaculos,
-        cantidadRevivir
-    };
+    try {
+        const data = {
+            cantidadSuperSalto,
+            cantidadPuntuacionx2,
+            cantidadAntiObstaculos,
+            cantidadRevivir
+        };
 
-    await fetch('/usuarios/usuario/itemsDespuesDePartida', {
-        credentials: 'include',
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
+        await fetch('/usuarios/usuario/itemsDespuesDePartida', {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error inesperado al actualizar los objetos... Pruebe a reiniciar el juego",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+        });
+    }
 }

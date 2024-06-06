@@ -12,7 +12,7 @@ let config = {
         default: "arcade",
         arcade: {
             gravity: {y: 1400},
-            debug: true
+            debug: false
         }
     },
     fps: 120,
@@ -88,3 +88,5 @@ let textoAntiObstaculos;
 let textoSuperSalto;
 let musicaActiva;
 let sonidoActivo;
+let musicaCambiado;
+let sonidoCambiado;

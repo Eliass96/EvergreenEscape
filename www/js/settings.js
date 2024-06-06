@@ -55,62 +55,70 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function confirmarAjustes() {
-        Swal.fire({
-            title: "¿Quieres guardar los ajustes?",
-            icon: "question",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Guardar",
-            denyButtonText: "Salir sin guardar",
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: "lightgreen",
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                await guardarAjustes();
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Ajustes guardados!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                }).then(() => {
-                    document.location.href = "/"
-                })
-            } else if (result.isDenied) {
-                window.location.href = "/";
-            }
-        });
+        if (musicaCambiado !== checkboxMusica.checked || sonidoCambiado !== checkboxSonido.checked) {
+            Swal.fire({
+                title: "¿Quieres guardar los ajustes?",
+                icon: "question",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Guardar",
+                denyButtonText: "Salir sin guardar",
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "lightgreen",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await guardarAjustes();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Ajustes guardados!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        document.location.href = "/"
+                    })
+                } else if (result.isDenied) {
+                    window.location.href = "/";
+                }
+            });
+        } else {
+            window.location.href = "/";
+        }
     }
 
     function cancelarAjustes() {
-        Swal.fire({
-            title: "¿Quieres salir sin guardar los ajustes?",
-            icon: "warning",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Guardar",
-            denyButtonText: "Salir sin guardar",
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: "lightgreen",
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                await guardarAjustes();
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Ajustes guardados!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                }).then(() => {
-                    document.location.href = "/"
-                })
-            } else if (result.isDenied) {
-                window.location.href = "/";
-            }
+        if (musicaCambiado !== checkboxMusica.checked || sonidoCambiado !== checkboxSonido.checked) {
+            Swal.fire({
+                title: "¿Quieres salir sin guardar los ajustes?",
+                icon: "warning",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Guardar",
+                denyButtonText: "Salir sin guardar",
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "lightgreen",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await guardarAjustes();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Ajustes guardados!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        document.location.href = "/"
+                    })
+                } else if (result.isDenied) {
+                    window.location.href = "/";
+                }
 
-        });
+            });
+        } else {
+            window.location.href = "/";
+        }
     }
 
     async function guardarAjustes() {
@@ -153,9 +161,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             musicaCambiado = !usuario.musica;
             sonidoCambiado = !usuario.sonido;
 
-
         } catch (error) {
-            console.error('Error al intentar cargar los ajustes:', error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
