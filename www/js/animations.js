@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         elemento.addEventListener('mouseenter', toggleClase);
         elemento.addEventListener('mouseleave', toggleClase);
     });
-
     function toggleClase(event) {
         const elemento = event.target;
         if (elemento.classList.contains('animate__slow')) {

@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             }
         } catch (error) {
-            console.log("Error al cargar la aplicación: ", error.message)
             Swal.fire({
                 icon: "error",
                 title: "Oops...",

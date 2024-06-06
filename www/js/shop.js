@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                 icon: "error",
                 title: "Ups...",
                 text: "Error inesperado al cargar la tienda... Pruebe a reiniciar la página",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
             }).then(() => {
                 document.location.href = "/"
             });
@@ -52,7 +55,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                     icon: "warning",
                     title: "No se puede cargar el objeto",
                     text: "¡Error al cargar el objeto de super salto! Pruebe a reiniciar la página",
-                    confirmButtonText: "Aceptar"
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
                 }).then(() => {
                     document.location.href = "/"
                 });
@@ -100,7 +105,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     icon: "warning",
                     title: "No se puede cargar el objeto",
                     text: "¡Error al cargar el objeto de revivir! Pruebe a reiniciar la página",
-                    confirmButtonText: "Aceptar"
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true
+
                 }).then(() => {
                     document.location.href = "/"
                 });
@@ -109,7 +117,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             Swal.fire({
                 icon: "error",
                 title: "Ups...",
-                text: "¡Error al cargar el objeto de super salto! Pruebe a reiniciar la página"
+                text: "¡Error al cargar el objeto de super salto! Pruebe a reiniciar la página",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
             }).then(() => {
                 document.location.href = "/"
             });
@@ -130,7 +141,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Algo ha fallado, pruebe a reiniciar la página"
+                text: "Algo ha fallado, pruebe a reiniciar la página",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
             }).then(() => {
                 document.location.href = "/"
             });
@@ -155,7 +169,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Algo ha fallado, pruebe a reiniciar la página"
+                    text: "Algo ha fallado, pruebe a reiniciar la página",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true
                 }).then(() => {
                     document.location.href = "/"
                 });
@@ -166,7 +183,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     title: "¡Compra realizada!",
                     showConfirmButton: false,
                     timer: 1000,
-                    timerProgressBar: true,
+                    timerProgressBar: true
                 })
                 await cantidadMonedas();
             }
@@ -175,7 +192,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Algo ha fallado, pruebe a reiniciar la página"
+                text: "Algo ha fallado, pruebe a reiniciar la página",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
             }).then(() => {
                 document.location.href = "/"
             });

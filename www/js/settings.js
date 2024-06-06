@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (document.getElementById('gameSettings')) {
         let but_cambiar_fondo = document.getElementById('gameSettings');
         but_cambiar_fondo.addEventListener('click', function () {
-            console.log("but_cambiar_fondo");
             cambiarFondo();
         });
     }
@@ -47,6 +46,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             icon: "error",
             title: "Ups...",
             text: "Error inesperado al cargar los ajustes... Pruebe a reiniciar la página",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
         }).then(() => {
             document.location.href = "/"
         });
@@ -126,11 +128,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                 body: JSON.stringify(data)
             });
         } catch (error) {
-            console.error('Error al intentar guardar los ajustes:', error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Error inesperado al guardar los ajustes"
+                text: "Error inesperado al guardar los ajustes",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
             });
         }
     }
@@ -155,7 +159,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Error inesperado al cargar los ajustes"
+                text: "Error inesperado al cargar los ajustes",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
             });
         }
     }

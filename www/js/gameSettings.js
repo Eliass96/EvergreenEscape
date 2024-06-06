@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             icon: "error",
             title: "Ups...",
             text: "Error inesperado al cargar los ajustes de fondo... Pruebe a reiniciar la página",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
         }).then(() => {
             document.location.href = "/"
         });
@@ -74,11 +77,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                 body: JSON.stringify(data)
             });
         } catch (error) {
-            console.error('Error al intentar guardar el fondo:', error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Error inesperado al guardar el fondo"
+                text: "Error inesperado al guardar el fondo",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
             });
         }
     }

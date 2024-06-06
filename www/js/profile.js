@@ -23,11 +23,13 @@ document.addEventListener('DOMContentLoaded', async function () {
             icon: "error",
             title: "Ups...",
             text: "Error inesperado al cargar el perfil... Pruebe a reiniciar la página",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
         }).then(() => {
             document.location.href = "/"
         });
     }
-
     async function cerrarSesion(evt) {
         if (evt.target.classList.contains("botonCerrarSesion")) {
             let resp = await fetch('/usuarios/cerrarSesion', {
@@ -54,11 +56,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                         document.location.href = "/"
                     })
                 } else {
-                    console.error('Error al cerrar sesión');
                     Swal.fire({
                         icon: "error",
                         title: "Ups...",
                         text: "Error inesperado al cargar el perfil... Pruebe a reiniciar la página",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
                     }).then(() => {
                         document.location.href = "/"
                     });

@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 tipo.type = "password";
             }
         }
-
         async function formularioLogin() {
             let usuario = document.getElementById('txtusuario');
             let password = document.getElementById('txtpassword');
@@ -19,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let txtPasswordLogin = document.getElementById('txtFaltanDatosPasswordLogin');
 
             if (usuario.value.trim() === '') {
-                event.preventDefault(); // Evitar el envío del formulario
+                event.preventDefault();
                 txtUsuarioLogin.style.visibility = 'visible';
                 usuario.classList.add('error');
             } else {
@@ -28,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (password.value.trim() === '') {
-                event.preventDefault(); // Evitar el envío del formulario
+                event.preventDefault();
                 txtPasswordLogin.style.visibility = 'visible';
                 password.classList.add('error');
             } else {
@@ -55,17 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     nombre: usuario.value.trim(),
                     password: password.value.trim()
                 }
-                /*const res = await fetch(`/usuarios/usuario/${data.nombre}/${data.password}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
 
-                let respuesta = await res.json();
-                let mensaje = respuesta.message;
-
-                if (mensaje === "CORRECTO") {*/
                 const resp = await fetch("/usuarios/logueo", {
                     method: "POST",
                     headers: {
@@ -124,26 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         document.location.href = "/"
                     })
                 }
-
-                /*} else if (mensaje === "USER") {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "¡Este usuario no existe!",
-                        showConfirmButton: true,
-                        confirmButtonText: "De acuerdo",
-                        confirmButtonColor: "lightgreen"
-                    })
-                } else if (mensaje === "PASSWORD") {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "¡Contraseña incorrecta!",
-                        showConfirmButton: true,
-                        confirmButtonText: "De acuerdo",
-                        confirmButtonColor: "lightgreen"
-                    })
-                }*/
             }
         }
     }

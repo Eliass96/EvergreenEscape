@@ -3,14 +3,11 @@ require("dotenv").config();
 const express = require("express");
 const db = require("./db.js");
 const bcryptjs = require("bcryptjs");
-const jsonwebtoken = require("jsonwebtoken");
 const session = require('express-session');
 const cors = require('cors');
-const bodyParser = require("body-parser");
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
-const HTTP_NO_CONTENT = 204;
 const HTTP_BAD_REQUEST = 400;
 const HTTP_UNAUTHORIZED = 401;
 const HTTP_FORBIDDEN = 403;
@@ -18,22 +15,10 @@ const HTTP_NOT_FOUND = 404;
 const HTTP_CONFLICT = 409;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 
-
 const PORT = process.env.PORT || 40000;
 
-const corsOptions = {
-    origin: '*'/*['http://localhost:30000', 'https://localhost:30000']*/,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204
-};
-
 const app = express();
-app.use(cors(corsOptions));
-app.use((req, res, next) => {
-    console.log(req);
-    next();
-});
+
 app.use(session({
     secret: 'EvergreenEscapeSecret',
     resave: false,
@@ -43,6 +28,7 @@ app.use(session({
         maxAge: 86400000
     }
 }));
+
 app.use(express.json());
 app.use(cors());
 app.use(express.static("www"));
@@ -89,7 +75,6 @@ app.post("/usuarios/registro", async (req, res) => {
         }
 
         const usuarioAResvisar = await db.existeUsuario(nombre);
-        console.log(usuarioAResvisar);
         if (!usuarioAResvisar) {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);
@@ -179,29 +164,9 @@ app.get("/usuarios/usuario", async function (req, res) { // funciona
             res.status(HTTP_NOT_FOUND).json({message: 'No hay ninguna sesión iniciada.'})
         }
     } catch (err) {
-        console.error('Error: :', err.message);
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({message: 'Error al buscar el usuario.', error: err.message});
     }
 });
-
-// ¿?
-/*app.get("/usuarios/usuario/:user/:password", async function (req, resp) { // funciona
-    try {
-        const userName = req.params.user;
-        const userPassword = req.params.password;
-        let usuarioEncontrado = await db.getUsuarioByName(userName);
-        let usuarioParseado = JSON.stringify(usuarioEncontrado);
-        if (usuarioEncontrado != null) {
-            let esCorrecto = await bcryptjs.compare(userPassword, usuarioEncontrado.password);
-            if (!esCorrecto) return resp.status(HTTP_OK).send({message: "PASSWORD", data: usuarioParseado});
-            return resp.status(HTTP_OK).send({message: "CORRECTO", data: usuarioParseado});
-        }
-        return resp.status(HTTP_OK).send({message: "USER", data: usuarioParseado});
-    } catch (err) {
-        console.log(err)
-        resp.status(HTTP_INTERNAL_SERVER_ERROR).send(err);
-    }
-});*/
 
 // LISTAR LAS MEJORES PUNTUACIONES DEL USUARIO
 app.get("/usuarios/usuario/puntuaciones", async function (req, res) { // funciona
@@ -257,7 +222,7 @@ app.get("/usuarios/puntuaciones", async function (req, res) {
 app.patch('/usuarios/usuario/nuevaPuntuacion', async (req, res) => { //funciona
     try {
         let userId = req.session.usuario;
-        console.log(userId)
+
         if (userId != null) {
             const {nuevaPuntuacion} = req.body;
             if (nuevaPuntuacion != null) {

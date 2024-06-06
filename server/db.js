@@ -96,12 +96,11 @@ exports.agregarPuntuacion = async function (userId, nuevaPuntuacion) {
             await usuario.save();
         }
         return usuario;
-    } catch
-        (error) {
+    } catch (error) {
         throw new Error('Error al agregar puntuación: ' + error.message);
     }
-}
-;
+};
+
 //LISTAR PUNTUACIONES DEL USUARIO
 exports.listarPuntuaciones = async function (userId) {
     try {
@@ -123,7 +122,6 @@ exports.getUsuario = async function (userId) {
         if (!usuario) {
             throw new Error('Usuario no encontrado');
         }
-        // Obtiene las primeras 10 puntuaciones
         return usuario;
     } catch (error) {
         throw new Error('Error al buscar el usuario: ' + error.message);
@@ -217,7 +215,6 @@ exports.utilizarItems = async function (userId, superSaltoDespuesDePartida, punt
             throw new Error('Usuario no encontrado');
         }
 
-        // Verificar si el usuario tiene suficientes elementos antes de actualizar
         if (superSaltoDespuesDePartida < 0 ||
             puntuacionExtraDespuesDePartida < 0 ||
             inmunidadDespuesDePartida < 0 ||
@@ -386,7 +383,6 @@ exports.agregarObjetos = async function () {
             await Objeto.create({nombre: "Revivir", precio: 50});
         }
     } catch (error) {
-        console.error(error);
         throw new Error('Error al agregar los objetos a la tienda: ' + error.message);
     }
 }
@@ -396,14 +392,6 @@ exports.getObjeto = async function (nombreObjeto) {
         return await Objeto.findOne({nombre: nombreObjeto});
     } catch (error) {
         throw new Error('Error al cargar el objeto: ' + error.message);
-    }
-};
-
-exports.listarObjetos = async function () {
-    try {
-        let objetos = await Objeto.find();
-    } catch (error) {
-        throw new Error('Error al listar todos los objetos: ' + error.message);
     }
 };
 

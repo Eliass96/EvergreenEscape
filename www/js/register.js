@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let txtPasswordRep = document.getElementById('txtFaltanDatosPasswordRep');
 
         if (usuario.value.trim() === '') {
-            event.preventDefault(); // Evitar el envío del formulario
+            event.preventDefault();
             txtUsuario.style.visibility = 'visible';
             usuario.classList.add('error');
         } else {
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (dropdownMenuButton.textContent.trim() === '') {
-            event.preventDefault(); // Evitar el envío del formulario
+            event.preventDefault();
             txtNacionalidad.style.visibility = 'visible';
             dropdownMenuButton.classList.add('error');
         } else {
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (password.value.trim() === '') {
-            event.preventDefault(); // Evitar el envío del formulario
+            event.preventDefault();
             txtPassword.style.visibility = 'visible';
             password.classList.add('error');
         } else {
@@ -89,14 +89,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (passwordRep.value.trim() === '') {
-            event.preventDefault(); // Evitar el envío del formulario
+            event.preventDefault();
             txtPasswordRep.style.visibility = 'visible';
             passwordRep.classList.add('error');
         } else {
             txtPasswordRep.style.visibility = 'hidden';
             passwordRep.classList.remove('error');
             if (password.value.trim() !== passwordRep.value.trim()) {
-                event.preventDefault(); // Evitar el envío del formulario
+                event.preventDefault();
                 txtPasswordRep.style.visibility = 'visible';
                 passwordRep.classList.add('error');
                 password.classList.add('error');
@@ -139,18 +139,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 nacionalidad: dropdownMenuButton.textContent.trim()
             }
 
-            /*const res = await fetch(`/usuarios/usuario/${data.nombre}/${data.password}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            let respuesta = await res.json();
-            let mensaje = respuesta.message;
-
-
-            if (mensaje === "USER") {*/
             const resp = await fetch("/usuarios/registro", {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
@@ -220,16 +208,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
-            /*} else {
-                Swal.fire({
-                    position: "center",
-                    icon: "error",
-                    title: "¡El usuario ya existe!",
-                    showConfirmButton: true,
-                    confirmButtonText: "De acuerdo",
-                    confirmButtonColor: "lightgreen"
-                })
-            }*/
         }
     }
 });
