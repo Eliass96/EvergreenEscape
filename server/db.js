@@ -184,10 +184,10 @@ exports.comprarItems = async function (userId, objetoId, cantidadComprada) {
         }
         usuario.monedas -= costoItem;
         switch (objeto.nombre) {
-            case 'Súper salto':
+            case 'Super salto':
                 usuario.superSalto += cantidadComprada;
                 break;
-            case 'Puntuación x2':
+            case 'Puntuacion x2':
                 usuario.puntuacionExtra += cantidadComprada;
                 break;
             case 'Inmunidad':
@@ -363,14 +363,14 @@ exports.existeUsuario = async function (nombreUsuario) {
 // AGREGAR OBJETO
 exports.agregarObjetos = async function () {
     try {
-        let objetoSuperSalto = await Objeto.findOne({nombre: "Súper salto"});
+        let objetoSuperSalto = await Objeto.findOne({nombre: "Super salto"});
         if (!objetoSuperSalto) {
-            await Objeto.create({nombre: "Súper salto", precio: 20});
+            await Objeto.create({nombre: "Super salto", precio: 20});
         }
 
-        let objetoPuntuacionX2 = await Objeto.findOne({nombre: "Puntuación x2"});
+        let objetoPuntuacionX2 = await Objeto.findOne({nombre: "Puntuacion x2"});
         if (!objetoPuntuacionX2) {
-            await Objeto.create({nombre: "Puntuación x2", precio: 30});
+            await Objeto.create({nombre: "Puntuacion x2", precio: 30});
         }
 
         let objetoInmunidad = await Objeto.findOne({nombre: "Inmunidad"});

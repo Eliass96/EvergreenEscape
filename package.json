@@ -40,14 +40,7 @@
     "pug": "^3.0.2",
     "sweetalert2": "^11.10.7"
   },
-  "cordova": {
-    "platforms": [
-      "android"
-    ],
-    "plugins": {}
-  },
   "devDependencies": {
-    "@capacitor/cli": "^5.0.0",
     "nodemon": "^3.1.0",
     "typescript": "^5.4.5"
   }

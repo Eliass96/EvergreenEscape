@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Algo ha fallado, pruebe a reiniciar la página",
+                    text: "Error en la compra, pruebe a reiniciar la página",
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true

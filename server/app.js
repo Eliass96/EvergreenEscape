@@ -383,8 +383,8 @@ app.get("/tienda/objeto/:nombreObjeto", async function (req, res) { // funciona
         let nombreObjeto = req.params.nombreObjeto;
         if (nombreObjeto != null) {
             let nombre;
-            if (nombreObjeto === "superSalto") nombre = "Súper salto"
-            if (nombreObjeto === "puntuacionX2") nombre = "Puntuación x2"
+            if (nombreObjeto === "superSalto") nombre = "Super salto"
+            if (nombreObjeto === "puntuacionX2") nombre = "Puntuacion x2"
             if (nombreObjeto === "inmunidad") nombre = "Inmunidad"
             if (nombreObjeto === "revivir") nombre = "Revivir"
             let objetoEncontrado = await db.getObjeto(nombre);
