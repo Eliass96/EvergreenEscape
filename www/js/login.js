@@ -2,8 +2,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('loginButton')) {
         document.getElementById('loginButton').addEventListener('click', formularioLogin);
         document.getElementById('checkboxLogin').addEventListener('click', verpasswordLogin);
+        document.addEventListener('keyup', (event) => {
+            if (event.key === 'Escape') {
+                window.location = '../index.html';
+            }
+        });
 
         function verpasswordLogin() {
+
             let tipo = document.getElementById("txtpassword");
             if (tipo.type === "password") {
                 tipo.type = "text";
@@ -11,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 tipo.type = "password";
             }
         }
+
+
         async function formularioLogin() {
             let usuario = document.getElementById('txtusuario');
             let password = document.getElementById('txtpassword');

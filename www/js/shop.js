@@ -1,5 +1,12 @@
 let monedasTotales;
 let usuario;
+
+document.addEventListener('keyup', (event) => {
+    if (event.key === 'Escape') {
+        window.location = '../index.html';
+    }
+});
+
 document.addEventListener('DOMContentLoaded', async function () {
     await cargarUsuario();
     let outputSuperSalto = document.getElementById("outputSuperSalto");

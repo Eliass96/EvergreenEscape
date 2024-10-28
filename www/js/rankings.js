@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     let outputRankingGlobal = document.getElementById("rankingGlobal");
     let outputRankingPorPais = document.getElementById("rankingPorPais");
 
+    document.addEventListener('keyup', (event) => {
+        if (event.key === 'Escape') {
+            window.location = '../index.html';
+        }
+    });
+
     try {
         let urlUsuario = '/usuarios/usuario';
         let resp = await fetch(urlUsuario);

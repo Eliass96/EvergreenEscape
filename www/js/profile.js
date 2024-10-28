@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('outputPerfil').addEventListener('click', cerrarSesion);
+
+    document.addEventListener('keyup', (event) => {
+        if (event.key === 'Escape') {
+            window.location = '../index.html';
+        }
+    });
+
     let outputPerfil = document.getElementById("outputPerfil");
 
     try {

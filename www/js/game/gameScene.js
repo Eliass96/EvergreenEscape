@@ -332,15 +332,22 @@ class gameScene extends Phaser.Scene {
         }, this);
 
         puntx2.addEventListener('click', function () {
-            efectoDeItemX2();
+            if (!estaX2Activo) {
+                efectoDeItemX2();
+            }
         }, this);
 
         antiObstaculos.addEventListener('click', function () {
-            efectoDeItemInmunidad();
+            if (!estaAntiObstaculosActivo) {
+                efectoDeItemInmunidad();
+            }
+
         }, this);
 
         botonSuperSalto.addEventListener('click', function () {
-            efectoDeItemSuperSalto();
+            if (!estaSuperSaltoActivo) {
+                efectoDeItemSuperSalto();
+            }
         }, this);
 
         botonRevivir.addEventListener('click', function () {
@@ -1022,10 +1029,14 @@ async function cargarAjustes() {
 
 async function efectoDeItemX2() {
     if (cantidadPuntuacionx2 > 0) {
+        estaX2Activo=true;
         cantidadPuntuacionx2--;
         puntosASumar = 2;
         let x = 15;
         while (x >= 0) {
+            if (!estaVivo) {
+                break;
+            }
             if (x <= 3) contadorTiempoPuntuacionx2.style.color = "red"
             contadorTiempoPuntuacionx2.textContent = x + "s";
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -1033,15 +1044,21 @@ async function efectoDeItemX2() {
         }
         contadorTiempoPuntuacionx2.textContent = "";
         puntosASumar = 1;
+        estaX2Activo = false;
+        contadorTiempoPuntuacionx2.style.color = "white";
     }
 }
 
 async function efectoDeItemSuperSalto() {
     if (cantidadSuperSalto > 0) {
+        estaSuperSaltoActivo = true;
         cantidadSuperSalto--;
         alturaSalto = -1000;
         let x = 15;
         while (x >= 0) {
+            if (!estaVivo) {
+                break;
+            }
             if (x <= 3) contadorTiempoSuperSalto.style.color = "red"
             contadorTiempoSuperSalto.textContent = x + "s";
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -1049,15 +1066,21 @@ async function efectoDeItemSuperSalto() {
         }
         contadorTiempoSuperSalto.textContent = "";
         alturaSalto = -725;
+        estaSuperSaltoActivo = false;
+        contadorTiempoSuperSalto.style.color = "white";
     }
 }
 
 async function efectoDeItemInmunidad() {
     if (cantidadAntiObstaculos > 0) {
+        estaAntiObstaculosActivo = true;
         cantidadAntiObstaculos--;
         puedeMorir = false;
         let x = 15;
         while (x >= 0) {
+            if (!estaVivo) {
+                break;
+            }
             if (x <= 3) contadorTiempoAntiObstaculos.style.color = "red"
             contadorTiempoAntiObstaculos.textContent = x + "s";
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -1065,6 +1088,8 @@ async function efectoDeItemInmunidad() {
         }
         contadorTiempoAntiObstaculos.textContent = "";
         puedeMorir = true;
+        estaAntiObstaculosActivo = false;
+        contadorTiempoAntiObstaculos.style.color = "white";
     }
 }
 
@@ -1081,7 +1106,7 @@ async function efectoDeItemRevivir() {
             if (result.isConfirmed) {
                 cantidadRevivir--;
                 $('#modalGameOver').modal('hide');
-
+                estaAntiObstaculosActivo=true;
                 jugador.anims.play('revivir');
                 jugador.once('animationcomplete', async () => {
                     jugador.anims.play('run');
@@ -1093,6 +1118,7 @@ async function efectoDeItemRevivir() {
 
                 let x = 6;
                 while (x >= 0) {
+
                     if (x <= 3) contadorTiempoAntiObstaculos.style.color = "red"
                     contadorTiempoAntiObstaculos.textContent = x + "s";
                     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -1100,6 +1126,8 @@ async function efectoDeItemRevivir() {
                 }
                 contadorTiempoAntiObstaculos.textContent = "";
                 puedeMorir = true;
+                estaAntiObstaculosActivo=false;
+                contadorTiempoAntiObstaculos.style.color = "white";
             }
         });
     } else {

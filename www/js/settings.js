@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const checkboxMusica = document.getElementById('bauble_check_musica');
     const checkboxSonido = document.getElementById('bauble_check_sonido');
+
+    document.addEventListener('keyup', (event) => {
+        if (event.key === 'Escape') {
+            window.location = '../index.html';
+        }
+    });
+
     let musicaCambiado = false;
     let sonidoCambiado = false;
     let usuario;
