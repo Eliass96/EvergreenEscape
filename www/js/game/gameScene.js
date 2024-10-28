@@ -373,7 +373,7 @@ class gameScene extends Phaser.Scene {
                 if (!disparando) {
                     if (pointer.leftButtonDown()) {
                         await dispararFlechas();
-                        await new Promise(resolve => setTimeout(resolve, 500));
+                        await new Promise(resolve => setTimeout(resolve, 1200));
                     }
                 }
             });
@@ -393,7 +393,7 @@ class gameScene extends Phaser.Scene {
             botonDisparar.addEventListener('click', async function () {
                 if (!disparando) {
                     await dispararFlechas();
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    await new Promise(resolve => setTimeout(resolve, 1200));
                 }
             }, this);
         }
