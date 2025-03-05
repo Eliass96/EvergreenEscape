@@ -59,12 +59,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function formularioRegister() {
         let usuario = document.getElementById('txtusuario');
+        let email = document.getElementById('txtemail');
         let password = document.getElementById('txtpassword');
         let passwordRep = document.getElementById('txtpasswordrep');
         let txtUsuario = document.getElementById('txtFaltanDatosUsuario');
+        let txtEmail = document.getElementById('txtFaltanDatosEmail');
         let txtNacionalidad = document.getElementById('txtFaltanDatosNacionalidad');
         let txtPassword = document.getElementById('txtFaltanDatosPassword');
         let txtPasswordRep = document.getElementById('txtFaltanDatosPasswordRep');
+
+        if (email.value.trim() === '') {
+            event.preventDefault();
+            txtEmail.style.visibility = 'visible';
+            email.classList.add('error');
+        } else {
+            txtEmail.style.visibility = 'hidden';
+            email.classList.remove('error');
+        }
 
         if (usuario.value.trim() === '') {
             event.preventDefault();
@@ -119,6 +130,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        email.addEventListener('input', function () {
+            if (email.value.trim() !== '') {
+                txtEmail.style.visibility = 'hidden';
+                email.classList.remove('error');
+            }
+        });
+
         password.addEventListener('input', function () {
             if (password.value.trim() !== '') {
                 txtPassword.style.visibility = 'hidden';
@@ -134,12 +152,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (!usuario.classList.contains('error')
+            && !email.classList.contains('error')
             && !dropdownMenuButton.classList.contains('error')
             && !password.classList.contains('error')
             && !passwordRep.classList.contains('error')
         ) {
             let data = {
                 nombre: usuario.value.trim(),
+                email: email.value.trim(),
                 password: password.value.trim(),
                 nacionalidad: dropdownMenuButton.textContent.trim()
             }

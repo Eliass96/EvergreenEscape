@@ -133,6 +133,14 @@ input {
     transition: transform 0.3s ease;
 }
 
+.google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #DB4437;
+}
+
 .textoscajas {
     display: flex;
     align-items: start;

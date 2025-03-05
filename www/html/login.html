@@ -14,7 +14,8 @@
 </head>
 <body>
 <header class="container-fluid d-flex justify-content-center align-items-center pt-4">
-    <a class="animate__animated animate__pulse animate__infinite animate__slow button_back" id="but_back" href="../index.html">
+    <a class="animate__animated animate__pulse animate__infinite animate__slow button_back" id="but_back"
+       href="../index.html">
         <img src="../img/buttons/prew.png" alt="boton_settings" class="img_button_back"/>
     </a>
     <img src="../img/headers/iniciar%20sesión.png" alt="boton_info" class="titulo_settings"/>
@@ -23,7 +24,7 @@
     <div class="formulariocaja d-flex align-items-center justify-content-center">
         <div class="form-inner d-flex justify-content-center">
             <form method="post" action="" name="vaidrollteam">
-                <div class="textoscajas" id="textBoxUserLogin">&#128273; Introduce tu usuario</div>
+                <div class="textoscajas" id="textBoxUserLogin">👤 Introduce tu usuario o email</div>
                 <label>
                     <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
                 </label>
@@ -41,9 +42,12 @@
                     </div>
                     <div>Mostrar contraseña</div>
                 </div>
-
                 <input type="button" value="Iniciar sesión" class="botonenviar" id="loginButton">
-
+                <button class="botonenviar google" id="loginButtonGoogle">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" width="20"
+                     style="margin-right: 8px; background: white; padding: 2px; border-radius: 50%;">
+                Iniciar sesión con Google
+                </button>
                 <div class="registrar">¿Necesitas una cuenta? <a class="but_abrir_registro"
                                                                  href="register.html">Registrar</a></div>
             </form>
