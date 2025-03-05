@@ -13,6 +13,11 @@ const UsuarioSchema = new mongoose.Schema(
             required: true,
             unique: true
         },
+        email: {
+            type: String,
+            required: true,
+            unique: true
+        },
         password: {
             type: String,
             required: true
@@ -351,9 +356,9 @@ exports.listarTodosLosUsuarios = async function () {
     }
 };
 
-exports.existeUsuario = async function (nombreUsuario) {
+exports.existeUsuario = async function (nombreUsuario, email) {
     try {
-        return await Usuario.findOne({nombre: nombreUsuario});
+        return await Usuario.findOne({nombre: nombreUsuario} || {email: email});
     } catch (error) {
         throw new Error('Error al comprobar la existencia del usuario: ' + error.message);
     }

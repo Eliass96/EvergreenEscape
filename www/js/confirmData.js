@@ -1,9 +1,6 @@
 
-
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('registerButton').addEventListener('click', formularioRegister);
-    document.getElementById('checkboxRegister').addEventListener('click', verpasswordRegister);
-    document.getElementById('registerButtonGoogle').addEventListener('click', registerGoogle);
+    document.getElementById('confirmDataButton').addEventListener('click', formularioRegister);
 
     document.addEventListener('keyup', (event) => {
         if (event.key === 'Escape') {
@@ -49,42 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function verpasswordRegister() {
-        let tipo = document.getElementById("txtpassword");
-        let tipoRep = document.getElementById("txtpasswordrep");
-        if (tipo.type === "password" && tipoRep.type === "password") {
-            tipo.type = "text";
-            tipoRep.type = "text";
-        } else {
-            tipo.type = "password";
-            tipoRep.type = "password";
-        }
-    }
-
-    async function registerGoogle() {
-        window.location.href = 'http://localhost:30000/auth/google';
-    }
-
 
     async function formularioRegister() {
         let usuario = document.getElementById('txtusuario');
-        let email = document.getElementById('txtemail');
-        let password = document.getElementById('txtpassword');
-        let passwordRep = document.getElementById('txtpasswordrep');
         let txtUsuario = document.getElementById('txtFaltanDatosUsuario');
-        let txtEmail = document.getElementById('txtFaltanDatosEmail');
         let txtNacionalidad = document.getElementById('txtFaltanDatosNacionalidad');
-        let txtPassword = document.getElementById('txtFaltanDatosPassword');
-        let txtPasswordRep = document.getElementById('txtFaltanDatosPasswordRep');
-
-        if (email.value.trim() === '') {
-            event.preventDefault();
-            txtEmail.style.visibility = 'visible';
-            email.classList.add('error');
-        } else {
-            txtEmail.style.visibility = 'hidden';
-            email.classList.remove('error');
-        }
 
         if (usuario.value.trim() === '') {
             event.preventDefault();
@@ -104,34 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
             dropdownMenuButton.classList.remove('error');
         }
 
-        if (password.value.trim() === '') {
-            event.preventDefault();
-            txtPassword.style.visibility = 'visible';
-            password.classList.add('error');
-        } else {
-            txtPassword.style.visibility = 'hidden';
-            password.classList.remove('error');
-        }
-
-        if (passwordRep.value.trim() === '') {
-            event.preventDefault();
-            txtPasswordRep.style.visibility = 'visible';
-            passwordRep.classList.add('error');
-        } else {
-            txtPasswordRep.style.visibility = 'hidden';
-            passwordRep.classList.remove('error');
-            if (password.value.trim() !== passwordRep.value.trim()) {
-                event.preventDefault();
-                txtPasswordRep.style.visibility = 'visible';
-                passwordRep.classList.add('error');
-                password.classList.add('error');
-                txtPasswordRep.textContent = "La contraseña no coincide";
-            } else {
-                txtPasswordRep.style.visibility = 'hidden';
-                passwordRep.classList.remove('error');
-            }
-        }
-
         usuario.addEventListener('input', function () {
             if (usuario.value.trim() !== '') {
                 txtUsuario.style.visibility = 'hidden';
@@ -139,44 +77,20 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        email.addEventListener('input', function () {
-            if (email.value.trim() !== '') {
-                txtEmail.style.visibility = 'hidden';
-                email.classList.remove('error');
-            }
-        });
-
-        password.addEventListener('input', function () {
-            if (password.value.trim() !== '') {
-                txtPassword.style.visibility = 'hidden';
-                password.classList.remove('error');
-            }
-        });
-
-        passwordRep.addEventListener('input', function () {
-            if (passwordRep.value.trim() !== '') {
-                txtPasswordRep.style.visibility = 'hidden';
-                passwordRep.classList.remove('error');
-            }
-        });
-
         if (!usuario.classList.contains('error')
-            && !email.classList.contains('error')
             && !dropdownMenuButton.classList.contains('error')
-            && !password.classList.contains('error')
-            && !passwordRep.classList.contains('error')
         ) {
             let data = {
                 nombre: usuario.value.trim(),
-                email: email.value.trim(),
-                password: password.value.trim(),
                 nacionalidad: dropdownMenuButton.textContent.trim()
             }
 
-            const resp = await fetch("/usuarios/registro", {
+
+            const resp = await fetch("/usuarios/completarDatos", {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
+
             });
 
             if (!resp.ok) {
@@ -217,17 +131,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     timer: 1000,
                     timerProgressBar: true,
                 }).then(async () => {
-                    let dataLogin = {
-                        nombre: usuario.value.trim(),
-                        password: password.value.trim()
+                    let dataLoginGoogle = {
+                        nombre: usuario.value.trim()
                     };
                     try {
-                        let respLogin = await fetch("/usuarios/logueo", {
+                        let respLogin = await fetch("/usuarios/logueoGoogle", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify(dataLogin)
+                            body: JSON.stringify(dataLoginGoogle)
                         });
 
                         if (!respLogin.ok) {

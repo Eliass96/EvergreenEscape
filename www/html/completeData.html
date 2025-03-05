@@ -23,17 +23,12 @@
     <div class="formulariocaja d-flex align-items-center justify-content-center">
         <div class="form-inner d-flex justify-content-center">
             <form method="post" action="" name="vaidrollteam">
-                <div class="textoscajas">📧 Introduce tu email</div>
-                <label>
-                    <input type="text" name="txtemail" class="cajaentradatexto" id="txtemail">
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosEmail">El email es obligatorio</p>
+
                 <div class="textoscajas">&#128273; Introduce tu usuario</div>
                 <label>
                     <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
                 </label>
                 <p class="txtFaltanDatos" id="txtFaltanDatosUsuario">El usuario es obligatorio</p>
-
 
                 <div class="textoscajas">&#127760; Selecciona tu nacionalidad</div>
 
@@ -53,35 +48,10 @@
                 </div>
 
                 <p class="txtFaltanDatos" id="txtFaltanDatosNacionalidad">La nacionalidad es obligatoria</p>
-                <div class="textoscajas">&#128274; Introduce tu contraseña</div>
-                <label for="txtpassword">
-                    <input type="password" name="txtpassword_register" id="txtpassword"
-                           class="cajaentradatexto">
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosPassword">La contraseña es obligatoria</p>
-                <div class="textoscajas">&#128274; Repite tu contraseña</div>
-                <label for="txtpasswordrep">
-                    <input type="password" name="txtpasswordrep_register" id="txtpasswordrep"
-                           class="cajaentradatexto">
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosPasswordRep">Por favor, repite tu contraseña</p>
-                <div class="afcheckbox1 d-flex align-items-center justify-content-start">
-                    <div>
-                        <label>
-                            <input type="checkbox" id="checkboxRegister" class="checkbox">
-                        </label>
-                    </div>
-                    <div>Mostrar contraseña</div>
-                </div>
 
-                <input type="button" value="Regístrate" class="botonenviar" id="registerButton">
-                <button class="botonenviar google" id="registerButtonGoogle" type="button">
-                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" width="20"
-                         style="margin-right: 8px; background: white; padding: 2px; border-radius: 50%;">
-                    Regístrate con Google
-                </button>
-                <div class="registrar">¿Ya tienes cuenta? <a class="but_abrir_login" href="login.html">Iniciar
-                    sesión</a></div>
+
+                <input type="button" value="Confirmar" class="botonenviar" id="confirmDataButton">
+
             </form>
         </div>
     </div>
@@ -93,7 +63,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="../js/register.js"></script>
+<script src="../js/confirmData.js"></script>
 <script src="../js/appPaises.js"></script>
 <script type="text/javascript" src="../js/animations.js"></script>
 </body>

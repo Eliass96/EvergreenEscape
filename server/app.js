@@ -6,7 +6,7 @@ const bcryptjs = require("bcryptjs");
 const session = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
@@ -20,26 +20,37 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 
 const app = express();
+let datosGoogle= null;
 
 
 //gmail
 app.use(passport.initialize());
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACKURL,
-}),
+    clientID: "334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com",
+    clientSecret: "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",
+    callbackURL: "/passport/google/callback",
+},
  function (accessToken, refreshToken, profile, cb) {
     console.log("Access Token: ", accessToken);
-    console.log("Refresh Token: ", refreshToken);
-    console.log("Profile: ", profile);
+    //console.log("Refresh Token: ", refreshToken);
+
     cb(null, profile);
+    datosGoogle= {
+        email: profile._json.email,
+        password: accessToken,
+        refreshToken: refreshToken
+    };
+    console.log(datosGoogle);
  }
-);
+));
+
+
 
 app.get("/auth/google", passport.authenticate('google', { scope: ["profile", "email"] }));
-app.get('/passport/google/callback', passport.authenticate("google", {session: false, successReturnToOrRedirect:"/", failureRedirect:"/usuarios/logueo"}));
+app.get('/passport/google/callback', passport.authenticate("google", {session: false,
+    successReturnToOrRedirect:"/html/completeData.html",
+    failureRedirect:"/usuarios/registro"}));
 
 
 //hola
@@ -89,14 +100,14 @@ app.get('/usuarios/estado', async (req, res) => {
     }
 });
 
-// REGISTRO
-app.post("/usuarios/registro", async (req, res) => {
+//COMPLETAR DATOS
+app.post("/usuarios/completarDatos", async (req, res) => {
     try {
-        debugger;
         const nombre = req.body.nombre;
-        const password = req.body.password;
+        const password = datosGoogle.password;
         const nacionalidad = req.body.nacionalidad;
-        if (!nombre || !password || !nacionalidad) {
+        const email = datosGoogle.email;
+        if (!nombre || !password || !nacionalidad || !email) {
             return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"})
         }
 
@@ -105,7 +116,7 @@ app.post("/usuarios/registro", async (req, res) => {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);
             const nuevoUsuario = {
-                nombre, password: hashPassword, nacionalidad
+                nombre,email, password: hashPassword, nacionalidad
             }
             await db.altaUsuario(nuevoUsuario);
             return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
@@ -116,6 +127,69 @@ app.post("/usuarios/registro", async (req, res) => {
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({message: 'Error inesperado al registrarte.', error: err.message});
     }
 });
+
+// REGISTRO
+app.post("/usuarios/registro", async (req, res) => {
+    try {
+        const nombre = req.body.nombre;
+        const password = req.body.password;
+        const nacionalidad = req.body.nacionalidad;
+        const email = req.body.email;
+        if (!nombre || !password || !nacionalidad || !email) {
+            return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"})
+        }
+
+        const usuarioAResvisar = await db.existeUsuario(nombre);
+        if (!usuarioAResvisar) {
+            const salt = await bcrypt.genSalt(5);
+            const hashPassword = await bcrypt.hash(password, salt);
+            const nuevoUsuario = {
+                nombre,email, password: hashPassword, nacionalidad
+            }
+            await db.altaUsuario(nuevoUsuario);
+            return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
+        } else {
+            return res.status(HTTP_CONFLICT).send({status: "Error", message: "Este usuario ya existe"});
+        }
+    } catch (err) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).send({message: 'Error inesperado al registrarte.', error: err.message});
+    }
+});
+//INICIO DE SESION GOOGLE
+app.post("/usuarios/logueoGoogle", async (req, res) => {
+    try {
+        const nombre = req.body.nombre;
+        const password = datosGoogle.password;
+
+        if (!nombre || !password) {
+            return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"});
+        }
+
+        const usuarioAResvisar = await db.existeUsuario(nombre);
+        if (!usuarioAResvisar) {
+            return res.status(HTTP_UNAUTHORIZED).send({status: "Error", message: "El usuario no existe"});
+        }
+
+        const loginCorrecto = await bcryptjs.compare(password, usuarioAResvisar.password);
+        if (!loginCorrecto) {
+            return res.status(HTTP_FORBIDDEN).send({status: "Error", message: "Contraseña incorrecta"});
+        }
+
+        req.session.usuario = usuarioAResvisar._id.toString();
+
+        return res
+            .location(`/usuarios/${usuarioAResvisar._id}`)
+            .status(HTTP_OK)
+            .send({usuario: usuarioAResvisar, mensaje: "Usuario logueado."});
+
+    } catch (err) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).send({
+            message: 'Error inesperado al iniciar sesión.',
+            error: err.message
+        });
+    }
+});
+
 
 // INICIO DE SESIÓN
 app.post("/usuarios/logueo", async (req, res) => {
