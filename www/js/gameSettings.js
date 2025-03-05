@@ -1,4 +1,11 @@
 let fondo;
+
+document.addEventListener('keyup', (event) => {
+    if (event.key === 'Escape') {
+        window.location = '../html/settings.html';
+    }
+});
+
 document.addEventListener('DOMContentLoaded', async function () {
 
     let botonFondoClaro = document.getElementById('botonFondoClaro');

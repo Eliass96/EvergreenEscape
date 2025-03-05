@@ -90,3 +90,7 @@ let musicaActiva;
 let sonidoActivo;
 let musicaCambiado;
 let sonidoCambiado;
+let estaAntiObstaculosActivo;
+let estaX2Activo;
+let estaSuperSaltoActivo;
+
