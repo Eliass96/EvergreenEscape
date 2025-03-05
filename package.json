@@ -35,6 +35,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "phaser": "^3.80.1",
     "phaser3-rex-plugins": "^1.80.1",
     "pug": "^3.0.2",

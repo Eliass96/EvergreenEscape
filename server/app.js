@@ -5,6 +5,8 @@ const db = require("./db.js");
 const bcryptjs = require("bcryptjs");
 const session = require('express-session');
 const cors = require('cors');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20');
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
@@ -18,6 +20,26 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 
 const app = express();
+
+
+//gmail
+app.use(passport.initialize());
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACKURL,
+}),
+ function (accessToken, refreshToken, profile, cb) {
+    console.log("Access Token: ", accessToken);
+    console.log("Refresh Token: ", refreshToken);
+    console.log("Profile: ", profile);
+    cb(null, profile);
+ }
+);
+
+app.get("/auth/google", passport.authenticate('google', { scope: ["profile", "email"] }));
+app.get('/passport/google/callback', passport.authenticate("google", {session: false, successReturnToOrRedirect:"/", failureRedirect:"/usuarios/logueo"}));
 
 
 //hola
