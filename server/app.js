@@ -19,6 +19,8 @@ const PORT = process.env.PORT || 40000;
 
 const app = express();
 
+
+//hola
 app.use(session({
     secret: 'EvergreenEscapeSecret',
     resave: false,
@@ -39,6 +41,8 @@ db.conectar().then(async () => {
     );
     await db.agregarObjetos();
 });
+
+
 
 //METODOS
 // COMPROBACIÓN DE SESIÓN
