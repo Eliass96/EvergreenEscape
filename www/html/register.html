@@ -23,6 +23,11 @@
     <div class="formulariocaja d-flex align-items-center justify-content-center">
         <div class="form-inner d-flex justify-content-center">
             <form method="post" action="" name="vaidrollteam">
+                <div class="textoscajas">📧 Introduce tu email</div>
+                <label>
+                    <input type="text" name="txtemail" class="cajaentradatexto" id="txtemail">
+                </label>
+                <p class="txtFaltanDatos" id="txtFaltanDatosEmail">El email es obligatorio</p>
                 <div class="textoscajas">&#128273; Introduce tu usuario</div>
                 <label>
                     <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
@@ -67,8 +72,12 @@
                     <div>Mostrar contraseña</div>
                 </div>
 
-                <input type="button" value="Registrar" class="botonenviar" id="registerButton">
-
+                <input type="button" value="Regístrate" class="botonenviar" id="registerButton">
+                <button class="botonenviar google" id="registerButtonGoogle">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" width="20"
+                         style="margin-right: 8px; background: white; padding: 2px; border-radius: 50%;">
+                    Regístrate con Google
+                </button>
                 <div class="registrar">¿Ya tienes cuenta? <a class="but_abrir_login" href="login.html">Iniciar
                     sesión</a></div>
             </form>
