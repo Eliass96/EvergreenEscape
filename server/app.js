@@ -57,10 +57,17 @@ app.get('/passport/google/callback',
                 <!DOCTYPE html>
                 <html>
                 <head>
-                  <meta charset="UTF-8">
-                  <title>Redirigiendo...</title>
+                    <link rel="icon" type="image/jpg" href="../img/logo/logo.jpg">
+                    <meta charset="UTF-8">
+                    <title>Redirigiendo...</title>
                 </head>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+                    <link rel="stylesheet" href="../css/styleGlobal.css">
                 <body>
+                <main></main>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                   <script>
                     fetch('/usuarios/logueo', {
                         method: 'POST',
@@ -71,7 +78,16 @@ app.get('/passport/google/callback',
                     })
                     .then(response => {
                         if (response.ok) {
-                            window.location.href = '/';
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "¡Has iniciado sesión!",
+                                showConfirmButton: false,
+                                timer: 1000,
+                                timerProgressBar: true,
+                            }).then(() => {
+                                document.location.href = "/"
+                            })
                         } else {
                             window.location.href = '/html/completeData.html';
                             console.error('Error en el inicio de sesión');
