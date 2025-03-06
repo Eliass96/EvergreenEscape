@@ -25,12 +25,12 @@
             <form method="post" action="" name="vaidrollteam">
                 <div class="textoscajas">📧 Introduce tu email</div>
                 <label>
-                    <input type="text" name="txtemail" class="cajaentradatexto" id="txtemail">
+                    <input type="email" name="txtemail" class="cajaentradatexto" id="txtemail" required>
                 </label>
                 <p class="txtFaltanDatos" id="txtFaltanDatosEmail">El email es obligatorio</p>
                 <div class="textoscajas">&#128273; Introduce tu usuario</div>
                 <label>
-                    <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
+                    <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario" required>
                 </label>
                 <p class="txtFaltanDatos" id="txtFaltanDatosUsuario">El usuario es obligatorio</p>
 
@@ -44,7 +44,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <label>
                             <input type="text" class="busquedapaises form-control m-1" id="formularioPaises"
-                                   placeholder="Busca tu país...">
+                                   placeholder="Busca tu país..." required>
                         </label>
                         <div id="listadoPaises" aria-labelledby="dropdownMenuLink">
 
@@ -56,13 +56,13 @@
                 <div class="textoscajas">&#128274; Introduce tu contraseña</div>
                 <label for="txtpassword">
                     <input type="password" name="txtpassword_register" id="txtpassword"
-                           class="cajaentradatexto">
+                           class="cajaentradatexto" required>
                 </label>
                 <p class="txtFaltanDatos" id="txtFaltanDatosPassword">La contraseña es obligatoria</p>
                 <div class="textoscajas">&#128274; Repite tu contraseña</div>
                 <label for="txtpasswordrep">
                     <input type="password" name="txtpasswordrep_register" id="txtpasswordrep"
-                           class="cajaentradatexto">
+                           class="cajaentradatexto" required>
                 </label>
                 <p class="txtFaltanDatos" id="txtFaltanDatosPasswordRep">Por favor, repite tu contraseña</p>
                 <div class="afcheckbox1 d-flex align-items-center justify-content-start">

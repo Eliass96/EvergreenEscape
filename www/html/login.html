@@ -24,14 +24,14 @@
     <div class="formulariocaja d-flex align-items-center justify-content-center">
         <div class="form-inner d-flex justify-content-center">
             <form method="post" action="" name="vaidrollteam">
-                <div class="textoscajas" id="textBoxUserLogin">👤 Introduce tu usuario o email</div>
+                <div class="textoscajas" id="textBoxUserLogin">📧 Introduce tu email</div>
                 <label>
-                    <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario">
+                    <input type="email" name="txtusuario" class="cajaentradatexto" id="txtusuario" required/>
                 </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosUsuarioLogin">El nombre de usuario es obligatorio</p>
+                <p class="txtFaltanDatos" id="txtFaltanDatosUsuarioLogin">El email es obligatorio</p>
                 <div class="textoscajas" id="textBoxPasswordLogin">&#128274; Introduce tu contraseña</div>
                 <label for="txtpassword">
-                    <input type="password" name="txtpassword" id="txtpassword" class="cajaentradatexto">
+                    <input type="password" name="txtpassword" id="txtpassword" class="cajaentradatexto" required>
                 </label>
                 <p class="txtFaltanDatos" id="txtFaltanDatosPasswordLogin">La contraseña es obligatoria</p>
                 <div class="afcheckbox1 d-flex align-items-center justify-content-start">

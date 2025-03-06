@@ -6,7 +6,7 @@
   "main": "server/app.js",
   "scripts": {
     "run": "node server/app.js",
-    "dev": "nodemon --exec server/app.js",
+    "dev": "nodemon server/app.js",
     "comp-perfil": "pug -c -D -n crearPerfil -o www/js/pug profile.pug",
     "comp-puntuaciones": "pug -c -D -n crearPuntuaciones -o www/js/pug rankings.pug",
     "comp-puntuacionesPais": "pug -c -D -n crearPuntuacionesPorPais -o www/js/pug countriesRankings.pug",
@@ -43,7 +43,7 @@
     "sweetalert2": "^11.10.7"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0",
+    "nodemon": "^3.1.9",
     "typescript": "^5.4.5"
   }
 }
