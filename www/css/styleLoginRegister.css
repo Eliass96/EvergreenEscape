@@ -24,6 +24,12 @@
     border-radius: 15px;
 }
 
+.completeData {
+    min-height: 100px;
+    height: 41vh;
+    max-height: 60vh;
+}
+
 input {
     display: block;
     text-align: left;

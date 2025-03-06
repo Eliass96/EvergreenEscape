@@ -60,7 +60,7 @@
     min-width: 50px;
 }
 
-.titulo_card_info{
+.titulo_card_info {
     font-family: 'jackpot', sans-serif;
     font-size: clamp(0.75em, 4vh, 1.25em);
     padding-top: 2em;
@@ -142,15 +142,15 @@
 
 /*** PERFIL ***/
 .cardPerfil {
-    height: 60vh;
+    height: 70vh;
     min-height: 100px;
     min-width: 30vw;
     border-radius: 15px;
     overflow-y: hidden;
     font-family: 'turtles', sans-serif;
-    font-size: clamp(1em, 4vh, 1.5em);
+    font-size: clamp(1em, 3vh, 1.25em);
 }
 
 .txtDatosPerfil {
-    font-size: clamp(1.5em, 6vh, 5em);
+    font-size: clamp(1.25em, 5vh, 4em);
 }
