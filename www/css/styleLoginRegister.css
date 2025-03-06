@@ -12,6 +12,7 @@
     font-family: 'turtles', sans-serif;
     display: flex;
     justify-content: center;
+    align-items: center;
     overflow-y: hidden;
 }
 
@@ -111,8 +112,8 @@ input {
 }
 
 .afcheckbox1 {
-    margin-bottom: 2.5vh;
-    margin-top: 1vh;
+    margin-bottom: 0.5vh;
+    margin-top: 0.25vh;
     margin-left: 0.5vw;
 }
 
