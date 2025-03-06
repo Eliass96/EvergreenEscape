@@ -132,12 +132,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     timerProgressBar: true,
                 }).then(async () => {
                     let dataLoginGoogle = {
-                        nombre: usuario.value.trim(),
-                        nacionalidad: dropdownMenuButton.textContent.trim()
+
                     };
                     console.log(dataLoginGoogle);
                     try {
-                        let respLogin = await fetch("/usuarios/logueo", {
+
+                        const respLogin = await fetch("/usuarios/logueo", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -145,11 +145,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             body: JSON.stringify(dataLoginGoogle)
                         });
 
+
+                        console.log(respLogin);
+
                         if (!respLogin.ok) {
                             throw new Error("Error en la solicitud");
                         }
 
                         let respJson = await respLogin.json();
+                        console.log(respJson);
 
                         document.location.href = "/";
                     } catch (error) {

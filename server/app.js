@@ -48,7 +48,7 @@ app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "ema
 
 let isNewUser;
 app.get('/passport/google/callback',
-    passport.authenticate("google", { session: false }),
+    passport.authenticate("google", {session: false}),
     (req, res) => {
         if (isNewUser) {
             res.redirect("/html/completeData.html");
@@ -85,7 +85,6 @@ app.get('/passport/google/callback',
         }
     }
 );
-
 
 
 //hola
@@ -153,7 +152,7 @@ app.post("/usuarios/completarDatos", async (req, res) => {
                 nombre, email, password: hashPassword, nacionalidad
             }
             await db.altaUsuario(nuevoUsuario);
-            datosGoogle = null;
+
             return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
         } else {
             return res.status(HTTP_CONFLICT).send({status: "Error", message: "Este usuario ya existe"});
@@ -182,8 +181,8 @@ app.post("/usuarios/registro", async (req, res) => {
                 nombre, email, password: hashPassword, nacionalidad
             }
             await db.altaUsuario(nuevoUsuario);
-            isNewUser=true;
-            datosGoogle=null;
+            isNewUser = true;
+
             return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
         } else {
             return res.status(HTTP_CONFLICT).send({status: "Error", message: "Este usuario ya existe"});
@@ -196,11 +195,13 @@ app.post("/usuarios/registro", async (req, res) => {
 // INICIO DE SESIÓN
 app.post("/usuarios/logueo", async (req, res) => {
     try {
+
+        console.log("hola");
         let email;
         let password;
         let provider;
 
-        if (datosGoogle!==null) {
+        if (datosGoogle) {
             email = datosGoogle.email;
             password = datosGoogle.password;
             provider = datosGoogle.provider;
@@ -211,6 +212,7 @@ app.post("/usuarios/logueo", async (req, res) => {
             provider = "normal";
         }
         console.log(datosGoogle);
+
         if (!email || !password) {
             return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"});
         }
@@ -232,7 +234,8 @@ app.post("/usuarios/logueo", async (req, res) => {
 
         req.session.usuario = usuarioAResvisar._id.toString();
 
-        isNewUser=false;
+        isNewUser = false;
+        datosGoogle = null;
         return res
             .location(`/usuarios/${usuarioAResvisar._id}`)
             .status(HTTP_OK)
