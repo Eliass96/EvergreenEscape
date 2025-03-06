@@ -132,8 +132,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     timerProgressBar: true,
                 }).then(async () => {
                     let dataLoginGoogle = {
-                        email: usuario.value.trim()
+                        nombre: usuario.value.trim(),
+                        nacionalidad: dropdownMenuButton.textContent.trim()
                     };
+                    console.log(dataLoginGoogle);
                     try {
                         let respLogin = await fetch("/usuarios/logueo", {
                             method: "POST",
