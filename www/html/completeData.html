@@ -22,30 +22,32 @@
 <main>
     <div class="formulariocaja d-flex align-items-center justify-content-center">
         <div class="form-inner completeData d-flex justify-content-center">
-            <form method="post" action="" name="vaidrollteam">
-                <div class="textoscajas">&#128273; Introduce tu usuario</div>
-                <label>
-                    <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario" required>
-                </label>
-                <p class="txtFaltanDatos" id="txtFaltanDatosUsuario">El usuario es obligatorio</p>
+            <form method="post" action="" name="vaidrollteam" class="d-flex align-items-center justify-content-between flex-column">
+                <div>
+                    <div class="textoscajas">&#128273; Introduce tu usuario</div>
+                    <label>
+                        <input type="text" name="txtusuario" class="cajaentradatexto" id="txtusuario" required>
+                    </label>
+                    <p class="txtFaltanDatos" id="txtFaltanDatosUsuario">El usuario es obligatorio</p>
 
-                <div class="textoscajas">&#127760; Selecciona tu nacionalidad</div>
+                    <div class="textoscajas">&#127760; Selecciona tu nacionalidad</div>
 
-                <div class="dropdown">
-                    <button class="cajaentradatexto dropdown-toggle text-end" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <label>
-                            <input type="text" class="busquedapaises form-control m-1" id="formularioPaises"
-                                   placeholder="Busca tu país..." required>
-                        </label>
-                        <div id="listadoPaises" aria-labelledby="dropdownMenuLink">
+                    <div class="dropdown">
+                        <button class="cajaentradatexto dropdown-toggle text-end" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <label>
+                                <input type="text" class="busquedapaises form-control m-1" id="formularioPaises"
+                                       placeholder="Busca tu país..." required>
+                            </label>
+                            <div id="listadoPaises" aria-labelledby="dropdownMenuLink">
+                            </div>
                         </div>
                     </div>
+                    <p class="txtFaltanDatos" id="txtFaltanDatosNacionalidad">La nacionalidad es obligatoria</p>
                 </div>
-                <p class="txtFaltanDatos" id="txtFaltanDatosNacionalidad">La nacionalidad es obligatoria</p>
-                <input type="button" value="Confirmar" class="botonenviar" id="confirmDataButton">
+                <input type="button" value="Confirmar" class="botonenviar mb-3" id="confirmDataButton">
             </form>
         </div>
     </div>
