@@ -356,9 +356,9 @@ exports.listarTodosLosUsuarios = async function () {
     }
 };
 
-exports.existeUsuario = async function (nombreUsuario, email) {
+exports.existeUsuario = async function (email) {
     try {
-        return await Usuario.findOne({nombre: nombreUsuario} || {email: email});
+        return await Usuario.findOne({email: email});
     } catch (error) {
         throw new Error('Error al comprobar la existencia del usuario: ' + error.message);
     }
