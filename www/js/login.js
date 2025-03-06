@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('loginButton')) {
         document.getElementById('loginButton').addEventListener('click', formularioLogin);
         document.getElementById('checkboxLogin').addEventListener('click', verpasswordLogin);
+        document.getElementById('loginButtonGoogle').addEventListener('click', loginGoogle);
         document.addEventListener('keyup', (event) => {
             if (event.key === 'Escape') {
                 window.location = '../index.html';
@@ -16,6 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 tipo.type = "password";
             }
+        }
+
+        async function loginGoogle() {
+            window.location.href = '/auth/google';
         }
 
 
@@ -59,9 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!usuario.classList.contains('error') && !password.classList.contains('error')) {
                 let data = {
-                    nombre: usuario.value.trim(),
+                    email: usuario.value.trim(),
                     password: password.value.trim()
                 }
+                console.log(data);
 
                 const resp = await fetch("/usuarios/logueo", {
                     method: "POST",
@@ -69,7 +75,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(data)
+
                 });
+
                 if (!resp.ok) {
                     if (resp.status === 400) {
                         Swal.fire({
@@ -81,15 +89,39 @@ document.addEventListener('DOMContentLoaded', function () {
                             confirmButtonColor: "lightgreen"
                         })
                     } else if (resp.status === 401) {
-                        Swal.fire({
-                            position: "center",
-                            icon: "error",
-                            title: "¡Este usuario no existe!",
-                            showConfirmButton: true,
-                            confirmButtonText: "De acuerdo",
-                            confirmButtonColor: "lightgreen"
-                        })
+                        resp.json().then(data => {
+                            const provider = data.provider;
+                            console.log(provider);
+                            if (provider==="normal") {
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "error",
+                                    title: "Este usuario no existe",
+                                    showConfirmButton: true,
+                                    confirmButtonText: "De acuerdo",
+                                    confirmButtonColor: "lightgreen"
+                                });
+                            } else if (provider==="google") {
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "error",
+                                    title: "Este usuario no existe, ¿Quieres crear uno nuevo?",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Aceptar",
+                                    cancelButtonText: "Cancelar",
+                                    confirmButtonColor: "lightgreen"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Redirigir a la pantalla deseada
+                                        window.location.href = "../html/completeData.html";
+                                    }
+                                });
 
+                            }
+
+                        }).catch(err => {
+                            console.error("Error al parsear la respuesta:", err);
+                        });
                     } else if (resp.status === 403) {
                         Swal.fire({
                             position: "center",

@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function registerGoogle() {
-        window.location.href = 'http://localhost:30000/auth/google';
+        window.location.href = '/auth/google';
     }
 
 
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     timerProgressBar: true,
                 }).then(async () => {
                     let dataLogin = {
-                        nombre: usuario.value.trim(),
+                        email: usuario.value.trim(),
                         password: password.value.trim()
                     };
                     try {

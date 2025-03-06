@@ -132,10 +132,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     timerProgressBar: true,
                 }).then(async () => {
                     let dataLoginGoogle = {
-                        nombre: usuario.value.trim()
+                        nombre: usuario.value.trim(),
+                        nacionalidad: dropdownMenuButton.textContent.trim()
                     };
+                    console.log(dataLoginGoogle);
                     try {
-                        let respLogin = await fetch("/usuarios/logueoGoogle", {
+                        let respLogin = await fetch("/usuarios/logueo", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"

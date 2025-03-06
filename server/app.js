@@ -20,37 +20,72 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 
 const app = express();
-let datosGoogle= null;
+let datosGoogle = null;
 
 
 //gmail
 app.use(passport.initialize());
 
 passport.use(new GoogleStrategy({
-    clientID: "334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com",
-    clientSecret: "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",
-    callbackURL: "/passport/google/callback",
-},
- function (accessToken, refreshToken, profile, cb) {
-    console.log("Access Token: ", accessToken);
-    //console.log("Refresh Token: ", refreshToken);
-
-    cb(null, profile);
-    datosGoogle= {
-        email: profile._json.email,
-        password: accessToken,
-        refreshToken: refreshToken
-    };
-    console.log(datosGoogle);
- }
+        clientID: "334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com",
+        clientSecret: "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",
+        callbackURL: "/passport/google/callback",
+    },
+    function (accessToken, refreshToken, profile, cb) {
+        console.log("Access Token: ", accessToken);
+        //console.log("Refresh Token: ", refreshToken);
+        cb(null, profile);
+        datosGoogle = {
+            email: profile._json.email,
+            password: profile._json.sub,
+            provider: profile.provider
+        };
+        //console.log(profile);
+    }
 ));
 
+app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "email"]}));
 
+let isNewUser;
+app.get('/passport/google/callback',
+    passport.authenticate("google", { session: false }),
+    (req, res) => {
+        if (isNewUser) {
+            res.redirect("/html/completeData.html");
+        } else {
+            res.send(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                  <meta charset="UTF-8">
+                  <title>Redirigiendo...</title>
+                </head>
+                <body>
+                  <script>
+                    fetch('/usuarios/logueo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ provider: 'google' }) // Puedes enviar más datos si es necesario
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/';
+                        } else {
+                            window.location.href = '/html/completeData.html';
+                            console.error('Error en el inicio de sesión');
+                        }
+                    })
+                    .catch(error => console.error('Error en la solicitud:', error));
+                  </script>
+                </body>
+                </html>
+            `);
+        }
+    }
+);
 
-app.get("/auth/google", passport.authenticate('google', { scope: ["profile", "email"] }));
-app.get('/passport/google/callback', passport.authenticate("google", {session: false,
-    successReturnToOrRedirect:"/html/completeData.html",
-    failureRedirect:"/usuarios/registro"}));
 
 
 //hola
@@ -74,7 +109,6 @@ db.conectar().then(async () => {
     );
     await db.agregarObjetos();
 });
-
 
 
 //METODOS
@@ -111,14 +145,15 @@ app.post("/usuarios/completarDatos", async (req, res) => {
             return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"})
         }
 
-        const usuarioAResvisar = await db.existeUsuario(nombre);
+        const usuarioAResvisar = await db.existeUsuario(email);
         if (!usuarioAResvisar) {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);
             const nuevoUsuario = {
-                nombre,email, password: hashPassword, nacionalidad
+                nombre, email, password: hashPassword, nacionalidad
             }
             await db.altaUsuario(nuevoUsuario);
+            datosGoogle = null;
             return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
         } else {
             return res.status(HTTP_CONFLICT).send({status: "Error", message: "Este usuario ya existe"});
@@ -144,9 +179,11 @@ app.post("/usuarios/registro", async (req, res) => {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);
             const nuevoUsuario = {
-                nombre,email, password: hashPassword, nacionalidad
+                nombre, email, password: hashPassword, nacionalidad
             }
             await db.altaUsuario(nuevoUsuario);
+            isNewUser=true;
+            datosGoogle=null;
             return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
         } else {
             return res.status(HTTP_CONFLICT).send({status: "Error", message: "Este usuario ya existe"});
@@ -155,55 +192,37 @@ app.post("/usuarios/registro", async (req, res) => {
         res.status(HTTP_INTERNAL_SERVER_ERROR).send({message: 'Error inesperado al registrarte.', error: err.message});
     }
 });
-//INICIO DE SESION GOOGLE
-app.post("/usuarios/logueoGoogle", async (req, res) => {
-    try {
-        const nombre = req.body.nombre;
-        const password = datosGoogle.password;
-
-        if (!nombre || !password) {
-            return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"});
-        }
-
-        const usuarioAResvisar = await db.existeUsuario(nombre);
-        if (!usuarioAResvisar) {
-            return res.status(HTTP_UNAUTHORIZED).send({status: "Error", message: "El usuario no existe"});
-        }
-
-        const loginCorrecto = await bcryptjs.compare(password, usuarioAResvisar.password);
-        if (!loginCorrecto) {
-            return res.status(HTTP_FORBIDDEN).send({status: "Error", message: "Contraseña incorrecta"});
-        }
-
-        req.session.usuario = usuarioAResvisar._id.toString();
-
-        return res
-            .location(`/usuarios/${usuarioAResvisar._id}`)
-            .status(HTTP_OK)
-            .send({usuario: usuarioAResvisar, mensaje: "Usuario logueado."});
-
-    } catch (err) {
-        res.status(HTTP_INTERNAL_SERVER_ERROR).send({
-            message: 'Error inesperado al iniciar sesión.',
-            error: err.message
-        });
-    }
-});
-
 
 // INICIO DE SESIÓN
 app.post("/usuarios/logueo", async (req, res) => {
     try {
-        const nombre = req.body.nombre;
-        const password = req.body.password;
+        let email;
+        let password;
+        let provider;
 
-        if (!nombre || !password) {
+        if (datosGoogle!==null) {
+            email = datosGoogle.email;
+            password = datosGoogle.password;
+            provider = datosGoogle.provider;
+
+        } else {
+            email = req.body.email;
+            password = req.body.password;
+            provider = "normal";
+        }
+        console.log(datosGoogle);
+        if (!email || !password) {
             return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"});
         }
 
-        const usuarioAResvisar = await db.existeUsuario(nombre);
+        const usuarioAResvisar = await db.existeUsuario(email);
+
         if (!usuarioAResvisar) {
-            return res.status(HTTP_UNAUTHORIZED).send({status: "Error", message: "El usuario no existe"});
+            return res.status(HTTP_UNAUTHORIZED).send({
+                status: "Error",
+                message: "El usuario no existe",
+                provider: provider  // "google" o "normal"
+            });
         }
 
         const loginCorrecto = await bcryptjs.compare(password, usuarioAResvisar.password);
@@ -213,6 +232,7 @@ app.post("/usuarios/logueo", async (req, res) => {
 
         req.session.usuario = usuarioAResvisar._id.toString();
 
+        isNewUser=false;
         return res
             .location(`/usuarios/${usuarioAResvisar._id}`)
             .status(HTTP_OK)
