@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('registerButton').addEventListener('click', formularioRegister);
     document.getElementById('checkboxRegister').addEventListener('click', verpasswordRegister);

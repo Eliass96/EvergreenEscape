@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('confirmDataButton').addEventListener('click', formularioRegister);
 
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-
     async function formularioRegister() {
         let usuario = document.getElementById('txtusuario');
         let txtUsuario = document.getElementById('txtFaltanDatosUsuario');
@@ -85,12 +83,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 nacionalidad: dropdownMenuButton.textContent.trim()
             }
 
-
             const resp = await fetch("/usuarios/completarDatos", {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
-
             });
 
             if (!resp.ok) {
@@ -131,9 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     timer: 1000,
                     timerProgressBar: true,
                 }).then(async () => {
-                    let dataLoginGoogle = {
-
-                    };
+                    let dataLoginGoogle = {};
                     console.log(dataLoginGoogle);
                     try {
 
@@ -144,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             },
                             body: JSON.stringify(dataLoginGoogle)
                         });
-
 
                         console.log(respLogin);
 

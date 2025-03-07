@@ -7,6 +7,7 @@ const session = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const path = require('path');
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
@@ -32,15 +33,12 @@ passport.use(new GoogleStrategy({
         callbackURL: "/passport/google/callback",
     },
     function (accessToken, refreshToken, profile, cb) {
-        console.log("Access Token: ", accessToken);
-        //console.log("Refresh Token: ", refreshToken);
         cb(null, profile);
         datosGoogle = {
             email: profile._json.email,
             password: profile._json.sub,
             provider: profile.provider
         };
-        //console.log(profile);
     }
 ));
 
@@ -53,51 +51,7 @@ app.get('/passport/google/callback',
         if (isNewUser) {
             res.redirect("/html/completeData.html");
         } else {
-            res.send(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <link rel="icon" type="image/jpg" href="../img/logo/logo.jpg">
-                    <meta charset="UTF-8">
-                    <title>Redirigiendo...</title>
-                </head>
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-                    <link rel="stylesheet" href="../css/styleGlobal.css">
-                <body>
-                <main></main>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                  <script>
-                    fetch('/usuarios/logueo', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ provider: 'google' }) // Puedes enviar más datos si es necesario
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            Swal.fire({
-                                position: "center",
-                                icon: "success",
-                                title: "¡Has iniciado sesión!",
-                                showConfirmButton: false,
-                                timer: 1000,
-                                timerProgressBar: true,
-                            }).then(() => {
-                                document.location.href = "/"
-                            })
-                        } else {
-                            window.location.href = '/html/completeData.html';
-                            console.error('Error en el inicio de sesión');
-                        }
-                    })
-                    .catch(error => console.error('Error en la solicitud:', error));
-                  </script>
-                </body>
-                </html>
-            `);
+            res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirect.html'));
         }
     }
 );
@@ -211,8 +165,6 @@ app.post("/usuarios/registro", async (req, res) => {
 // INICIO DE SESIÓN
 app.post("/usuarios/logueo", async (req, res) => {
     try {
-
-        console.log("hola");
         let email;
         let password;
         let provider;
@@ -227,7 +179,6 @@ app.post("/usuarios/logueo", async (req, res) => {
             password = req.body.password;
             provider = "normal";
         }
-        console.log(datosGoogle);
 
         if (!email || !password) {
             return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"});

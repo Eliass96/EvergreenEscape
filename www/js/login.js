@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = '/auth/google';
         }
 
-
         async function formularioLogin() {
             let usuario = document.getElementById('txtusuario');
             let password = document.getElementById('txtpassword');
@@ -116,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                         window.location.href = "../html/completeData.html";
                                     }
                                 });
-
                             }
 
                         }).catch(err => {
