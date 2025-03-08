@@ -223,6 +223,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 animation: true,
                 confirmButtonColor: "lightgreen",
                 showCancelButton: true,
+                cancelButtonColor: "#e74c3c",
                 confirmButtonText: "Comprar",
                 cancelButtonText: "Cancelar",
                 showLoaderOnConfirm: true,

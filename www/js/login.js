@@ -106,6 +106,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                     icon: "error",
                                     title: "Este usuario no existe, ¿Quieres crear uno nuevo?",
                                     showCancelButton: true,
+                                    animation: true,
+                                    cancelButtonColor: "#e74c3c",
                                     confirmButtonText: "Aceptar",
                                     cancelButtonText: "Cancelar",
                                     confirmButtonColor: "lightgreen"

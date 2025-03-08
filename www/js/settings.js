@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 confirmButtonText: "Guardar",
                 denyButtonText: "Salir sin guardar",
                 cancelButtonText: "Cancelar",
+                animation: true,
+                cancelButtonColor: "#e74c3c",
                 confirmButtonColor: "lightgreen",
             }).then(async (result) => {
                 if (result.isConfirmed) {
@@ -101,6 +103,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 icon: "warning",
                 showDenyButton: true,
                 showCancelButton: true,
+                animation: true,
+                cancelButtonColor: "#e74c3c",
                 confirmButtonText: "Guardar",
                 denyButtonText: "Salir sin guardar",
                 cancelButtonText: "Cancelar",
@@ -187,6 +191,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 icon: "warning",
                 showDenyButton: true,
                 showCancelButton: true,
+                animation: true,
+                cancelButtonColor: "#e74c3c",
                 confirmButtonText: "Guardar",
                 denyButtonText: "No guardar",
                 cancelButtonText: "Cancelar",

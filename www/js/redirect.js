@@ -23,13 +23,20 @@ document.addEventListener('DOMContentLoaded', async function () {
                     position: "center",
                     icon: "warning",
                     title: "¡Usuario no encontrado!",
-                    text: "Por favor, regístrate para continuar.",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                }).then(() => {
-                    window.location.href = '/html/completeData.html';
-                })
+                    text: "¿Deseas registrarte para continuar?",
+                    showCancelButton: true,
+                    animation: true,
+                    confirmButtonColor: "lightgreen",
+                    cancelButtonColor: "#e74c3c",
+                    confirmButtonText: "Sí, registrarme",
+                    cancelButtonText: "No, cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/html/completeData.html";
+                    } else {
+                        window.location.href = "/html/login.html";
+                    }
+                });
             }
         })
         .catch(error => console.error('Error en la solicitud:', error));
