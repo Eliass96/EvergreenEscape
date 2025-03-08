@@ -7,14 +7,14 @@
   "scripts": {
     "run": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "comp-perfil": "pug -c -D -n crearPerfil -o www/js/pug profile.pug",
-    "comp-puntuaciones": "pug -c -D -n crearPuntuaciones -o www/js/pug rankings.pug",
-    "comp-puntuacionesPais": "pug -c -D -n crearPuntuacionesPorPais -o www/js/pug countriesRankings.pug",
-    "comp-puntuacionesGlobales": "pug -c -D -n crearPuntuacionesGlobales -o www/js/pug globalRankings.pug",
-    "comp-superSalto": "pug -c -D -n superSalto -o www/js/pug superSalto.pug",
-    "comp-inmunidad": "pug -c -D -n inmunidad -o www/js/pug inmunidad.pug",
-    "comp-puntuacionDoble": "pug -c -D -n puntuacionDoble -o www/js/pug puntuacionDoble.pug",
-    "comp-revivir": "pug -c -D -n revivir -o www/js/pug revivir.pug"
+    "comp-perfil": "pug -c -D -n crearPerfil -o www/js/pug www/pug/profile.pug",
+    "comp-puntuaciones": "pug -c -D -n crearPuntuaciones -o www/js/pug www/pug/rankings.pug",
+    "comp-puntuacionesPais": "pug -c -D -n crearPuntuacionesPorPais -o www/js/pug www/pug/countriesRankings.pug",
+    "comp-puntuacionesGlobales": "pug -c -D -n crearPuntuacionesGlobales -o www/js/pug www/pug/globalRankings.pug",
+    "comp-superSalto": "pug -c -D -n superSalto -o www/js/pug www/pug/superSalto.pug",
+    "comp-inmunidad": "pug -c -D -n inmunidad -o www/js/pug www/pug/inmunidad.pug",
+    "comp-puntuacionDoble": "pug -c -D -n puntuacionDoble -o www/js/pug www/pug/puntuacionDoble.pug",
+    "comp-revivir": "pug -c -D -n revivir -o www/js/pug www/pug/revivir.pug"
   },
   "keywords": [
     "ecosystem:cordova"
