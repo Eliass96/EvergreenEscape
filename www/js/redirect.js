@@ -10,14 +10,23 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (response.ok) {
                 Swal.fire({
                     position: "center",
-                    icon: "success",
-                    title: "¡Has iniciado sesión!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
+                    icon: "warning",
+                    title: "El usuario ya existe",
+                    text: "Se iniciará sesión automáticamente.",
+                    showConfirmButton: true,
+                    confirmButtonText: "Aceptar"
                 }).then(() => {
-                    document.location.href = "/"
-                })
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Has iniciado sesión!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        document.location.href = "/"
+                    })
+                });
             } else {
                 Swal.fire({
                     position: "center",

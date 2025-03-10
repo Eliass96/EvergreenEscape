@@ -169,7 +169,6 @@ app.post("/usuarios/logueo", async (req, res) => {
             email = datosGoogle.email;
             password = datosGoogle.password;
             provider = datosGoogle.provider;
-
         } else {
             email = req.body.email;
             password = req.body.password;
@@ -186,7 +185,7 @@ app.post("/usuarios/logueo", async (req, res) => {
             return res.status(HTTP_UNAUTHORIZED).send({
                 status: "Error",
                 message: "El usuario no existe",
-                provider: provider  // "google" o "normal"
+                provider: provider
             });
         }
 

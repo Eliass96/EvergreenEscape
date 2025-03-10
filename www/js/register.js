@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = '/auth/google';
     }
 
-
     async function formularioRegister() {
         let usuario = document.getElementById('txtusuario');
         let email = document.getElementById('txtemail');
@@ -188,13 +187,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify(dataLogin)
-                        });
-                        console.log(respLogin)
+                        })
                         if (!respLogin.ok) {
                             throw new Error("Error en la solicitud");
                         }
-
-                        let respJson = await respLogin.json();
 
                         document.location.href = "/";
                     } catch (error) {
