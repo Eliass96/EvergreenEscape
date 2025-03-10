@@ -28,9 +28,9 @@ let datosGoogle = null;
 app.use(passport.initialize());
 
 passport.use(new GoogleStrategy({
-        clientID: "334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com",
-        clientSecret: "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",
-        callbackURL: "/passport/google/callback",
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     function (accessToken, refreshToken, profile, cb) {
         cb(null, profile);
