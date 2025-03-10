@@ -23,6 +23,7 @@ const PORT = process.env.PORT || 40000;
 const app = express();
 let datosGoogle = null;
 let isNewUser;
+let isRegister = true;
 
 //Gmail
 app.use(passport.initialize());
@@ -49,7 +50,12 @@ app.get('/passport/google/callback',
         if (isNewUser) {
             res.redirect("/html/completeData.html");
         } else {
-            res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirect.html'));
+            if (!isRegister) {
+                res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
+            } else {
+                isRegister = true;
+                res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
+            }
         }
     }
 );
@@ -138,9 +144,9 @@ app.post("/usuarios/registro", async (req, res) => {
         if (!nombre || !password || !nacionalidad || !email) {
             return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"})
         }
-
-        const usuarioAResvisar = await db.existeUsuario(nombre);
-        if (!usuarioAResvisar) {
+        isRegister = true;
+        const usuarioARevisar = await db.existeUsuario(nombre);
+        if (!usuarioARevisar) {
             const salt = await bcrypt.genSalt(5);
             const hashPassword = await bcrypt.hash(password, salt);
             const nuevoUsuario = {
@@ -148,7 +154,6 @@ app.post("/usuarios/registro", async (req, res) => {
             }
             await db.altaUsuario(nuevoUsuario);
             isNewUser = true;
-
             return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
         } else {
             return res.status(HTTP_CONFLICT).send({status: "Error", message: "Este usuario ya existe"});
@@ -180,7 +185,6 @@ app.post("/usuarios/logueo", async (req, res) => {
         }
 
         const usuarioAResvisar = await db.existeUsuario(email);
-
         if (!usuarioAResvisar) {
             return res.status(HTTP_UNAUTHORIZED).send({
                 status: "Error",
@@ -197,6 +201,7 @@ app.post("/usuarios/logueo", async (req, res) => {
         req.session.usuario = usuarioAResvisar._id.toString();
 
         isNewUser = false;
+        isRegister = false;
         datosGoogle = null;
         return res
             .location(`/usuarios/${usuarioAResvisar._id}`)
