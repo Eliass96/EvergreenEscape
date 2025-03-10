@@ -22,9 +22,9 @@ const PORT = process.env.PORT || 40000;
 
 const app = express();
 let datosGoogle = null;
+let isNewUser;
 
-
-//gmail
+//Gmail
 app.use(passport.initialize());
 
 passport.use(new GoogleStrategy({
@@ -43,8 +43,6 @@ passport.use(new GoogleStrategy({
 ));
 
 app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "email"]}));
-
-let isNewUser;
 app.get('/passport/google/callback',
     passport.authenticate("google", {session: false}),
     (req, res) => {
@@ -56,8 +54,6 @@ app.get('/passport/google/callback',
     }
 );
 
-
-//hola
 app.use(session({
     secret: 'EvergreenEscapeSecret',
     resave: false,
