@@ -26,6 +26,10 @@ const UsuarioSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        amigos: {
+            type: [String],
+            default: ['55']
+        },
         puntuaciones: {
             type: [Number],
             default: []
@@ -80,6 +84,59 @@ const Usuario = mongoose.model('Usuario', UsuarioSchema);
 const Objeto = mongoose.model('Objeto', ObjetoSchema);
 
 //METODOS DE USUARIO
+//CREAR USUARIO
+exports.altaUsuario = async function (datosDeUsuario) {
+    try {
+        return Usuario.create(datosDeUsuario);
+    } catch (error) {
+        throw new Error('Error al agregar el usuario: ' + error.message);
+    }
+}
+
+// GET USUARIO
+exports.getUsuario = async function (userId) {
+    try {
+        const usuario = await Usuario.findById(userId);
+        if (!usuario) {
+            throw new Error('Usuario no encontrado');
+        }
+        return usuario;
+    } catch (error) {
+        throw new Error('Error al buscar el usuario: ' + error.message);
+    }
+};
+
+exports.getUsuarioByName = async function (userName) {
+    try {
+        return await Usuario.findOne({nombre: userName});
+    } catch (error) {
+        throw new Error('Error al buscar el usuario por nombre: ' + error.message);
+    }
+};
+
+//EXISTE USUARIO
+exports.existeUsuario = async function (email) {
+    try {
+        return await Usuario.findOne({email: email});
+    } catch (error) {
+        throw new Error('Error al comprobar la existencia del usuario: ' + error.message);
+    }
+};
+
+//LISTAR USUARIOS
+exports.listarTodosLosUsuarios = async function () {
+    try {
+        const usuarios = await Usuario.find();
+
+        if (usuarios.length === 0) {
+            throw new Error('No se encontraron usuarios');
+        }
+        return usuarios;
+    } catch (error) {
+        throw new Error('Error al listar todos los usuarios: ' + error.message);
+    }
+};
+
 //AÑADIR PUNTUACIÓN AL USUARIO
 exports.agregarPuntuacion = async function (userId, nuevaPuntuacion) {
     try {
@@ -120,27 +177,7 @@ exports.listarPuntuaciones = async function (userId) {
     }
 };
 
-// GET USUARIO
-exports.getUsuario = async function (userId) {
-    try {
-        const usuario = await Usuario.findById(userId);
-        if (!usuario) {
-            throw new Error('Usuario no encontrado');
-        }
-        return usuario;
-    } catch (error) {
-        throw new Error('Error al buscar el usuario: ' + error.message);
-    }
-};
-
-exports.getUsuarioByName = async function (userName) {
-    try {
-        return await Usuario.findOne({nombre: userName});
-    } catch (error) {
-        throw new Error('Error al buscar el usuario por nombre: ' + error.message);
-    }
-};
-
+//MÉTODOS DE AJUSTES
 //CAMBIAR AJUSTES
 exports.cambiarAjustes = async function (userId, valorMusica, valorSonido) {
     try {
@@ -159,6 +196,7 @@ exports.cambiarAjustes = async function (userId, valorMusica, valorSonido) {
     }
 }
 
+//GUARDAR FONDO
 exports.guardarFondo = async function (userId, fondoJuego) {
     try {
         const usuario = await Usuario.findById(userId);
@@ -240,7 +278,6 @@ exports.utilizarItems = async function (userId, superSaltoDespuesDePartida, punt
     }
 }
 
-
 //EDITAR MONEDAS
 exports.sumarMonedas = async function (userId, monedasObtenidas) {
     try {
@@ -253,15 +290,6 @@ exports.sumarMonedas = async function (userId, monedasObtenidas) {
         return usuario;
     } catch (error) {
         throw new Error('Hubo un error al sumar monedas');
-    }
-}
-
-//CREAR USUARIO
-exports.altaUsuario = async function (datosDeUsuario) {
-    try {
-        return Usuario.create(datosDeUsuario);
-    } catch (error) {
-        throw new Error('Error al agregar el usuario: ' + error.message);
     }
 }
 
@@ -341,28 +369,61 @@ exports.listarTodasLasPuntuaciones = async function () {
     }
 };
 
-
-//LISTAR USUARIOS ----------
-exports.listarTodosLosUsuarios = async function () {
+//LISTAR PUNTUACIONES DE AMIGOS
+exports.listarPuntuacionesDeAmigos = async function (userId) {
     try {
-        const usuarios = await Usuario.find();
-
-        if (usuarios.length === 0) {
-            throw new Error('No se encontraron usuarios');
+        // Buscar al usuario por su ID
+        const usuario = await Usuario.findOne({_id: userId});
+        if (!usuario) {
+            throw new Error('No se encontró al usuario');
         }
-        return usuarios;
+
+        let mejoresPuntuacionesAmigos = [];
+
+        // Iterar sobre los amigos del usuario
+        for (const userName of usuario.amigos) {
+            // Usar findOne() para obtener el primer usuario con ese nombre
+            let amigo = await Usuario.findOne({nombre: userName});
+            if (amigo) {
+                console.log("Amigo encontrado:", amigo);
+
+                // Asegurarse de que el amigo tenga puntuaciones antes de acceder
+                if (amigo.puntuaciones) {
+                    amigo.puntuaciones.forEach(puntuacion => {
+                        mejoresPuntuacionesAmigos.push({
+                            nombre: amigo.nombre,
+                            puntuacion: puntuacion
+                        });
+                    });
+                }
+            } else {
+                console.log("No se encontró amigo con nombre:", userName);
+            }
+        }
+
+        // Agregar las puntuaciones del usuario
+        if (usuario.puntuaciones) {
+            usuario.puntuaciones.forEach(puntuacion => {
+                mejoresPuntuacionesAmigos.push({
+                    nombre: usuario.nombre,
+                    puntuacion: puntuacion
+                });
+            });
+        }
+
+        console.log("Puntuaciones finales de los amigos:", mejoresPuntuacionesAmigos);
+
+        // Ordenar las puntuaciones en orden descendente
+        mejoresPuntuacionesAmigos.sort((a, b) => b.puntuacion - a.puntuacion);
+
+        // Retornar las 10 mejores puntuaciones
+        return mejoresPuntuacionesAmigos.slice(0, 10);
     } catch (error) {
-        throw new Error('Error al listar todos los usuarios: ' + error.message);
+        console.error("Error en la función listarPuntuacionesDeAmigos:", error.message);
+        throw new Error('Error al listar las mejores puntuaciones por país: ' + error.message);
     }
 };
 
-exports.existeUsuario = async function (email) {
-    try {
-        return await Usuario.findOne({email: email});
-    } catch (error) {
-        throw new Error('Error al comprobar la existencia del usuario: ' + error.message);
-    }
-};
 
 //METODOS DE OBJETO
 // AGREGAR OBJETO

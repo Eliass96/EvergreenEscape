@@ -295,6 +295,29 @@ app.get("/usuarios/puntuaciones/:nacionalidad", async function (req, res) {
     }
 });
 
+// LISTAR LAS PUNTUACIONES DE AMIGOS
+app.get("/usuarios/puntuacionesAmigos", async function (req, res) {
+    try {
+        console.log("hola")
+        let userId = req.session.usuario;
+        console.log(userId);
+        if (userId) {
+            console.log("kevin")
+            let puntuacionesDeAmigos = await db.listarPuntuacionesDeAmigos(userId);
+            console.log("kevin 2")
+            res.status(HTTP_OK).send(puntuacionesDeAmigos);
+        } else {
+            console.log("no kevin")
+            res.status(HTTP_NOT_FOUND).json({message: 'No se has podido encontrar los amigos.'})
+        }
+    } catch (err) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).send({
+            message: 'Error al listar las puntuaciones de amigos.',
+            error: err.message
+        });
+    }
+});
+
 // LISTAR TODAS LAS PUNTUACIONES
 app.get("/usuarios/puntuaciones", async function (req, res) {
     try {

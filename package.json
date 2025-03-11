@@ -10,6 +10,7 @@
     "comp-perfil": "pug -c -D -n crearPerfil -o www/js/pug www/pug/profile.pug",
     "comp-puntuaciones": "pug -c -D -n crearPuntuaciones -o www/js/pug www/pug/rankings.pug",
     "comp-puntuacionesPais": "pug -c -D -n crearPuntuacionesPorPais -o www/js/pug www/pug/countriesRankings.pug",
+    "comp-puntuacionesAmigos": "pug -c -D -n crearPuntuacionesDeAmigos -o www/js/pug www/pug/friendsRankings.pug",
     "comp-puntuacionesGlobales": "pug -c -D -n crearPuntuacionesGlobales -o www/js/pug www/pug/globalRankings.pug",
     "comp-superSalto": "pug -c -D -n superSalto -o www/js/pug www/pug/superSalto.pug",
     "comp-inmunidad": "pug -c -D -n inmunidad -o www/js/pug www/pug/inmunidad.pug",
