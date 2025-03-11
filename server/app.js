@@ -298,16 +298,11 @@ app.get("/usuarios/puntuaciones/:nacionalidad", async function (req, res) {
 // LISTAR LAS PUNTUACIONES DE AMIGOS
 app.get("/usuarios/puntuacionesAmigos", async function (req, res) {
     try {
-        console.log("hola")
         let userId = req.session.usuario;
-        console.log(userId);
         if (userId) {
-            console.log("kevin")
             let puntuacionesDeAmigos = await db.listarPuntuacionesDeAmigos(userId);
-            console.log("kevin 2")
             res.status(HTTP_OK).send(puntuacionesDeAmigos);
         } else {
-            console.log("no kevin")
             res.status(HTTP_NOT_FOUND).json({message: 'No se has podido encontrar los amigos.'})
         }
     } catch (err) {

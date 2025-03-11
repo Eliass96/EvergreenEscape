@@ -380,14 +380,9 @@ exports.listarPuntuacionesDeAmigos = async function (userId) {
 
         let mejoresPuntuacionesAmigos = [];
 
-        // Iterar sobre los amigos del usuario
         for (const userName of usuario.amigos) {
-            // Usar findOne() para obtener el primer usuario con ese nombre
             let amigo = await Usuario.findOne({nombre: userName});
             if (amigo) {
-                console.log("Amigo encontrado:", amigo);
-
-                // Asegurarse de que el amigo tenga puntuaciones antes de acceder
                 if (amigo.puntuaciones) {
                     amigo.puntuaciones.forEach(puntuacion => {
                         mejoresPuntuacionesAmigos.push({
@@ -396,12 +391,9 @@ exports.listarPuntuacionesDeAmigos = async function (userId) {
                         });
                     });
                 }
-            } else {
-                console.log("No se encontró amigo con nombre:", userName);
             }
         }
 
-        // Agregar las puntuaciones del usuario
         if (usuario.puntuaciones) {
             usuario.puntuaciones.forEach(puntuacion => {
                 mejoresPuntuacionesAmigos.push({
@@ -411,19 +403,14 @@ exports.listarPuntuacionesDeAmigos = async function (userId) {
             });
         }
 
-        console.log("Puntuaciones finales de los amigos:", mejoresPuntuacionesAmigos);
-
-        // Ordenar las puntuaciones en orden descendente
         mejoresPuntuacionesAmigos.sort((a, b) => b.puntuacion - a.puntuacion);
 
-        // Retornar las 10 mejores puntuaciones
         return mejoresPuntuacionesAmigos.slice(0, 10);
     } catch (error) {
         console.error("Error en la función listarPuntuacionesDeAmigos:", error.message);
         throw new Error('Error al listar las mejores puntuaciones por país: ' + error.message);
     }
 };
-
 
 //METODOS DE OBJETO
 // AGREGAR OBJETO
