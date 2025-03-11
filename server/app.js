@@ -9,6 +9,20 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
 
+const redis = require('redis');
+const { RedisStore } = require('connect-redis'); // Desestructuramos RedisStore directamente desde connect-redis
+
+// Crea el cliente de Redis
+const redisClient = redis.createClient({
+    url: process.env.REDIS_URL,
+    socket: {
+        tls: true
+    }
+});
+
+// Conéctate a Redis
+redisClient.connect().catch(err => console.error('Error al conectar a Redis:', err));
+
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
 const HTTP_BAD_REQUEST = 400;
@@ -25,6 +39,39 @@ let datosGoogle = null;
 let isNewUser;
 let isRegister = true;
 
+// app.use(session({
+//     secret: 'EvergreenEscapeSecret',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//         secure: false,
+//         maxAge: 86400000
+//     }
+// }));
+
+app.use(session({
+    store: new RedisStore({ client: redisClient }),
+    secret: 'EvergreenEscapeSecret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        maxAge: 86400000
+    }
+}));
+
+app.use(express.json());
+app.use(cors());
+app.use(express.static("www"));
+db.conectar().then(async () => {
+    console.log("Conectado con la base de datos.");
+    app.listen(PORT, () =>
+        console.log("Servicio escuchando en el puerto " + PORT)
+    );
+    await db.agregarObjetos();
+});
+
+//METODOS
 //Gmail
 app.use(passport.initialize());
 
@@ -60,29 +107,6 @@ app.get('/passport/google/callback',
     }
 );
 
-app.use(session({
-    secret: 'EvergreenEscapeSecret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        secure: false,
-        maxAge: 86400000
-    }
-}));
-
-app.use(express.json());
-app.use(cors());
-app.use(express.static("www"));
-db.conectar().then(async () => {
-    console.log("Conectado con la base de datos.");
-    app.listen(PORT, () =>
-        console.log("Servicio escuchando en el puerto " + PORT)
-    );
-    await db.agregarObjetos();
-});
-
-
-//METODOS
 // COMPROBACIÓN DE SESIÓN
 app.get('/usuarios/estado', async (req, res) => {
     try {
