@@ -35,9 +35,6 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 
 const app = express();
-let datosGoogle = null;
-let isNewUser;
-let isRegister = true;
 
 // app.use(session({
 //     secret: 'EvergreenEscapeSecret',
@@ -73,6 +70,10 @@ db.conectar().then(async () => {
 
 //METODOS
 //Gmail
+let datosGoogle = null;
+let isNewUser;
+let isRegister = true;
+
 app.use(passport.initialize());
 
 passport.use(new GoogleStrategy({
