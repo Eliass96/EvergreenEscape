@@ -2,7 +2,7 @@ let fondo;
 
 document.addEventListener('keyup', (event) => {
     if (event.key === 'Escape') {
-        window.location = '../html/settings.html';
+        window.location.href = '/settings';
     }
 });
 
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1000,
                     timerProgressBar: true
                 }).then(() => {
-                    document.location.href = "../html/settings.html";
+                    document.location.href = "/settings";
                 });
             })
 
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1000,
                     timerProgressBar: true
                 }).then(() => {
-                    document.location.href = "../html/settings.html";
+                    document.location.href = "/settings";
                 });
 
             })
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 text: "¡Tienes que iniciar sesión para poder acceder a los ajustes de fondo!",
                 confirmButtonText: "Aceptar"
             }).then(() => {
-                document.location.href = "../html/login.html";
+                document.location.href = "/login";
             });
         }
     } catch (error) {

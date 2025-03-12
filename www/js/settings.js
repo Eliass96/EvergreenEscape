@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     document.addEventListener('keyup', (event) => {
         if (event.key === 'Escape') {
-            window.location = '../index.html';
+            window.location = '/';
         }
     });
 
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 text: "¡Tienes que iniciar sesión para poder acceder a los ajustes!",
                 confirmButtonText: "Aceptar"
             }).then(() => {
-                document.location.href = "../html/login.html";
+                document.location.href = "/login";
             });
         }
     } catch (error) {
@@ -208,15 +208,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                         timer: 1000,
                         timerProgressBar: true,
                     }).then(() => {
-                        window.location.href = "../html/gameSettings.html";
+                        window.location.href = "/gameSettings";
                     })
                 } else if (result.isDenied) {
-                    window.location.href = "../html/gameSettings.html";
+                    window.location.href = "/gameSettings";
                 }
 
             });
         } else {
-            window.location.href = "../html/gameSettings.html";
+            window.location.href = "/gameSettings";
         }
     }
 });

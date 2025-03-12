@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             });
             if (!resp.ok) {
-                document.getElementById('butUser').setAttribute('href', '../html/login.html');
+                document.getElementById('butUser').setAttribute('href', '/login');
                 elementosA.forEach(elemento => {
                     elemento.style.visibility = 'hidden';
                 });
@@ -19,13 +19,13 @@ document.addEventListener('DOMContentLoaded', async function () {
             } else {
                 const data = await resp.json();
                 if (data.usuarioId) {
-                    document.getElementById('butUser').setAttribute('href', '../html/profile.html');
+                    document.getElementById('butUser').setAttribute('href', '/profile');
                     elementosA.forEach(elemento => {
                         elemento.style.visibility = 'visible';
                     });
                     document.getElementById('txtNotLogged').style.visibility = 'hidden';
                 } else {
-                    document.getElementById('butUser').setAttribute('href', '../html/login.html');
+                    document.getElementById('butUser').setAttribute('href', '/login');
                     elementosA.forEach(elemento => {
                         elemento.style.visibility = 'hidden';
                     });

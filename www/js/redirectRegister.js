@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                     cancelButtonText: "No, cancelar",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "/html/completeData.html";
+                        window.location.href = "/completeData";
                     } else {
-                        window.location.href = "/html/login.html";
+                        window.location.href = "/login";
                     }
                 });
             }

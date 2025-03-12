@@ -10,17 +10,13 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
 
 const redis = require('redis');
-const { RedisStore } = require('connect-redis'); // Desestructuramos RedisStore directamente desde connect-redis
-
-// Crea el cliente de Redis
+const { RedisStore } = require('connect-redis');
 const redisClient = redis.createClient({
     url: process.env.REDIS_URL,
     socket: {
         tls: true
     }
 });
-
-// Conéctate a Redis
 redisClient.connect().catch(err => console.error('Error al conectar a Redis:', err));
 
 setInterval(async () => {
@@ -30,7 +26,7 @@ setInterval(async () => {
     } catch (err) {
         console.error("Error al hacer ping a Redis:", err);
     }
-}, 300000); // Realiza un ping cada 5 minutos
+}, 300000);
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
@@ -42,18 +38,7 @@ const HTTP_CONFLICT = 409;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 
 const PORT = process.env.PORT || 40000;
-
 const app = express();
-
-// app.use(session({
-//     secret: 'EvergreenEscapeSecret',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//         secure: false,
-//         maxAge: 86400000
-//     }
-// }));
 
 app.use(session({
     store: new RedisStore({ client: redisClient }),
@@ -77,12 +62,58 @@ db.conectar().then(async () => {
     await db.agregarObjetos();
 });
 
-//METODOS
-//Gmail
+// VARIABLES
 let datosGoogle = null;
 let isNewUser;
 let isRegister = true;
 
+// RUTAS
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/index.html"));
+});
+
+app.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/login.html"));
+});
+
+app.get("/register", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/register.html"));
+});
+
+app.get("/profile", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/profile.html"));
+});
+
+app.get("/game", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/game.html"));
+});
+
+app.get("/info", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/info.html"));
+});
+
+app.get("/shop", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/shop.html"));
+});
+
+app.get("/rankings", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/rankings.html"));
+});
+
+app.get("/settings", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/settings.html"));
+});
+
+app.get("/changeBackground", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/gameSettings.html"));
+});
+
+app.get("/completeData", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/completeData.html"));
+});
+
+// METODOS
+// GMAIL
 app.use(passport.initialize());
 
 passport.use(new GoogleStrategy({
@@ -105,7 +136,7 @@ app.get('/passport/google/callback',
     passport.authenticate("google", {session: false}),
     (req, res) => {
         if (isNewUser) {
-            res.redirect("/html/completeData.html");
+            res.redirect("/completeData");
         } else {
             if (!isRegister) {
                 res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));

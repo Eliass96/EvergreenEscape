@@ -118,7 +118,7 @@ class gameScene extends Phaser.Scene {
                     text: "¡Tienes que iniciar sesión para poder acceder al juego!",
                     confirmButtonText: "Aceptar"
                 }).then(() => {
-                    document.location.href = "../html/login.html";
+                    document.location.href = "/login";
                 });
             }
         } catch (error) {

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('loginButtonGoogle').addEventListener('click', loginGoogle);
         document.addEventListener('keyup', (event) => {
             if (event.key === 'Escape') {
-                window.location = '../index.html';
+                window.location = '/';
             }
         });
 
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         // Redirigir a la pantalla deseada
-                                        window.location.href = "../html/completeData.html";
+                                        window.location.href = "/completeData";
                                     }
                                 });
                             }

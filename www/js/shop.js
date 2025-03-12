@@ -3,7 +3,7 @@ let usuario;
 
 document.addEventListener('keyup', (event) => {
     if (event.key === 'Escape') {
-        window.location = '../index.html';
+        window.location = '/';
     }
 });
 
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     text: "¡Tienes que iniciar sesión para poder acceder a la tienda!",
                     confirmButtonText: "Aceptar"
                 }).then(() => {
-                    document.location.href = "../html/login.html";
+                    document.location.href = "/login";
                 });
             }
         } catch (error) {
