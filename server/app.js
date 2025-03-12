@@ -104,7 +104,7 @@ app.get("/settings", (req, res) => {
     res.sendFile(path.join(__dirname, "../www/html/settings.html"));
 });
 
-app.get("/changeBackground", (req, res) => {
+app.get("/gameSettings", (req, res) => {
     res.sendFile(path.join(__dirname, "../www/html/gameSettings.html"));
 });
 
