@@ -573,3 +573,8 @@ app.get("/tienda/objeto/:nombreObjeto", async function (req, res) { // funciona
         });
     }
 });
+
+// RUTA DE ERROR 404
+app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(__dirname, "../www/html/errors/404.html"));
+});
