@@ -51,6 +51,31 @@ app.use(session({
     }
 }));
 
+function bloquearAccesoDirecto(req, res, next) {
+    const referer = req.get('Referer');
+    const origin = req.get('Origin');
+
+    if (!referer && !origin) {
+        return res.status(403).sendFile(path.join(__dirname, "../www/html/errors/404.html"));
+    }
+
+    if (referer && !referer.startsWith('http://localhost:30000') && !referer.startsWith('https://evergreenescape.onrender.com/')) {
+        return res.status(403).sendFile(path.join(__dirname, "../www/html/errors/404.html"));
+    }
+    next();
+}
+
+app.use('/js', bloquearAccesoDirecto);
+app.use('/css', bloquearAccesoDirecto);
+app.use('/html', bloquearAccesoDirecto);
+app.use('/assets', bloquearAccesoDirecto);
+app.use('/pug', bloquearAccesoDirecto);
+app.use('/img', bloquearAccesoDirecto);
+app.use('/apiPaises.json', bloquearAccesoDirecto);
+app.use('/apiPaisesTraducida.json', bloquearAccesoDirecto);
+app.use('/index.html', bloquearAccesoDirecto);
+
+
 app.use(express.json());
 app.use(cors());
 app.use(express.static("www"));

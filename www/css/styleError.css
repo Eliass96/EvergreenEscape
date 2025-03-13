@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'jackpot';
+    src: url('../assets/fonts/Jackpot.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'turtles';
+    src: url('../assets/fonts/Turtles.woff') format('woff');
+}
+
+.styleError {
+    font-family: 'turtles', serif;
+    font-size: clamp(2em, 3vw, 3em);
+}
+
+.styleError404 {
+    font-family: 'turtles', serif;
+    font-size: clamp(3em, 4vw, 4em);
+}
