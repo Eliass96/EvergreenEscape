@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         let resp = await fetch(urlUsuario);
         if (resp.ok) {
             const datosUsuario = await resp.json();
+            console.log(datosUsuario);
             outputPerfil.innerHTML = crearPerfil(datosUsuario);
         } else {
             Swal.fire({
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             document.location.href = "/"
         });
     }
+
     async function cerrarSesion(evt) {
         if (evt.target.classList.contains("botonCerrarSesion")) {
             let resp = await fetch('/usuarios/cerrarSesion', {

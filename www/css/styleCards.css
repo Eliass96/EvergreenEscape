@@ -39,6 +39,47 @@
     white-space: break-spaces;
 }
 
+/*** FRIENDS ***/
+.titulo_card_friends {
+    font-family: 'jackpot', sans-serif;
+    font-size: clamp(0.60em, 3.5vh, 1.1em);
+    padding-top: 2em;
+    text-align: center;
+    line-height: 1.75;
+}
+
+.cardFriends {
+    color: white;
+    overflow-y: hidden;
+    height: 60vh;
+    min-height: 100px;
+    width: 22vw;
+    border-radius: 15px;
+}
+
+.card-inner-friends {
+    width: 22vw;
+    background-color: rgba(0, 0, 0, .5);
+    color: white;
+    overflow-y: auto;
+    height: 60vh;
+    min-height: 100px;
+    border-radius: 15px;
+}
+
+.lista_friends {
+    padding: 20px;
+    font-family: 'turtles', sans-serif;
+    font-size: 1.1em;
+}
+
+.texto_friends {
+    font-family: 'turtles', sans-serif;
+    font-size: clamp(0.75em, 3vh, 1em);
+    padding-bottom: 5px;
+    white-space: break-spaces;
+}
+
 /*** INFO ***/
 .card-outer {
     min-width: 30vw;

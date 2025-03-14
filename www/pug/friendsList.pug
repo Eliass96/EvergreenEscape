@@ -1,0 +1,11 @@
+output.cardFriends#friendsList
+    .card-inner-friends
+        header.d-flex.align-items-center.justify-content-center
+            h2.titulo_card_friends Mis Amigos
+        ul.lista_friends
+            each amigo in amigos
+                li.texto_friends.d-flex.align-items-center.justify-content-between
+                    p= amigo
+                    .d-flex.gap-2
+                        button.btn.btn-custom.boton_eliminar#boton_eliminar ❌
+                        button.btn.btn-custom.boton_chatear#boton_chatear 💬

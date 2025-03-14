@@ -15,7 +15,8 @@
     "comp-superSalto": "pug -c -D -n superSalto -o www/js/pug www/pug/superSalto.pug",
     "comp-inmunidad": "pug -c -D -n inmunidad -o www/js/pug www/pug/inmunidad.pug",
     "comp-puntuacionDoble": "pug -c -D -n puntuacionDoble -o www/js/pug www/pug/puntuacionDoble.pug",
-    "comp-revivir": "pug -c -D -n revivir -o www/js/pug www/pug/revivir.pug"
+    "comp-revivir": "pug -c -D -n revivir -o www/js/pug www/pug/revivir.pug",
+    "comp-friendsList": "pug -c -D -n friendsList -o www/js/pug www/pug/friendsList.pug"
   },
   "keywords": [
     "ecosystem:cordova"
