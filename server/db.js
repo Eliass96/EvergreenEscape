@@ -28,7 +28,7 @@ const UsuarioSchema = new mongoose.Schema(
         },
         amigos: {
             type: [String],
-            default: ['55']
+            default: ['55', '123', 'email@gmail.com', '12345']
         },
         puntuaciones: {
             type: [Number],

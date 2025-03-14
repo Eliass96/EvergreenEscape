@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1500,
                     timerProgressBar: true,
                 }).then(() => {
-                    document.location.href = window.location.href;
+                    window.location.reload();
                 });
             } else {
                 Swal.fire({
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1000,
                     timerProgressBar: true,
                 }).then(() => {
-                    //document.location.href = "/friends"
+                    window.location.reload();
                 })
             }
         }
