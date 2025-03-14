@@ -84,6 +84,40 @@ const Usuario = mongoose.model('Usuario', UsuarioSchema);
 const Objeto = mongoose.model('Objeto', ObjetoSchema);
 
 //METODOS DE USUARIO
+
+//AÑADIR AMIGO
+exports.agregarAmigo = async (userId, amigoId) => {
+    try {
+        const usuario = await Usuario.findById(userId);
+        if (!usuario) throw new Error("Usuario no encontrado");
+
+        if (!usuario.amigos.includes(amigoId)) {
+            usuario.amigos.push(amigoId);
+            await usuario.save();
+            return { success: true, message: "Amigo agregado exitosamente" };
+        } else {
+            return { success: false, message: "El usuario ya es tu amigo" };
+        }
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+};
+
+
+//ELIMINAR AMIGO
+exports.eliminarAmigo = async (userId, amigoId) => {
+    try {
+        const usuario = await Usuario.findById(userId);
+        if (!usuario) throw new Error("Usuario no encontrado");
+
+        usuario.amigos = usuario.amigos.filter((id) => id !== amigoId);
+        await usuario.save();
+        return { success: true, message: "Amigo eliminado exitosamente" };
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+};
+
 //CREAR USUARIO
 exports.altaUsuario = async function (datosDeUsuario) {
     try {
