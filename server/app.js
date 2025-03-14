@@ -19,15 +19,6 @@ const redisClient = redis.createClient({
 });
 redisClient.connect().catch(err => console.error('Error al conectar a Redis:', err));
 
-setInterval(async () => {
-    try {
-        await redisClient.ping();
-        console.log("Ping enviado a Redis");
-    } catch (err) {
-        console.error("Error al hacer ping a Redis:", err);
-    }
-}, 300000);
-
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
 const HTTP_BAD_REQUEST = 400;
