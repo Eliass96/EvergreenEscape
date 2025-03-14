@@ -613,16 +613,16 @@ app.get("/tienda/objeto/:nombreObjeto", async function (req, res) { // funciona
     }
 });
 
-app.post("/usuarios/amigos/:amigoId", async (req, res) => {
+app.post("/usuarios/amigos/:amigoNombre", async (req, res) => {
     try {
         const usuarioId = req.session?.usuario;
-        const amigoId = req.params.amigoId;
+        const amigoNombre = req.params.amigoNombre;
 
         if (!usuarioId) {
-            return res.status(401).json({ success: false, message: "Usuario no autenticado" });
+            return res.status(HTTP_UNAUTHORIZED).json({ success: false, message: "Usuario no autenticado" });
         }
 
-        const resultado = await agregarAmigo(usuarioId, amigoId);
+        const resultado = await db.agregarAmigo(usuarioId, amigoNombre);
         res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
     } catch (error) {
         console.error("❌ Error al agregar amigo", error);
@@ -632,13 +632,19 @@ app.post("/usuarios/amigos/:amigoId", async (req, res) => {
 
 
 //Eliminar un amigo
-app.delete("/usuarios/:userId/amigos/:amigoId", async (req, res) => {
+app.delete("/usuarios/amigos/:amigoNombre", async (req, res) => {
     try {
-        const { userId, amigoId } = req.params;
-        const resultado = await eliminarAmigo(userId, amigoId);
-        res.status(resultado.success ? 200 : 400).json(resultado);
+        const usuarioId = req.session?.usuario;
+        const amigoNombre = req.params.amigoNombre;
+
+        if (!usuarioId) {
+            return res.status(HTTP_UNAUTHORIZED).json({ success: false, message: "Usuario no autenticado" });
+        }
+
+        const resultado = await db.eliminarAmigo(usuarioId, amigoNombre);
+        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
     } catch (error) {
-        console.error("❌ Error en eliminarAmigo:", error);
+        console.error("❌ Error al eliminar amigo", error);
         res.status(500).json({ success: false, message: "Error interno del servidor" });
     }
 });

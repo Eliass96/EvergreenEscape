@@ -86,13 +86,13 @@ const Objeto = mongoose.model('Objeto', ObjetoSchema);
 //METODOS DE USUARIO
 
 //AÑADIR AMIGO
-exports.agregarAmigo = async (userId, amigoId) => {
+exports.agregarAmigo = async (userId, amigoNombre) => {
     try {
         const usuario = await Usuario.findById(userId);
         if (!usuario) throw new Error("Usuario no encontrado");
 
-        if (!usuario.amigos.includes(amigoId)) {
-            usuario.amigos.push(amigoId);
+        if (!usuario.amigos.includes(amigoNombre)) {
+            usuario.amigos.push(amigoNombre);
             await usuario.save();
             return { success: true, message: "Amigo agregado exitosamente" };
         } else {
@@ -105,12 +105,12 @@ exports.agregarAmigo = async (userId, amigoId) => {
 
 
 //ELIMINAR AMIGO
-exports.eliminarAmigo = async (userId, amigoId) => {
+exports.eliminarAmigo = async (userId, amigoNombre) => {
     try {
         const usuario = await Usuario.findById(userId);
         if (!usuario) throw new Error("Usuario no encontrado");
 
-        usuario.amigos = usuario.amigos.filter((id) => id !== amigoId);
+        usuario.amigos = usuario.amigos.filter((id) => id !== amigoNombre);
         await usuario.save();
         return { success: true, message: "Amigo eliminado exitosamente" };
     } catch (error) {
