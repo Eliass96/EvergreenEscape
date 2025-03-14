@@ -137,6 +137,10 @@ app.get("/completeData", (req, res) => {
     res.sendFile(path.join(__dirname, "../www/html/completeData.html"));
 });
 
+app.get("/friends", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/friends.html"));
+});
+
 // METODOS
 // GMAIL
 app.use(passport.initialize());
@@ -608,6 +612,37 @@ app.get("/tienda/objeto/:nombreObjeto", async function (req, res) { // funciona
         });
     }
 });
+
+app.post("/usuarios/amigos/:amigoId", async (req, res) => {
+    try {
+        const usuarioId = req.session?.usuario;
+        const amigoId = req.params.amigoId;
+
+        if (!usuarioId) {
+            return res.status(401).json({ success: false, message: "Usuario no autenticado" });
+        }
+
+        const resultado = await agregarAmigo(usuarioId, amigoId);
+        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
+    } catch (error) {
+        console.error("❌ Error al agregar amigo", error);
+        res.status(500).json({ success: false, message: "Error interno del servidor" });
+    }
+});
+
+
+//Eliminar un amigo
+app.delete("/usuarios/:userId/amigos/:amigoId", async (req, res) => {
+    try {
+        const { userId, amigoId } = req.params;
+        const resultado = await eliminarAmigo(userId, amigoId);
+        res.status(resultado.success ? 200 : 400).json(resultado);
+    } catch (error) {
+        console.error("❌ Error en eliminarAmigo:", error);
+        res.status(500).json({ success: false, message: "Error interno del servidor" });
+    }
+});
+
 
 // RUTA DE ERROR 404
 app.use((req, res, next) => {
