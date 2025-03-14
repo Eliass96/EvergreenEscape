@@ -114,14 +114,17 @@ exports.getUsuarioByName = async function (userName) {
     }
 };
 
-//EXISTE USUARIO
-exports.existeUsuario = async function (email) {
+// EXISTE USUARIO
+exports.existeUsuario = async function (email, nombre) {
     try {
-        return await Usuario.findOne({email: email});
+        return await Usuario.findOne({
+            $or: [{email: email}, {nombre: nombre}]
+        });
     } catch (error) {
         throw new Error('Error al comprobar la existencia del usuario: ' + error.message);
     }
 };
+
 
 //LISTAR USUARIOS
 exports.listarTodosLosUsuarios = async function () {

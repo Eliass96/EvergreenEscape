@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: "¡Este usuario ya existe!",
+                        title: "¡Este nombre de usuario o email ya existe!",
                         showConfirmButton: true,
                         confirmButtonText: "De acuerdo",
                         confirmButtonColor: "lightgreen"

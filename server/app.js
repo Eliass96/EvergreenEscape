@@ -10,7 +10,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
 
 const redis = require('redis');
-const { RedisStore } = require('connect-redis');
+const {RedisStore} = require('connect-redis');
 const redisClient = redis.createClient({
     url: process.env.REDIS_URL,
     socket: {
@@ -41,7 +41,7 @@ const PORT = process.env.PORT || 40000;
 const app = express();
 
 app.use(session({
-    store: new RedisStore({ client: redisClient }),
+    store: new RedisStore({client: redisClient}),
     secret: 'EvergreenEscapeSecret',
     resave: false,
     saveUninitialized: false,
@@ -227,29 +227,39 @@ app.post("/usuarios/completarDatos", async (req, res) => {
 // REGISTRO
 app.post("/usuarios/registro", async (req, res) => {
     try {
-        const nombre = req.body.nombre;
-        const password = req.body.password;
-        const nacionalidad = req.body.nacionalidad;
-        const email = req.body.email;
-        if (!nombre || !password || !nacionalidad || !email) {
-            return res.status(HTTP_BAD_REQUEST).send({status: "Error", message: "Los campos están incompletos"})
+        const {nombre, password, nacionalidad, email} = req.body;
+
+        if (!nombre?.trim() || !password?.trim() || !nacionalidad?.trim() || !email?.trim()) {
+            return res.status(HTTP_BAD_REQUEST).json({status: "Error", message: "Los campos están incompletos"});
         }
-        isRegister = true;
-        const usuarioARevisar = await db.existeUsuario(nombre);
-        if (!usuarioARevisar) {
-            const salt = await bcrypt.genSalt(5);
-            const hashPassword = await bcrypt.hash(password, salt);
-            const nuevoUsuario = {
-                nombre, email, password: hashPassword, nacionalidad
-            }
-            await db.altaUsuario(nuevoUsuario);
-            isNewUser = true;
-            return res.status(HTTP_CREATED).send({status: "ok", message: `Usuario ${nuevoUsuario.nombre} registrado`})
-        } else {
-            return res.status(HTTP_CONFLICT).send({status: "Error", message: "Este usuario ya existe"});
+
+        const usuarioExistente = await db.existeUsuario(email.trim(), nombre.trim());
+        if (usuarioExistente) {
+            return res.status(HTTP_CONFLICT).json({status: "Error", message: "Este usuario ya existe"});
         }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(password, salt);
+
+        const nuevoUsuario = {
+            nombre: nombre.trim(),
+            email: email.trim(),
+            password: hashPassword,
+            nacionalidad: nacionalidad.trim()
+        };
+
+        await db.altaUsuario(nuevoUsuario);
+        return res.status(HTTP_CREATED).json({
+            status: "ok",
+            message: `Usuario ${nuevoUsuario.nombre} registrado exitosamente`
+        });
+
     } catch (err) {
-        res.status(HTTP_INTERNAL_SERVER_ERROR).send({message: 'Error inesperado al registrarte.', error: err.message});
+        return res.status(HTTP_INTERNAL_SERVER_ERROR).json({
+            status: "Error",
+            message: "Error inesperado al registrarte",
+            error: err.message
+        });
     }
 });
 
