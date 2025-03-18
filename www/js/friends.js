@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 text: "¡Tienes que iniciar sesión para poder acceder al listado de amigos!",
                 confirmButtonText: "Aceptar"
             }).then(() => {
-                // document.location.href = "/login";
+                document.location.href = "/login";
             });
         }
     } catch (error) {
@@ -68,31 +68,26 @@ document.addEventListener('DOMContentLoaded', async function () {
             timerProgressBar: true,
         }).then(() => {
             console.log(error)
-            // document.location.href = "/"
+            document.location.href = "/"
         });
     }
 
 
     document.getElementById("buscador").addEventListener('input', function (event) {
-        const busqueda = event.target.value.toLowerCase();  // Obtenemos el valor del input en minúsculas
+        const busqueda = event.target.value.toLowerCase();
 
-        // Filtramos los usuarios que contienen el texto ingresado
         const usuariosFiltrados = usuarios.filter(usuario => {
             return usuario.nombre.toLowerCase().includes(busqueda);
         });
 
-        // Actualizamos la lista de usuarios en el DOM
         actualizarListaUsuarios(usuariosFiltrados);
     });
 
-// Función que actualiza la lista de usuarios en la interfaz
     function actualizarListaUsuarios(usuariosFiltrados) {
         const listaUsuarios = document.querySelector('.lista_users');
 
-        // Limpiamos la lista actual de usuarios
         listaUsuarios.innerHTML = '';
 
-        // Iteramos sobre los usuarios filtrados y los agregamos al DOM
         usuariosFiltrados.forEach(usuario => {
             const li = document.createElement('li');
             li.classList.add('texto_users', 'd-flex', 'align-items-center', 'justify-content-between');
@@ -140,16 +135,34 @@ document.addEventListener('DOMContentLoaded', async function () {
                     window.location.reload();
                 });
             } else {
+
+
                 Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Amigo eliminado!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                }).then(() => {
-                    window.location.reload();
-                })
+                    title: "¿Estás seguro de que quieres eliminar a este amigo?",
+                    icon: "warning",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    animation: true,
+                    cancelButtonColor: "#e74c3c",
+                    confirmButtonText: "Si",
+                    denyButtonText: "No",
+                    cancelButtonText: "Cancelar",
+                    confirmButtonColor: "lightgreen",
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "¡Amigo eliminado!",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true,
+                        }).then(() => {
+                            window.location.reload();
+                        })
+                    }
+
+                });
             }
         }
     }
