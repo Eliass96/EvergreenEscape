@@ -11,3 +11,19 @@
     background: white;
     color: black;
 }
+
+.img_button_solicitudes {
+    width: 6vw;
+    min-width: 80px;
+}
+
+.button_solicitudes {
+    position: absolute;
+    right: 2vw;
+    top: 2vw;
+    background: transparent;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+

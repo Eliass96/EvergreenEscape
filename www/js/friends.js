@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
+
     document.addEventListener('keyup', (event) => {
         if (event.key === 'Escape') {
             window.location = '/';
@@ -8,6 +9,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     document.getElementById('outputFriendsList').addEventListener('click', eliminarAmigo)
     document.getElementById('outputFriendsAddList').addEventListener('click', addAmigo)
+
+
+
+    document.getElementById("but_solicitudes").addEventListener('click', async function () {
+        $('#modalFriendRequest').modal({backdrop: 'static', keyboard: false}).modal('show');
+
+        $(document.getElementById("but_solicitudes")).modal('hide');
+    }, this);
+
 
     try {
         let urlUsuario = '/usuarios/usuario';
@@ -45,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         let urlUsuario = '/usuarios';
         let resp = await fetch(urlUsuario);
         if (resp.ok) {
-             usuarios = await resp.json();
+            usuarios = await resp.json();
 
             outputFriendsAddList.innerHTML = friendsAddList({usuarios: usuarios});
         } else {
@@ -74,14 +84,23 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
     document.getElementById("buscador").addEventListener('input', function (event) {
-        const busqueda = event.target.value.toLowerCase();
+        let busqueda = event.target.value;
+
+        busqueda = busqueda.replace(/[a-zA-Z]/g, function(match) {
+            return match.toLowerCase();
+        });
 
         const usuariosFiltrados = usuarios.filter(usuario => {
-            return usuario.nombre.toLowerCase().includes(busqueda);
+            const nombreUsuario = usuario.nombre.replace(/[a-zA-Z]/g, function(match) {
+                return match.toLowerCase();
+            });
+
+            return nombreUsuario.includes(busqueda);
         });
 
         actualizarListaUsuarios(usuariosFiltrados);
     });
+
 
     function actualizarListaUsuarios(usuariosFiltrados) {
         const listaUsuarios = document.querySelector('.lista_users');
@@ -109,7 +128,39 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function addAmigo(evt) {
         if (evt.target.classList.contains("boton_anadir")) {
+            let friendName = evt.target.parentElement.querySelector("p").textContent
+            console.log(friendName);
+           let resp = await fetch(`/usuarios/amigos/${friendName}`, {
+                credentials: 'include',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
+            if (!resp.ok) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Ups...",
+                    text: "Error inesperado al añadir amigo... Pruebe a reiniciar la página",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                }).then(() => {
+                    //window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "¡Solicitud de amistad enviada!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                }).then(() => {
+                    window.location.reload();
+                })
+            }
         }
     }
 
@@ -135,18 +186,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                     window.location.reload();
                 });
             } else {
-
-
                 Swal.fire({
                     title: "¿Estás seguro de que quieres eliminar a este amigo?",
                     icon: "warning",
                     showDenyButton: true,
-                    showCancelButton: true,
                     animation: true,
-                    cancelButtonColor: "#e74c3c",
                     confirmButtonText: "Si",
                     denyButtonText: "No",
-                    cancelButtonText: "Cancelar",
                     confirmButtonColor: "lightgreen",
                 }).then(async (result) => {
                     if (result.isConfirmed) {

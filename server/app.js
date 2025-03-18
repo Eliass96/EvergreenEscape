@@ -622,7 +622,7 @@ app.post("/usuarios/amigos/:amigoId", async (req, res) => {
             return res.status(401).json({ success: false, message: "Usuario no autenticado" });
         }
 
-        const resultado = await agregarAmigo(usuarioId, amigoId);
+        const resultado = await db.agregarAmigo(usuarioId, amigoId);
         res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
     } catch (error) {
         console.error("❌ Error al agregar amigo", error);
