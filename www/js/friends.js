@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     document.getElementById('outputFriendsList').addEventListener('click', eliminarAmigo)
-    document.getElementById('outputFriendsAddList').addEventListener('click', addAmigo)
+    document.getElementById('outputFriendsAddList').addEventListener('click', enviarSolicitud)
+    document.getElementById('outputCardSolicitudes').addEventListener('click', gestionarSolicitudes)
+
 
 
 
@@ -18,6 +20,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         $(document.getElementById("but_solicitudes")).modal('hide');
     }, this);
 
+    document.getElementById("boton_cerrar").addEventListener("click", function () {
+        $("#modalFriendRequest").modal("hide");
+    });
+
 
     try {
         let urlUsuario = '/usuarios/usuario';
@@ -25,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (resp.ok) {
             const datosUsuario = await resp.json();
             outputFriendsList.innerHTML = friendsList({amigos: datosUsuario.amigos});
+            outputCardSolicitudes.innerHTML = friendsRequest({solicitudes: datosUsuario.solicitudesAmistad});
         } else {
             Swal.fire({
                 icon: "warning",
@@ -45,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             timerProgressBar: true,
         }).then(() => {
             console.log(error)
-            document.location.href = "/"
+           // document.location.href = "/"
         });
     }
 
@@ -54,6 +61,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     try {
         let urlUsuario = '/usuarios';
         let resp = await fetch(urlUsuario);
+
         if (resp.ok) {
             usuarios = await resp.json();
 
@@ -101,6 +109,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         actualizarListaUsuarios(usuariosFiltrados);
     });
 
+    function  gestionarSolicitudes() {
+
+    }
+
 
     function actualizarListaUsuarios(usuariosFiltrados) {
         const listaUsuarios = document.querySelector('.lista_users');
@@ -126,13 +138,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
 
-    async function addAmigo(evt) {
+    async function enviarSolicitud(evt) {
         if (evt.target.classList.contains("boton_anadir")) {
             let friendName = evt.target.parentElement.querySelector("p").textContent
             console.log(friendName);
-           let resp = await fetch(`/usuarios/amigos/${friendName}`, {
+           let resp = await fetch(`/usuarios/solicitudes/${friendName}`, {
                 credentials: 'include',
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -142,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 Swal.fire({
                     icon: "error",
                     title: "Ups...",
-                    text: "Error inesperado al añadir amigo... Pruebe a reiniciar la página",
+                    text: "Error inesperado al mandar solicitud de amigo... Pruebe a reiniciar la página",
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,

@@ -649,6 +649,24 @@ app.patch("/usuarios/amigos/:amigoNombre", async (req, res) => {
     }
 });
 
+app.patch("/usuarios/solicitudes/:amigoNombre", async (req, res) => {
+    try {
+        const usuarioId = req.session?.usuario;
+        const amigoNombre = req.params.amigoNombre;
+
+        if (!usuarioId) {
+            return res.status(HTTP_UNAUTHORIZED).json({ success: false, message: "Usuario no autenticado" });
+        }
+
+        const resultado = await db.agregarSolicitud(amigoNombre, usuarioId);
+        console.log(resultado);
+        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
+    } catch (error) {
+        console.error("❌ Error al enviar solicitud de amistad", error);
+        res.status(500).json({ success: false, message: "Error interno del servidor" });
+    }
+});
+
 
 // RUTA DE ERROR 404
 app.use((req, res, next) => {

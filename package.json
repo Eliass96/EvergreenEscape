@@ -17,7 +17,8 @@
     "comp-puntuacionDoble": "pug -c -D -n puntuacionDoble -o www/js/pug www/pug/puntuacionDoble.pug",
     "comp-revivir": "pug -c -D -n revivir -o www/js/pug www/pug/revivir.pug",
     "comp-friendsList": "pug -c -D -n friendsList -o www/js/pug www/pug/friendsList.pug",
-    "comp-friendsAddList": "pug -c -D -n friendsAddList -o www/js/pug www/pug/friendsAddList.pug"
+    "comp-friendsAddList": "pug -c -D -n friendsAddList -o www/js/pug www/pug/friendsAddList.pug",
+    "comp-solicitudes": "pug -c -D -n friendsRequest -o www/js/pug www/pug/solicitudes.pug"
   },
   "keywords": [
     "ecosystem:cordova"
