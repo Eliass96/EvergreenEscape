@@ -26,33 +26,4 @@
     transition: transform 0.3s ease;
 }
 
-.modal-header {
-    padding: 0 !important;
-    border-bottom: none !important;
-}
-
-.modal-body {
-    padding: 0 !important;
-}
-
-.modal-footer {
-    border-top: none;
-}
-
-.modal-friends {
-    background-color: rgba(0, 0, 0, .4);
-    border: none;
-    border-radius: 15px;
-    max-height: 80vh;
-    width: 50vw;
-}
-
-.modalSettings-inner {
-    color: white;
-    overflow-y: auto;
-    border-radius: 15px;
-    max-height: 78vh;
-    width: 50vw;
-}
-
 

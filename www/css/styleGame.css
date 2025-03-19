@@ -1,17 +1,4 @@
 /*GAME OVER MODAL*/
-.modal-header {
-    padding: 0 !important;
-    border-bottom: none !important;
-}
-
-.modal-body {
-    padding: 0 !important;
-}
-
-.modal-footer {
-    border-top: none;
-}
-
 .modalGameOver {
     display: flex;
     align-items: center;
@@ -21,6 +8,14 @@
     width: 70vw;
     border-radius: 15px;
     max-height: 80vh;
+}
+
+.modal-header {
+    padding: 0 !important;
+}
+
+.modal-body {
+    padding: 0 !important;
 }
 
 .modalPause {
@@ -47,6 +42,14 @@
     border-radius: 15px;
     max-height: 78vh;
     width: 50vw;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.modal-header {
+    border-bottom: none !important;
 }
 
 .row {
