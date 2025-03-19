@@ -28,7 +28,11 @@ const UsuarioSchema = new mongoose.Schema(
         },
         amigos: {
             type: [String],
-            default: ['55', '123', 'email@gmail.com', '12345']
+            default: ['55', '123']
+        },
+        solicitudesAmistad: {
+            type: [String],
+            default: []
         },
         puntuaciones: {
             type: [Number],
@@ -117,6 +121,31 @@ exports.eliminarAmigo = async (userId, amigoNombre) => {
         return { success: false, message: error.message };
     }
 };
+
+
+exports.agregarSolicitud = async (amigoNombre, usuarioId) => {
+    try {
+        const usuario = await Usuario.findOne({nombre: amigoNombre});
+
+        const amigoAgregar= await Usuario.findById(usuarioId);
+
+
+        if (!usuario) throw new Error("Usuario no encontrado");
+
+        if (usuario.solicitudesAmistad.includes(amigoAgregar.nombre)) {
+            throw new Error("La solicitud ya ha sido enviada");
+        }
+
+        usuario.solicitudesAmistad.push(amigoAgregar.nombre);
+        console.log(usuario);
+        await usuario.save();
+
+        return { success: true, message: "Solicitud de amistad enviada exitosamente" };
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+};
+
 
 //CREAR USUARIO
 exports.altaUsuario = async function (datosDeUsuario) {
