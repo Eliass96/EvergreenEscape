@@ -613,7 +613,7 @@ app.get("/tienda/objeto/:nombreObjeto", async function (req, res) { // funciona
     }
 });
 
-app.post("/usuarios/amigos/:amigoId", async (req, res) => {
+app.patch("/usuarios/amigos/agregar/:amigoId", async (req, res) => {
     try {
         const usuarioId = req.session?.usuario;
         const amigoId = req.params.amigoId;
@@ -632,7 +632,7 @@ app.post("/usuarios/amigos/:amigoId", async (req, res) => {
 
 
 //Eliminar un amigo
-app.patch("/usuarios/amigos/:amigoNombre", async (req, res) => {
+app.patch("/usuarios/amigos/eliminar/:amigoNombre", async (req, res) => {
     try {
         const usuarioId = req.session?.usuario;
         const amigoNombre = req.params.amigoNombre;

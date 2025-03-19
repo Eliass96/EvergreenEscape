@@ -109,8 +109,42 @@ document.addEventListener('DOMContentLoaded', async function () {
         actualizarListaUsuarios(usuariosFiltrados);
     });
 
-    function  gestionarSolicitudes() {
+    async function gestionarSolicitudes(evt) {
+        if (evt.target.classList.contains("boton_aceptar")) {
+            let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
+            console.log(friendName);
+            let resp = await fetch(`/usuarios/amigos/agregar/${friendName}`, {
+                credentials: 'include',
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
+            if (!resp.ok) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Ups...",
+                    text: "Error inesperado al agregar amigo... Pruebe a reiniciar la página",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "¡Amigo añadido correctamente!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                }).then(() => {
+                    window.location.reload();
+                })
+            }
+        }
     }
 
 
@@ -159,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1500,
                     timerProgressBar: true,
                 }).then(() => {
-                    //window.location.reload();
+                    window.location.reload();
                 });
             } else {
                 Swal.fire({
@@ -179,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     async function eliminarAmigo(evt) {
         if (evt.target.classList.contains("boton_eliminar")) {
             let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
-            let resp = await fetch(`/usuarios/amigos/${friendName}`, {
+            let resp = await fetch(`/usuarios/amigos/eliminar/${friendName}`, {
                 credentials: 'include',
                 method: 'PATCH',
                 headers: {
@@ -195,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1500,
                     timerProgressBar: true,
                 }).then(() => {
-                    window.location.reload();
+                    //window.location.reload();
                 });
             } else {
                 Swal.fire({
