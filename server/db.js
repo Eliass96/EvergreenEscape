@@ -100,14 +100,15 @@ exports.agregarAmigo = async (userId, amigoNombre) => {
         if (!usuario.amigos.includes(amigoNombre)) {
             usuario.amigos.push(amigoNombre);
             amigo.amigos.push(usuario.nombre);
+            usuario.solicitudesAmistad = usuario.solicitudesAmistad.filter(nombre => nombre !== amigo.nombre);
             await usuario.save();
             await amigo.save();
-            return { success: true, message: "Amigo agregado exitosamente" };
+            return {success: true, message: "Amigo agregado exitosamente"};
         } else {
-            return { success: false, message: "El usuario ya es tu amigo" };
+            return {success: false, message: "El usuario ya es tu amigo"};
         }
     } catch (error) {
-        return { success: false, message: error.message };
+        return {success: false, message: error.message};
     }
 };
 
@@ -119,33 +120,52 @@ exports.eliminarAmigo = async (userId, amigoNombre) => {
 
         usuario.amigos = usuario.amigos.filter((id) => id !== amigoNombre);
         await usuario.save();
-        return { success: true, message: "Amigo eliminado exitosamente" };
+        return {success: true, message: "Amigo eliminado exitosamente"};
     } catch (error) {
-        return { success: false, message: error.message };
+        return {success: false, message: error.message};
     }
 };
 
 //ENVIAR SOLICITUD DE AMISTAD
 exports.agregarSolicitud = async (amigoNombre, usuarioId) => {
     try {
-        const usuario = await Usuario.findOne({nombre: amigoNombre});
+        const amigoSolicitado = await Usuario.findOne({nombre: amigoNombre});
+        const usuario = await Usuario.findById(usuarioId);
 
-        const amigoAgregar= await Usuario.findById(usuarioId);
-
-
+        if (!amigoSolicitado) throw new Error("Amigo no encontrado");
         if (!usuario) throw new Error("Usuario no encontrado");
 
-        if (usuario.solicitudesAmistad.includes(amigoAgregar.nombre)) {
+        if (amigoSolicitado.solicitudesAmistad.includes(usuario.nombre)) {
             throw new Error("La solicitud ya ha sido enviada");
         }
 
-        usuario.solicitudesAmistad.push(amigoAgregar.nombre);
-        console.log(usuario);
-        await usuario.save();
+        amigoSolicitado.solicitudesAmistad.push(usuario.nombre);
+        await amigoSolicitado.save();
 
-        return { success: true, message: "Solicitud de amistad enviada exitosamente" };
+        return {success: true, message: "Solicitud de amistad enviada exitosamente"};
     } catch (error) {
-        return { success: false, message: error.message };
+        return {success: false, message: error.message};
+    }
+};
+
+//RECHAZAR SOLICITUD DE AMISTAD
+exports.rechazarSolicitud = async (amigoNombre, usuarioId) => {
+    try {
+        const amigoSolicitado = await Usuario.findOne({nombre: amigoNombre});
+        const usuario = await Usuario.findById(usuarioId);
+
+        if (!amigoSolicitado) throw new Error("Usuario no encontrado");
+        if (!usuario) throw new Error("Amigo no encontrado");
+
+        if (!usuario.solicitudesAmistad.includes(amigoSolicitado.nombre)) {
+            throw new Error("La solicitud no ha sido enviada");
+        }
+
+        usuario.solicitudesAmistad = usuario.solicitudesAmistad.filter(nombre => nombre !== amigoSolicitado.nombre);
+        await usuario.save();
+        return {success: true, message: "Solicitud de amistad rechazada exitosamente"};
+    } catch (error) {
+        return {success: false, message: error.message};
     }
 };
 
@@ -189,7 +209,6 @@ exports.existeUsuario = async function (email, nombre) {
         throw new Error('Error al comprobar la existencia del usuario: ' + error.message);
     }
 };
-
 
 //LISTAR USUARIOS
 exports.listarTodosLosUsuarios = async function () {

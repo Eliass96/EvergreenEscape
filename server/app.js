@@ -617,16 +617,42 @@ app.patch("/usuarios/solicitudes/:amigoNombre", async (req, res) => {
     try {
         const usuarioId = req.session?.usuario;
         const amigoNombre = req.params.amigoNombre;
+        let amigo = await db.getUsuarioByName(amigoNombre);
 
         if (!usuarioId) {
             return res.status(HTTP_UNAUTHORIZED).json({success: false, message: "Usuario no autenticado"});
         }
 
+        let usuario = await db.getUsuario(usuarioId)
+
+        if (amigo.solicitudesAmistad.includes(usuario.nombre) || amigo.amigos.includes(usuario.nombre) || amigoNombre === usuario.nombre) {
+            return res.status(HTTP_CONFLICT).json({message: 'Ya se ha enviado una solicitud a ese usuario o ya es tu amigo.'})
+        }
+
         const resultado = await db.agregarSolicitud(amigoNombre, usuarioId);
-        console.log(resultado);
-        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
+        console.log(resultado)
+
+        return res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
     } catch (error) {
         console.error("❌ Error al enviar solicitud de amistad", error);
+        res.status(500).json({success: false, message: "Error interno del servidor"});
+    }
+});
+
+// RECHAZAR SOLICITUD DE AMISTAD
+app.patch("/usuarios/solicitudes/rechazar/:amigoNombre", async (req, res) => {
+    try {
+        const usuarioId = req.session?.usuario;
+        const amigoNombre = req.params.amigoNombre;
+
+        if (!usuarioId) {
+            return res.status(HTTP_UNAUTHORIZED).json({success: false, message: "Usuario no autenticado"});
+        }
+
+        const resultado = await db.rechazarSolicitud(amigoNombre, usuarioId);
+        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
+    } catch (error) {
+        console.error("❌ Error al rechazar solicitud de amistad", error);
         res.status(500).json({success: false, message: "Error interno del servidor"});
     }
 });

@@ -103,40 +103,69 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     async function gestionarSolicitudes(evt) {
-        if (evt.target.classList.contains("boton_aceptar")) {
-            let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
-            console.log(friendName);
-            let resp = await fetch(`/usuarios/amigos/agregar/${friendName}`, {
-                credentials: 'include',
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (!resp.ok) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Ups...",
-                    text: "Error inesperado al agregar amigo... Pruebe a reiniciar la página",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                }).then(() => {
-                    window.location.reload();
+        try {
+            if (evt.target.classList.contains("boton_aceptar")) {
+                let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
+                console.log(friendName);
+                let resp = await fetch(`/usuarios/amigos/agregar/${friendName}`, {
+                    credentials: 'include',
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
-            } else {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Amigo añadido correctamente!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                }).then(() => {
+
+                if (!resp.ok) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ups...",
+                        text: "Error inesperado al agregar amigo... Pruebe a reiniciar la página",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Amigo añadido correctamente!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        window.location.reload();
+                    })
+                }
+            } else if (evt.target.classList.contains("boton_rechazar")) {
+                let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
+                console.log(friendName);
+                let resp = await fetch(`/usuarios/solicitudes/rechazar/${friendName}`, {
+                    credentials: 'include',
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!resp.ok) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ups...",
+                        text: "Error inesperado al rechazar la solicitud... Pruebe a reiniciar la página",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        //window.location.reload();
+                    });
+                } else {
                     window.location.reload();
-                })
+                }
             }
+        } catch (e) {
+            console.log(e)
         }
     }
 
@@ -162,89 +191,106 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function enviarSolicitud(evt) {
-        if (evt.target.classList.contains("boton_anadir")) {
-            let friendName = evt.target.parentElement.querySelector("p").textContent
-            console.log(friendName);
-            let resp = await fetch(`/usuarios/solicitudes/${friendName}`, {
-                credentials: 'include',
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (!resp.ok) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Ups...",
-                    text: "Error inesperado al mandar solicitud de amigo... Pruebe a reiniciar la página",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                }).then(() => {
-                    window.location.reload();
+        try {
+            if (evt.target.classList.contains("boton_anadir")) {
+                let friendName = evt.target.parentElement.querySelector("p").textContent
+                console.log(friendName);
+                let resp = await fetch(`/usuarios/solicitudes/${friendName}`, {
+                    credentials: 'include',
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
-            } else {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "¡Solicitud de amistad enviada!",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                }).then(() => {
-                    window.location.reload();
-                })
+
+                if (!resp.ok) {
+                    if (resp.status === 409) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Ups...",
+                            text: "Ya se ha enviado una solicitud a ese usuario o ya es tu amigo.",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Ups...",
+                            text: "Error inesperado al mandar solicitud de amigo... Pruebe a reiniciar la página",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                        })
+                    }
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Solicitud de amistad enviada!",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        window.location.reload();
+                    })
+                }
             }
+        } catch (e) {
+            console.log(e)
         }
     }
 
     async function eliminarAmigo(evt) {
-        if (evt.target.classList.contains("boton_eliminar")) {
-            let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
-            let resp = await fetch(`/usuarios/amigos/eliminar/${friendName}`, {
-                credentials: 'include',
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!resp.ok) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Ups...",
-                    text: "Error inesperado al eliminar el amigo... Pruebe a reiniciar la página",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                }).then(() => {
-                    //window.location.reload();
-                });
-            } else {
-                Swal.fire({
-                    title: "¿Estás seguro de que quieres eliminar a este amigo?",
-                    icon: "warning",
-                    showDenyButton: true,
-                    animation: true,
-                    confirmButtonText: "Si",
-                    denyButtonText: "No",
-                    confirmButtonColor: "lightgreen",
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            position: "center",
-                            icon: "success",
-                            title: "¡Amigo eliminado!",
-                            showConfirmButton: false,
-                            timer: 1000,
-                            timerProgressBar: true,
-                        }).then(() => {
-                            window.location.reload();
-                        })
+        try {
+            if (evt.target.classList.contains("boton_eliminar")) {
+                let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
+                let resp = await fetch(`/usuarios/amigos/eliminar/${friendName}`, {
+                    credentials: 'include',
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
-
                 });
+                if (!resp.ok) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ups...",
+                        text: "Error inesperado al eliminar el amigo... Pruebe a reiniciar la página",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: "¿Estás seguro de que quieres eliminar a este amigo?",
+                        icon: "warning",
+                        showDenyButton: true,
+                        animation: true,
+                        confirmButtonText: "Si",
+                        denyButtonText: "No",
+                        confirmButtonColor: "lightgreen",
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "¡Amigo eliminado!",
+                                showConfirmButton: false,
+                                timer: 1000,
+                                timerProgressBar: true,
+                            }).then(() => {
+                                window.location.reload();
+                            })
+                        }
+
+                    });
+                }
             }
+        } catch (e) {
+            console.log(e)
         }
     }
 })
