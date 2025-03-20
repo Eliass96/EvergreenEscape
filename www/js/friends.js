@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', async function () {
-
-
     document.addEventListener('keyup', (event) => {
         if (event.key === 'Escape') {
             window.location = '/';
@@ -10,10 +8,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('outputFriendsList').addEventListener('click', eliminarAmigo)
     document.getElementById('outputFriendsAddList').addEventListener('click', enviarSolicitud)
     document.getElementById('outputCardSolicitudes').addEventListener('click', gestionarSolicitudes)
-
-
-
-
     document.getElementById("but_solicitudes").addEventListener('click', async function () {
         $('#modalFriendRequest').modal({backdrop: 'static', keyboard: false}).modal('show');
 
@@ -24,12 +18,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         $("#modalFriendRequest").modal("hide");
     });
 
-
     try {
         let urlUsuario = '/usuarios/usuario';
         let resp = await fetch(urlUsuario);
         if (resp.ok) {
             const datosUsuario = await resp.json();
+            console.log(datosUsuario);
             outputFriendsList.innerHTML = friendsList({amigos: datosUsuario.amigos});
             outputCardSolicitudes.innerHTML = friendsRequest({solicitudes: datosUsuario.solicitudesAmistad});
         } else {
@@ -46,13 +40,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         Swal.fire({
             icon: "error",
             title: "Ups...",
-            text: "Error inesperado al cargar el listado de amigos... Pruebe a reiniciar la página",
+            text: "Error inesperado al cargar los amigos... Pruebe a reiniciar la página",
             showConfirmButton: false,
             timer: 1500,
             timerProgressBar: true,
         }).then(() => {
             console.log(error)
-           // document.location.href = "/"
+            document.location.href = "/"
         });
     }
 
@@ -80,7 +74,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         Swal.fire({
             icon: "error",
             title: "Ups...",
-            text: "Error inesperado al cargar el listado de amigos... Pruebe a reiniciar la página",
+            text: "Error inesperado al cargar el listado de usuarios... Pruebe a reiniciar la página",
             showConfirmButton: false,
             timer: 1500,
             timerProgressBar: true,
@@ -90,16 +84,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-
     document.getElementById("buscador").addEventListener('input', function (event) {
         let busqueda = event.target.value;
 
-        busqueda = busqueda.replace(/[a-zA-Z]/g, function(match) {
+        busqueda = busqueda.replace(/[a-zA-Z]/g, function (match) {
             return match.toLowerCase();
         });
 
         const usuariosFiltrados = usuarios.filter(usuario => {
-            const nombreUsuario = usuario.nombre.replace(/[a-zA-Z]/g, function(match) {
+            const nombreUsuario = usuario.nombre.replace(/[a-zA-Z]/g, function (match) {
                 return match.toLowerCase();
             });
 
@@ -147,12 +140,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-
     function actualizarListaUsuarios(usuariosFiltrados) {
         const listaUsuarios = document.querySelector('.lista_users');
-
         listaUsuarios.innerHTML = '';
-
         usuariosFiltrados.forEach(usuario => {
             const li = document.createElement('li');
             li.classList.add('texto_users', 'd-flex', 'align-items-center', 'justify-content-between');
@@ -171,12 +161,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-
     async function enviarSolicitud(evt) {
         if (evt.target.classList.contains("boton_anadir")) {
             let friendName = evt.target.parentElement.querySelector("p").textContent
             console.log(friendName);
-           let resp = await fetch(`/usuarios/solicitudes/${friendName}`, {
+            let resp = await fetch(`/usuarios/solicitudes/${friendName}`, {
                 credentials: 'include',
                 method: 'PATCH',
                 headers: {

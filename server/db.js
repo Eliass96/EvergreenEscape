@@ -95,6 +95,7 @@ exports.agregarAmigo = async (userId, amigoNombre) => {
         const usuario = await Usuario.findById(userId);
         const amigo = await Usuario.findOne({nombre: amigoNombre});
         if (!usuario) throw new Error("Usuario no encontrado");
+        if (!amigo) throw new Error("Amigo no encontrado");
 
         if (!usuario.amigos.includes(amigoNombre)) {
             usuario.amigos.push(amigoNombre);
@@ -110,7 +111,6 @@ exports.agregarAmigo = async (userId, amigoNombre) => {
     }
 };
 
-
 //ELIMINAR AMIGO
 exports.eliminarAmigo = async (userId, amigoNombre) => {
     try {
@@ -125,7 +125,7 @@ exports.eliminarAmigo = async (userId, amigoNombre) => {
     }
 };
 
-
+//ENVIAR SOLICITUD DE AMISTAD
 exports.agregarSolicitud = async (amigoNombre, usuarioId) => {
     try {
         const usuario = await Usuario.findOne({nombre: amigoNombre});
@@ -148,7 +148,6 @@ exports.agregarSolicitud = async (amigoNombre, usuarioId) => {
         return { success: false, message: error.message };
     }
 };
-
 
 //CREAR USUARIO
 exports.altaUsuario = async function (datosDeUsuario) {

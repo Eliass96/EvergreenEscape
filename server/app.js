@@ -75,7 +75,6 @@ app.use('/apiPaises.json', bloquearAccesoDirecto);
 app.use('/apiPaisesTraducida.json', bloquearAccesoDirecto);
 app.use('/index.html', bloquearAccesoDirecto);
 
-
 app.use(express.json());
 app.use(cors());
 app.use(express.static("www"));
@@ -613,49 +612,14 @@ app.get("/tienda/objeto/:nombreObjeto", async function (req, res) { // funciona
     }
 });
 
-app.patch("/usuarios/amigos/agregar/:amigoId", async (req, res) => {
-    try {
-        const usuarioId = req.session?.usuario;
-        const amigoId = req.params.amigoId;
-
-        if (!usuarioId) {
-            return res.status(401).json({ success: false, message: "Usuario no autenticado" });
-        }
-
-        const resultado = await db.agregarAmigo(usuarioId, amigoId);
-        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
-    } catch (error) {
-        console.error("❌ Error al agregar amigo", error);
-        res.status(500).json({ success: false, message: "Error interno del servidor" });
-    }
-});
-
-
-//Eliminar un amigo
-app.patch("/usuarios/amigos/eliminar/:amigoNombre", async (req, res) => {
-    try {
-        const usuarioId = req.session?.usuario;
-        const amigoNombre = req.params.amigoNombre;
-
-        if (!usuarioId) {
-            return res.status(HTTP_UNAUTHORIZED).json({ success: false, message: "Usuario no autenticado" });
-        }
-
-        const resultado = await db.eliminarAmigo(usuarioId, amigoNombre);
-        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
-    } catch (error) {
-        console.error("❌ Error al eliminar amigo", error);
-        res.status(500).json({ success: false, message: "Error interno del servidor" });
-    }
-});
-
+// ENVIAR SOLICITUD DE AMISTAD
 app.patch("/usuarios/solicitudes/:amigoNombre", async (req, res) => {
     try {
         const usuarioId = req.session?.usuario;
         const amigoNombre = req.params.amigoNombre;
 
         if (!usuarioId) {
-            return res.status(HTTP_UNAUTHORIZED).json({ success: false, message: "Usuario no autenticado" });
+            return res.status(HTTP_UNAUTHORIZED).json({success: false, message: "Usuario no autenticado"});
         }
 
         const resultado = await db.agregarSolicitud(amigoNombre, usuarioId);
@@ -663,10 +627,45 @@ app.patch("/usuarios/solicitudes/:amigoNombre", async (req, res) => {
         res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
     } catch (error) {
         console.error("❌ Error al enviar solicitud de amistad", error);
-        res.status(500).json({ success: false, message: "Error interno del servidor" });
+        res.status(500).json({success: false, message: "Error interno del servidor"});
     }
 });
 
+// AGREGAR AMIGO
+app.patch("/usuarios/amigos/agregar/:amigoId", async (req, res) => {
+    try {
+        const usuarioId = req.session?.usuario;
+        const amigoId = req.params.amigoId;
+
+        if (!usuarioId) {
+            return res.status(401).json({success: false, message: "Usuario no autenticado"});
+        }
+
+        const resultado = await db.agregarAmigo(usuarioId, amigoId);
+        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
+    } catch (error) {
+        console.error("❌ Error al agregar amigo", error);
+        res.status(500).json({success: false, message: "Error interno del servidor"});
+    }
+});
+
+// ELIMINAR AMIGO
+app.patch("/usuarios/amigos/eliminar/:amigoNombre", async (req, res) => {
+    try {
+        const usuarioId = req.session?.usuario;
+        const amigoNombre = req.params.amigoNombre;
+
+        if (!usuarioId) {
+            return res.status(HTTP_UNAUTHORIZED).json({success: false, message: "Usuario no autenticado"});
+        }
+
+        const resultado = await db.eliminarAmigo(usuarioId, amigoNombre);
+        res.status(resultado.success ? HTTP_OK : HTTP_BAD_REQUEST).json(resultado);
+    } catch (error) {
+        console.error("❌ Error al eliminar amigo", error);
+        res.status(500).json({success: false, message: "Error interno del servidor"});
+    }
+});
 
 // RUTA DE ERROR 404
 app.use((req, res, next) => {
