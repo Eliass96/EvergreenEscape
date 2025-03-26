@@ -18,12 +18,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         $("#modalFriendRequest").modal("hide");
     });
 
+    let datosUsuario;
+
     try {
         let urlUsuario = '/usuarios/usuario';
         let resp = await fetch(urlUsuario);
         if (resp.ok) {
-            const datosUsuario = await resp.json();
-            console.log(datosUsuario);
+            datosUsuario = await resp.json();
             outputFriendsList.innerHTML = friendsList({amigos: datosUsuario.amigos});
             outputCardSolicitudes.innerHTML = friendsRequest({solicitudes: datosUsuario.solicitudesAmistad});
         } else {
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (resp.ok) {
             usuarios = await resp.json();
 
-            outputFriendsAddList.innerHTML = friendsAddList({usuarios: usuarios});
+            outputFriendsAddList.innerHTML = friendsAddList({usuarios: usuarios, datosUsuario: datosUsuario});
         } else {
             Swal.fire({
                 icon: "warning",

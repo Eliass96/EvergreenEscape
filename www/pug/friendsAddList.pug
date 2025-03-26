@@ -5,7 +5,8 @@ output.cardUsers#usersList
             input.form-control#buscador(type='text' placeholder='Buscar usuario...')
         ul.lista_users
             each usuario in usuarios
-                li.texto_users.d-flex.align-items-center.justify-content-between
-                    p= usuario.nombre
-                    button.btn.btn-custom.boton_anadir#boton_anadir ➕
+                if usuario.nombre !== datosUsuario.nombre && !datosUsuario.amigos.includes(usuario.nombre) && !datosUsuario.solicitudesAmistad.includes(usuario.nombre) && !usuario.solicitudesAmistad.includes(datosUsuario.nombre)
+                    li.texto_users.d-flex.align-items-center.justify-content-between
+                        p= usuario.nombre
+                        button.btn.btn-custom.boton_anadir#boton_anadir ➕
 

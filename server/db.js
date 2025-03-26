@@ -97,10 +97,11 @@ exports.agregarAmigo = async (userId, amigoNombre) => {
         if (!usuario) throw new Error("Usuario no encontrado");
         if (!amigo) throw new Error("Amigo no encontrado");
 
-        if (!usuario.amigos.includes(amigoNombre)) {
-            usuario.amigos.push(amigoNombre);
+        if (!usuario.amigos.includes(amigo.nombre)) {
+            usuario.amigos.push(amigo.nombre);
             amigo.amigos.push(usuario.nombre);
             usuario.solicitudesAmistad = usuario.solicitudesAmistad.filter(nombre => nombre !== amigo.nombre);
+            amigo.solicitudesAmistad = amigo.solicitudesAmistad.filter(nombre => nombre !== usuario.nombre);
             await usuario.save();
             await amigo.save();
             return {success: true, message: "Amigo agregado exitosamente"};
@@ -116,10 +117,14 @@ exports.agregarAmigo = async (userId, amigoNombre) => {
 exports.eliminarAmigo = async (userId, amigoNombre) => {
     try {
         const usuario = await Usuario.findById(userId);
+        const amigo = await Usuario.findOne({nombre: amigoNombre});
         if (!usuario) throw new Error("Usuario no encontrado");
+        if (!amigo) throw new Error("Amigo no encontrado");
 
-        usuario.amigos = usuario.amigos.filter((id) => id !== amigoNombre);
+        usuario.amigos = usuario.amigos.filter((id) => id !== amigo.nombre);
+        amigo.amigos = amigo.amigos.filter((id) => id !== usuario.nombre);
         await usuario.save();
+        await amigo.save();
         return {success: true, message: "Amigo eliminado exitosamente"};
     } catch (error) {
         return {success: false, message: error.message};
@@ -141,7 +146,6 @@ exports.agregarSolicitud = async (amigoNombre, usuarioId) => {
 
         amigoSolicitado.solicitudesAmistad.push(usuario.nombre);
         await amigoSolicitado.save();
-
         return {success: true, message: "Solicitud de amistad enviada exitosamente"};
     } catch (error) {
         return {success: false, message: error.message};
