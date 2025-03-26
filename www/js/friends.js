@@ -19,39 +19,41 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     let datosUsuario;
+    let usuarios;
 
-    try {
-        let urlUsuario = '/usuarios/usuario';
-        let resp = await fetch(urlUsuario);
-        if (resp.ok) {
-            datosUsuario = await resp.json();
-            outputFriendsList.innerHTML = friendsList({amigos: datosUsuario.amigos});
-            outputCardSolicitudes.innerHTML = friendsRequest({solicitudes: datosUsuario.solicitudesAmistad});
-        } else {
+    async function getUsuario() {
+        try {
+            let urlUsuario = '/usuarios/usuario';
+            let resp = await fetch(urlUsuario);
+            if (resp.ok) {
+                datosUsuario = await resp.json();
+                outputFriendsList.innerHTML = friendsList({amigos: datosUsuario.amigos});
+                outputCardSolicitudes.innerHTML = friendsRequest({solicitudes: datosUsuario.solicitudesAmistad});
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "No has iniciado sesión",
+                    text: "¡Tienes que iniciar sesión para poder acceder al listado de amigos!",
+                    confirmButtonText: "Aceptar"
+                }).then(() => {
+                    document.location.href = "/login";
+                });
+            }
+        } catch (error) {
             Swal.fire({
-                icon: "warning",
-                title: "No has iniciado sesión",
-                text: "¡Tienes que iniciar sesión para poder acceder al listado de amigos!",
-                confirmButtonText: "Aceptar"
+                icon: "error",
+                title: "Ups...",
+                text: "Error inesperado al cargar los amigos... Pruebe a reiniciar la página",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
             }).then(() => {
-                document.location.href = "/login";
+                console.log(error)
+                document.location.href = "/"
             });
         }
-    } catch (error) {
-        Swal.fire({
-            icon: "error",
-            title: "Ups...",
-            text: "Error inesperado al cargar los amigos... Pruebe a reiniciar la página",
-            showConfirmButton: false,
-            timer: 1500,
-            timerProgressBar: true,
-        }).then(() => {
-            console.log(error)
-            document.location.href = "/"
-        });
     }
-
-    let usuarios;
+    await getUsuario();
 
     try {
         let urlUsuario = '/usuarios';
@@ -107,7 +109,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         try {
             if (evt.target.classList.contains("boton_aceptar")) {
                 let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
-                console.log(friendName);
                 let resp = await fetch(`/usuarios/amigos/agregar/${friendName}`, {
                     credentials: 'include',
                     method: 'PATCH',
@@ -135,8 +136,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                         showConfirmButton: false,
                         timer: 1000,
                         timerProgressBar: true,
-                    }).then(() => {
-                        window.location.reload();
+                    }).then(async () => {
+                        await getUsuario();
                     })
                 }
             } else if (evt.target.classList.contains("boton_rechazar")) {

@@ -28,7 +28,7 @@ const UsuarioSchema = new mongoose.Schema(
         },
         amigos: {
             type: [String],
-            default: ['55', '123']
+            default: []
         },
         solicitudesAmistad: {
             type: [String],
