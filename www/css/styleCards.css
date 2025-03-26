@@ -43,9 +43,11 @@
 .titulo_card_friends {
     font-family: 'jackpot', sans-serif;
     font-size: clamp(0.60em, 3.5vh, 1.1em);
-    padding-top: 2em;
+    padding-top: 1.25em;
+    padding-right: 1em;
     text-align: center;
     line-height: 1.75;
+    color: white;
 }
 
 .cardFriends {
@@ -53,12 +55,15 @@
     overflow-y: hidden;
     height: 60vh;
     min-height: 100px;
-    width: 22vw;
+    width: auto;
     border-radius: 15px;
+    min-width: 30vw;
+    max-width: 40vw;
 }
 
 .card-inner-friends {
-    width: 22vw;
+    min-width: 30vw;
+    max-width: 40vw;
     background-color: rgba(0, 0, 0, .5);
     color: white;
     overflow-y: auto;
@@ -94,12 +99,14 @@
     overflow-y: hidden;
     height: 60vh;
     min-height: 100px;
-    width: 22vw;
+    min-width: 30vw;
+    max-width: 40vw;
     border-radius: 15px;
 }
 
 .card-inner-users {
-    width: 22vw;
+    min-width: 30vw;
+    max-width: 40vw;
     background-color: rgba(0, 0, 0, .5);
     color: white;
     overflow-y: auto;

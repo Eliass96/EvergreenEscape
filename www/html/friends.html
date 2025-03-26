@@ -23,16 +23,16 @@
         <img src="../img/buttons/ok.png" alt="boton_solicitudes" class="img_button_solicitudes"/>
     </a>
 </header>
-<main class="container-fluid d-flex justify-content-around align-items-start mt-4">
-    <output class="cardFriends" id="outputFriendsList"></output>
-    <output class="cardUsers" id="outputFriendsAddList"></output>
+<main class="container-fluid row d-flex justify-content-around align-items-start mt-4">
+    <output class="cardFriends col-12 col-md-6" id="outputFriendsList"></output>
+    <output class="cardUsers col-12 col-md-6" id="outputFriendsAddList"></output>
 
-    <dialog class="modal modal-friends" id="modalFriendRequest" tabindex="-1">
+    <dialog class="modal modalSettings" id="modalFriendRequest" tabindex="-1">
         <div class="modal-dialog d-flex align-items-center justify-content-center">
-            <div class="modal-content modalFriendRequest d-flex align-items-center justify-content-center">
-                <header class="modal-header d-flex justify-content-between">
-                    <p>Solicitudes pendientes</p>
-                    <button class="btn-close" id="boton_cerrar">✖</button>
+            <div class="modal-content d-flex align-items-center justify-content-center">
+                <header class="modal-header d-flex justify-content-between align-items-center">
+                    <h2 class="titulo_card_friends">Solicitudes de Amistad</h2>
+                    <button class="boton_cerrar" id="boton_cerrar">❌</button>
                 </header>
                 <div class="modal-body d-flex align-items-center justify-content-center">
                     <output class="cardSolicitudes" id="outputCardSolicitudes"></output>

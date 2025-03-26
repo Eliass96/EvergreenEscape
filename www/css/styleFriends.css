@@ -26,4 +26,56 @@
     transition: transform 0.3s ease;
 }
 
+.modalFriendRequest {
+    background-color: rgba(0, 0, 0, .4);
+    border: none;
+    border-radius: 15px;
+    max-height: 80vh;
+    width: 50vw;
+}
 
+.modalFriendRequest-inner {
+    color: white;
+    overflow-y: auto;
+    border-radius: 15px;
+    max-height: 78vh;
+    width: 50vw;
+}
+
+.modal-header {
+    border-bottom: none !important;
+    display: flex;
+    align-items: center !important;
+}
+
+.boton_cerrar {
+    padding: 0 !important;
+    padding-top: 1em !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.modal-content {
+    width: 50vw;
+    height: 60vh;
+    background-color: rgba(0, 0, 0, .5);
+    border: none !important;
+    position: fixed; /* Hace que el modal sea fijo en la pantalla */
+    top: 50%; /* Lo centra verticalmente */
+    left: 50%; /* Lo centra horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta el modal para que quede perfectamente centrado */
+}
+
+.modal-body {
+    background: transparent !important;
+}
+
+.text-no-solicitudes p {
+    font-family: 'turtles', sans-serif;
+    font-size: 1.5rem; /* Tamaño grande */
+    color: white; /* Puedes cambiarlo a cualquier color que desees */
+    text-align: center;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7); /* Sombra para hacerlo más llamativo */
+}

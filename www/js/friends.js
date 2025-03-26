@@ -14,9 +14,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         $(document.getElementById("but_solicitudes")).modal('hide');
     }, this);
 
-    document.getElementById("boton_cerrar").addEventListener("click", function () {
-        $("#modalFriendRequest").modal("hide");
-    });
+    let botonCerrar = document.getElementById("boton_cerrar");
+
+    if (botonCerrar) {
+        botonCerrar.addEventListener("click", function () {
+            $("#modalFriendRequest").modal("hide");
+        });
+    }
 
     let datosUsuario;
     let usuarios;
