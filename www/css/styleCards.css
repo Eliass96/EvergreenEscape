@@ -50,20 +50,8 @@
     color: white;
 }
 
-.cardFriends {
-    color: white;
-    overflow-y: hidden;
-    height: 60vh;
-    min-height: 100px;
-    width: auto;
-    border-radius: 15px;
-    min-width: 30vw;
-    max-width: 40vw;
-}
-
 .card-inner-friends {
-    min-width: 30vw;
-    max-width: 40vw;
+    width: 35vw;
     background-color: rgba(0, 0, 0, .5);
     color: white;
     overflow-y: auto;
@@ -94,19 +82,26 @@
     margin-bottom: 1.5em;
 }
 
+.cardFriends {
+    color: white;
+    overflow-y: hidden;
+    height: 60vh;
+    min-height: 100px;
+    border-radius: 15px;
+    width: 35vw;
+}
+
 .cardUsers {
     color: white;
     overflow-y: hidden;
     height: 60vh;
     min-height: 100px;
-    min-width: 30vw;
-    max-width: 40vw;
     border-radius: 15px;
+    width: 35vw;
 }
 
 .card-inner-users {
-    min-width: 30vw;
-    max-width: 40vw;
+    width: 35vw;
     background-color: rgba(0, 0, 0, .5);
     color: white;
     overflow-y: auto;

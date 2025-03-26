@@ -5,12 +5,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+
     document.getElementById('outputFriendsList').addEventListener('click', eliminarAmigo)
     document.getElementById('outputFriendsAddList').addEventListener('click', enviarSolicitud)
     document.getElementById('outputCardSolicitudes').addEventListener('click', gestionarSolicitudes)
     document.getElementById("but_solicitudes").addEventListener('click', async function () {
+        // Ocultar los contenedores
+        document.getElementById("outputFriendsList").classList.add('d-none');
+        document.getElementById("outputFriendsAddList").classList.add('d-none');
+
+        // Abrir el modal
         $('#modalFriendRequest').modal({backdrop: 'static', keyboard: false}).modal('show');
 
+        // Ocultar el botón de solicitudes
         $(document.getElementById("but_solicitudes")).modal('hide');
     }, this);
 
@@ -18,7 +25,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if (botonCerrar) {
         botonCerrar.addEventListener("click", function () {
+            // Cerrar el modal
             $("#modalFriendRequest").modal("hide");
+
+            // Mostrar los contenedores nuevamente
+            document.getElementById("outputFriendsList").classList.remove('d-none');
+            document.getElementById("outputFriendsAddList").classList.remove('d-none');
         });
     }
 
@@ -57,6 +69,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
     }
+
     await getUsuario();
 
     try {

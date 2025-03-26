@@ -20,10 +20,10 @@
     <img src="../img/headers/perfil.png" alt="boton_info" class="titulo_settings"/>
 
     <a class="animate__animated animate__pulse animate__infinite animate__slow button_solicitudes" id="but_solicitudes">
-        <img src="../img/buttons/ok.png" alt="boton_solicitudes" class="img_button_solicitudes"/>
+        <img src="../img/buttons/ok.png" alt="boton_solicitudes" class="img_button_solicitudes" id="but_solicitudes_ok"/>
     </a>
 </header>
-<main class="container-fluid row d-flex justify-content-around align-items-start mt-4">
+<main class="container-fluid d-flex justify-content-around align-items-center mt-4">
     <output class="cardFriends col-12 col-md-6" id="outputFriendsList"></output>
     <output class="cardUsers col-12 col-md-6" id="outputFriendsAddList"></output>
 
@@ -31,10 +31,10 @@
         <div class="modal-dialog d-flex align-items-center justify-content-center">
             <div class="modal-content d-flex align-items-center justify-content-center">
                 <header class="modal-header d-flex justify-content-between align-items-center">
-                    <h2 class="titulo_card_friends">Solicitudes de Amistad</h2>
+                    <h2 class="titulo_card_friends pe-2">Solicitudes de Amistad</h2>
                     <button class="boton_cerrar" id="boton_cerrar">❌</button>
                 </header>
-                <div class="modal-body d-flex align-items-center justify-content-center">
+                <div class="modal-body">
                     <output class="cardSolicitudes" id="outputCardSolicitudes"></output>
                 </div>
             </div>
