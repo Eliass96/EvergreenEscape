@@ -198,8 +198,7 @@
     min-width: 100px;
 }
 
-.btnComprar,
-.botonCerrarSesion {
+.btnComprar, .botonCerrarSesion {
     width: 90%;
     padding: 10px 30px;
     cursor: pointer;
@@ -213,6 +212,10 @@
     transition: transform 0.3s ease;
     font-family: 'turtles', sans-serif;
     font-size: clamp(0.75em, 3vh, 4em);
+}
+
+.botonCerrarSesion {
+    font-size: clamp(0.5em, 2.5vh, 3em) !important;
 }
 
 .monedaShop {
@@ -252,6 +255,32 @@
 
 .parrafoPerfil {
     font-size: clamp(0.7em, 2.5vh, 2em);
+}
+
+/* Estilo base para la imagen */
+.avatar-img {
+    width: 6em;
+    height: 6em;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el movimiento y la sombra */
+}
+
+.avatar-container {
+    margin-top: 1em;
+    transition: all 0.3s ease, height 0.3s ease;
+}
+
+/* Efecto al pasar el ratón sobre la imagen */
+.avatar-container:hover .avatar-img {
+    transform: scale(1.1); /* Agranda ligeramente la imagen */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Agrega una sombra para resaltar la imagen */
+}
+
+/* Efecto al pasar el ratón sobre el contenedor (para hacer visible el botón) */
+.avatar-container:hover .avatar-input {
+    opacity: 0.5; /* Hace el botón parcialmente visible */
+}
+.avatar-container:hover .avatar-input {
+    opacity: 1; /* Hace el botón completamente visible */
 }
 
 @media (max-width: 992px) {

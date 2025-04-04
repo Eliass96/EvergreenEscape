@@ -70,6 +70,10 @@ const UsuarioSchema = new mongoose.Schema(
             type: Boolean,
             default: true
         },
+        avatar: {
+            type: String,
+            default: ''
+        }
     }
 );
 

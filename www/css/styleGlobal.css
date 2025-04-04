@@ -278,24 +278,6 @@ footer p {
     }
 }
 
-/* Para pantallas muy pequeñas (<= 576px) */
-/*@media (max-width: 768px) {*/
-/*    .cardShop {*/
-/*        min-width: 250px !important; !* Establece un ancho mínimo de 250px para cada tarjeta *!*/
-/*    }*/
-
-/*    .cardRanking,*/
-/*    .card-outer{*/
-/*        min-width: 300px !important; !* Establece un ancho mínimo de 250px para cada tarjeta *!*/
-/*    }*/
-/*}*/
-
-/*@media (max-width: 575px) {*/
-/*    .cardShop {*/
-/*        min-width: 300px !important; !* Establece un ancho mínimo de 250px para cada tarjeta *!*/
-/*    }*/
-/*}*/
-
 @media (max-width: 450px) {
     .titulo_shop {
         padding-top: 50px;
