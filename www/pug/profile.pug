@@ -3,10 +3,10 @@ output.cardPerfil(data-id-usuario=_id)
         // Contenedor del avatar con el botón para cambiar imagen
         .avatar-container(style="position: relative;")
             // Avatar de usuario
-            img(src=avatar, alt='783ef2b4490ac1b28b793a8f53ae3ade', class='rounded-circle shadow-4 avatar-img')
+            img(src=avatar, alt='783ef2b4490ac1b28b793a8f53ae3ade', class='rounded-circle shadow-4 avatar-img' id='avatar')
 
             // Botón invisible para cambiar imagen
-            input(type="file", id="avatarInput", class="avatar-input", style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;", onchange="previewImage(event)")
+            input(type="file", id="avatarInput", class="avatar-input", style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;")
 
         .d-flex.flex-column.align-items-center.justify-content-between.mx-4.my-2
             p.parrafoPerfil Email

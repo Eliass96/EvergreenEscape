@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    document.getElementById('outputPerfil').addEventListener('click', cerrarSesion);
+    document.getElementById('outputPerfil').addEventListener('change', accionesPerfil);
 
     document.addEventListener('keyup', (event) => {
         if (event.key === 'Escape') {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    async function cerrarSesion(evt) {
+    async function accionesPerfil(evt) {
         if (evt.target.classList.contains("botonCerrarSesion")) {
             let resp = await fetch('/usuarios/cerrarSesion', {
                 credentials: 'include',
@@ -76,6 +76,59 @@ document.addEventListener('DOMContentLoaded', async function () {
                         document.location.href = "/"
                     });
                 }
+            }
+        } else if (evt.target.classList.contains("avatar-input")) {
+            try {
+                // Obtener el archivo de la imagen desde el input
+                const archivo = evt.target.files[0];
+                console.log(evt.target.files[0]);
+
+                if (!archivo) {
+                    alert("No se ha seleccionado ninguna imagen.");
+                    return;
+                }
+
+                const tipoArchivo = archivo.type;
+                const tiposPermitidos = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/avif'];
+
+                if (!tiposPermitidos.includes(tipoArchivo)) {
+                    alert("Formato de archivo no permitido. Solo imágenes PNG, JPG y JPEG.");
+                    return;
+                }
+
+                // Mostrar la imagen seleccionada antes de enviar (opcional)
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    // Mostrar la imagen seleccionada en el perfil del usuario (opcional)
+                    document.getElementById("avatar").src = event.target.result;
+                }
+                reader.readAsDataURL(archivo);
+
+                // Crear un FormData para enviar la imagen
+                const formData = new FormData();
+                formData.append('foto', archivo);
+                console.log(archivo);
+
+                // Realizar la solicitud POST para cambiar el avatar
+                const response = await fetch('/usuarios/usuario/cambiarAvatar', {
+                    method: 'POST',
+                    body: formData, // Se envía el FormData con el archivo
+                });
+
+                // Procesar la respuesta del servidor
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Foto de perfil actualizada exitosamente.");
+                    console.log("URL de la nueva foto:", data.url);
+                    // Opcional: Actualizar la imagen del avatar en la interfaz de usuario
+                    document.getElementById("avatar").src = data.url;
+                } else {
+                    alert("Error al cambiar la foto de perfil: " + data.message);
+                }
+            } catch (error) {
+                console.error('Error al intentar cambiar la foto de perfil:', error);
+                alert("Hubo un error al cambiar la foto de perfil.");
             }
         }
     }

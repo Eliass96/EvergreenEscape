@@ -547,6 +547,69 @@ exports.getObjeto = async function (nombreObjeto) {
     }
 };
 
+exports.subirImagenAPostimages = async function (idUsuario, rutaImagen) {
+    const API_KEY = '442c1196f61793728f933be13f35cba416756a1598c5f5e1f97a0316c24db0ae';
+    try {
+        if (!fs.existsSync(rutaImagen)) {
+            console.error('❌ Error: La imagen no existe en la ruta especificada.');
+            return null;
+        }
+
+        const formData = new FormData();
+        formData.append('source', fs.createReadStream(rutaImagen));
+
+        const response = await axios.post('https://postimage.me/api/1/upload', formData, {
+            headers: {
+                ...formData.getHeaders(),
+                'X-API-Key': API_KEY,
+            },
+        });
+
+        if (response.data.status_code === 200) {
+            console.log('✅ Imagen subida exitosamente en:', response.data.image.url);
+            let user = await Usuario.findById(idUsuario);
+            if (!user) {
+                return null;
+            }
+            user.avatar = response.data.image.url;
+            console.log('✅ Imagen cambiada exitosamente');
+        } else {
+            console.error('❌ Error al subir la imagen:', response.data.status_txt);
+            return null;
+        }
+    } catch (error) {
+        const errorMsg = error.response?.data || error.message;
+
+        if (errorMsg.error?.code === 101) {
+            console.warn('⚠️ La imagen ya fue subida previamente.');
+
+            // Intentamos obtener la URL del mensaje de error si está disponible
+            if (errorMsg.image?.url) {
+                console.log('📸 Imagen encontrada:', errorMsg.image.url);
+                return errorMsg.image.url;
+            }
+
+            // Si la API no proporciona la URL, podemos intentar buscar en Postimage (esto no es 100% garantizado)
+            const nombreArchivo = path.basename(rutaImagen);
+            const posibleUrl = `https://postimage.me/search?q=${encodeURIComponent(nombreArchivo)}`;
+            console.log(`🔍 Intenta buscar la imagen en: ${posibleUrl}`);
+            return posibleUrl;
+        } else {
+            console.error('❌ Error en la solicitud a Postimages:', errorMsg);
+        }
+
+        return null;
+    }
+}
+
+// // Prueba con una imagen
+// const ruta = path.resolve(__dirname, '../www/assets/components/pinchos.png');
+// subirImagenAPostimages(ruta)
+//     .then(url => {
+//         if (url) console.log("📸 Imagen disponible en:", url);
+//     })
+//     .catch(error => console.error("❌ Error al subir la imagen:", error));
+
 exports.conectar = async function () {
     try {
         const uri = process.env.MONGODB_URI;
@@ -557,37 +620,3 @@ exports.conectar = async function () {
 };
 
 exports.desconectar = mongoose.disconnect;
-
-// Tu clave pública de la API de Postimage
-const API_KEY = '442c1196f61793728f933be13f35cba416756a1598c5f5e1f97a0316c24db0ae';
-
-async function subirImagenAPostimages(rutaImagen) {
-    try {
-        // Crear un nuevo FormData
-        const form = new FormData();
-
-        // Añadir la imagen al form
-        form.append('source', fs.createReadStream(rutaImagen)); // Para archivos locales
-        // Realizar la solicitud POST
-        const response = await axios.post('https://postimage.me/api/1/upload', form, {
-            headers: {
-                ...form.getHeaders(), // Se añaden los headers de multipart/form-data automáticamente
-                'X-API-Key': API_KEY, // Clave de la API
-            },
-        });
-
-        // Revisar si la carga fue exitosa
-        if (response.data.status_code === 200) {
-            console.log('Imagen subida exitosamente:', response.data.image.url);
-        } else {
-            console.error('Error al subir la imagen:', response.data.status_txt);
-        }
-    } catch (error) {
-        console.error('Error en la solicitud a Postimages:', error);
-    }
-}
-
-// Usar esta función con la ruta de la imagen
-subirImagenAPostimages(path.resolve(__dirname, '../www/assets/components/coin.png'))
-    .then(url => console.log("Imagen subida:", url))
-    .catch(error => console.error(error));
