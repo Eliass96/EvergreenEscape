@@ -568,10 +568,6 @@ async function subirImagenAPostimages(rutaImagen) {
 
         // Añadir la imagen al form
         form.append('source', fs.createReadStream(rutaImagen)); // Para archivos locales
-        // O si tienes una imagen en base64 o una URL, también puedes hacerlo:
-        // form.append('source', 'data:image/jpeg;base64,....'); // Para base64
-        // form.append('source', 'http://url.de.la.imagen'); // Para URL de la imagen
-
         // Realizar la solicitud POST
         const response = await axios.post('https://postimage.me/api/1/upload', form, {
             headers: {
