@@ -1,5 +1,9 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
+const axios = require("axios");
+const FormData = require("form-data");
+const fs = require("fs"); // Solo si tienes la imagen en el sistema de archivos
+const path = require("path");
 
 //CREACION DEL ESQUEMA
 // USUARIO-≥ nombre required unique, contraseña required, nacionalidad required, array de puntuaciones vacio,
@@ -72,7 +76,7 @@ const UsuarioSchema = new mongoose.Schema(
         },
         avatar: {
             type: String,
-            default: ''
+            default: 'https://i.postimg.cc/kBmMswvy/783ef2b4490ac1b28b793a8f53ae3ade.jpg\' border=\'0\' alt=\'783ef2b4490ac1b28b793a8f53ae3ade'
         }
     }
 );
@@ -554,4 +558,40 @@ exports.conectar = async function () {
 
 exports.desconectar = mongoose.disconnect;
 
+// Tu clave pública de la API de Postimage
+const API_KEY = '442c1196f61793728f933be13f35cba416756a1598c5f5e1f97a0316c24db0ae';
 
+async function subirImagenAPostimages(rutaImagen) {
+    try {
+        // Crear un nuevo FormData
+        const form = new FormData();
+
+        // Añadir la imagen al form
+        form.append('source', fs.createReadStream(rutaImagen)); // Para archivos locales
+        // O si tienes una imagen en base64 o una URL, también puedes hacerlo:
+        // form.append('source', 'data:image/jpeg;base64,....'); // Para base64
+        // form.append('source', 'http://url.de.la.imagen'); // Para URL de la imagen
+
+        // Realizar la solicitud POST
+        const response = await axios.post('https://postimage.me/api/1/upload', form, {
+            headers: {
+                ...form.getHeaders(), // Se añaden los headers de multipart/form-data automáticamente
+                'X-API-Key': API_KEY, // Clave de la API
+            },
+        });
+
+        // Revisar si la carga fue exitosa
+        if (response.data.status_code === 200) {
+            console.log('Imagen subida exitosamente:', response.data.image.url);
+        } else {
+            console.error('Error al subir la imagen:', response.data.status_txt);
+        }
+    } catch (error) {
+        console.error('Error en la solicitud a Postimages:', error);
+    }
+}
+
+// Usar esta función con la ruta de la imagen
+subirImagenAPostimages(path.resolve(__dirname, '../www/assets/components/coin.png'))
+    .then(url => console.log("Imagen subida:", url))
+    .catch(error => console.error(error));
