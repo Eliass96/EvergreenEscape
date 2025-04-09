@@ -602,14 +602,6 @@ exports.subirImagenAPostimages = async function (idUsuario, rutaImagen) {
     }
 }
 
-// // Prueba con una imagen
-// const ruta = path.resolve(__dirname, '../www/assets/components/pinchos.png');
-// subirImagenAPostimages(ruta)
-//     .then(url => {
-//         if (url) console.log("📸 Imagen disponible en:", url);
-//     })
-//     .catch(error => console.error("❌ Error al subir la imagen:", error));
-
 exports.conectar = async function () {
     try {
         const uri = process.env.MONGODB_URI;

@@ -9,6 +9,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
 const fs = require('fs');
+const multer = require('multer');
 
 const redis = require('redis');
 const {RedisStore} = require('connect-redis');
@@ -366,39 +367,37 @@ app.get("/usuarios/usuario", async function (req, res) { // funciona
 app.post("/usuarios/usuario/cambiarAvatar", async function (req, res) {
     try {
         const idUsuario = req.session.usuario;  // Obtener ID del usuario desde la sesión
-        // const { foto } = req.file;  // Asumiendo que se recibe una imagen en el cuerpo de la solicitud
-        console.log(req)
+        const archivo = req.body;  // El archivo debería estar en el cuerpo de la solicitud
+
         if (!idUsuario) {
             return res.status(HTTP_NOT_FOUND).json({ message: 'No hay sesión iniciada para cambiar la foto.' });
         }
 
-        if (!foto) {
-            return res.status(HTTP_BAD_REQUEST).json({ message: 'No se ha enviado una foto de perfil.' });
+        if (!archivo) {
+            return res.status(HTTP_BAD_REQUEST).json({ message: 'No se ha recibido ninguna imagen.' });
         }
+
         // Verificar que la foto sea válida
-        const ext = path.extname(foto.name).toLowerCase();
-        const tiposPermitidos = ['.png', '.jpg', '.jpeg', '.webp', 'avif'];
+        const ext = path.extname(archivo.name).toLowerCase();
+        const tiposPermitidos = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
 
         if (!tiposPermitidos.includes(ext)) {
-            return res.status(HTTP_BAD_REQUEST).json({ message: 'Formato de archivo no permitido. Solo imágenes PNG, JPG y JPEG.' });
+            return res.status(HTTP_BAD_REQUEST).json({ message: 'Formato de archivo no permitido. Solo imágenes PNG, JPG, JPEG, WEBP y AVIF.' });
         }
-
-        // Establecer la ruta donde se guardará la imagen
-        // const directorioImagenes = path.resolve(__dirname, 'public/images/profiles');
-        // if (!fs.existsSync(directorioImagenes)) {
-        //     fs.mkdirSync(directorioImagenes, { recursive: true });
-        // }
 
         // Generar un nombre único para la imagen
         const nombreImagen = `${idUsuario}_${Date.now()}${ext}`;
-        const rutaImagen = path.join(directorioImagenes, nombreImagen);
+        const rutaImagen = path.join(__dirname, 'public', 'images', 'profiles', nombreImagen);
 
-        // Mover la imagen desde el archivo temporal al directorio final
-        // await foto.mv(rutaImagen);
+        // Aquí puedes guardar la imagen localmente si es necesario, o solo subirla directamente a Postimage
+        // Guarda la imagen en el servidor si es necesario
+        const fs = require('fs');
+        const fileStream = fs.createWriteStream(rutaImagen);
+        archivo.stream.pipe(fileStream);
 
         // Llamar a la base de datos para actualizar la foto del perfil
         const fotoUrl = `/images/profiles/${nombreImagen}`;  // URL pública de la imagen
-        const resultado = await db.subirImagenAPostimages(idUsuario, fotoUrl);  // Asegúrate de tener este método en tu DB
+        const resultado = await db.subirImagenAPostimages(idUsuario, rutaImagen);  // Asegúrate de que este método funcione correctamente
 
         if (resultado) {
             return res.status(HTTP_OK).json({ message: 'Foto de perfil actualizada con éxito', url: fotoUrl });
@@ -413,7 +412,6 @@ app.post("/usuarios/usuario/cambiarAvatar", async function (req, res) {
         });
     }
 });
-
 
 // LISTAR LAS MEJORES PUNTUACIONES DEL USUARIO
 app.get("/usuarios/usuario/puntuaciones", async function (req, res) { // funciona
