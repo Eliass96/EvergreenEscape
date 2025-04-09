@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+
     let outputPerfil = document.getElementById("outputPerfil");
 
     try {
@@ -16,6 +17,48 @@ document.addEventListener('DOMContentLoaded', async function () {
             const datosUsuario = await resp.json();
             console.log(datosUsuario);
             outputPerfil.innerHTML = crearPerfil(datosUsuario);
+
+            let cropper;
+
+            const avatar = document.getElementById('avatar');
+            const input = document.getElementById('avatarInput');
+            const cropperImage = document.getElementById('cropperImage');
+            const cropperModal = new bootstrap.Modal(document.getElementById('cropperModal'));
+
+            avatar.addEventListener('click', () => input.click());
+
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    cropperImage.src = reader.result;
+                    cropperModal.show();
+
+                    setTimeout(() => {
+                        if (cropper) cropper.destroy();
+                        cropper = new Cropper(cropperImage, {
+                            aspectRatio: 1,
+                            viewMode: 1,
+                        });
+                    }, 300);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('cropImageBtn').addEventListener('click', () => {
+                if (cropper) {
+                    const canvas = cropper.getCroppedCanvas({
+                        width: 300,
+                        height: 300,
+                    });
+
+                    avatar.src = canvas.toDataURL();
+                    cropperModal.hide();
+                }
+            });
+
         } else {
             Swal.fire({
                 icon: "warning",
