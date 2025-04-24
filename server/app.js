@@ -367,42 +367,33 @@ app.get("/usuarios/usuario", async function (req, res) { // funciona
 app.post("/usuarios/usuario/cambiarAvatar", async function (req, res) {
     try {
         const idUsuario = req.session.usuario;  // Obtener ID del usuario desde la sesión
-        const archivo = req.body;  // El archivo debería estar en el cuerpo de la solicitud
-
+        console.log(req.body)
+        const foto = req.body.foto;  // Obtener el base64 de la imagen desde el cuerpo de la solicitud
+        console.log(foto)
         if (!idUsuario) {
-            return res.status(HTTP_NOT_FOUND).json({ message: 'No hay sesión iniciada para cambiar la foto.' });
+            return res.status(HTTP_NOT_FOUND).json({message: 'No hay sesión iniciada para cambiar la foto.'});
         }
 
-        if (!archivo) {
-            return res.status(HTTP_BAD_REQUEST).json({ message: 'No se ha recibido ninguna imagen.' });
+        if (!foto) {
+            return res.status(HTTP_BAD_REQUEST).json({message: 'No se ha recibido ninguna imagen.'});
         }
 
-        // Verificar que la foto sea válida
-        const ext = path.extname(archivo.name).toLowerCase();
-        const tiposPermitidos = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
-
-        if (!tiposPermitidos.includes(ext)) {
-            return res.status(HTTP_BAD_REQUEST).json({ message: 'Formato de archivo no permitido. Solo imágenes PNG, JPG, JPEG, WEBP y AVIF.' });
+        // Verificar que el base64 tenga un formato válido
+        const regexBase64 = /^data:image\/(png|jpg|jpeg|webp|avif);base64,/;
+        if (!regexBase64.test(foto)) {
+            return res.status(HTTP_BAD_REQUEST).json({message: 'Formato de imagen no válido. Solo se permiten imágenes PNG, JPG, JPEG, WEBP y AVIF.'});
         }
 
-        // Generar un nombre único para la imagen
-        const nombreImagen = `${idUsuario}_${Date.now()}${ext}`;
-        const rutaImagen = path.join(__dirname, 'public', 'images', 'profiles', nombreImagen);
+        // Eliminar la cabecera de base64 para guardar solo los datos
+        //const imagenSinCabecera = foto.replace(regexBase64, '');
 
-        // Aquí puedes guardar la imagen localmente si es necesario, o solo subirla directamente a Postimage
-        // Guarda la imagen en el servidor si es necesario
-        const fs = require('fs');
-        const fileStream = fs.createWriteStream(rutaImagen);
-        archivo.stream.pipe(fileStream);
-
-        // Llamar a la base de datos para actualizar la foto del perfil
-        const fotoUrl = `/images/profiles/${nombreImagen}`;  // URL pública de la imagen
-        const resultado = await db.subirImagenAPostimages(idUsuario, rutaImagen);  // Asegúrate de que este método funcione correctamente
+        // Guardar la imagen en base64 directamente en la base de datos
+        const resultado = await db.actualizarFotoPerfil(idUsuario, foto);  // Cambia este método a uno que guarde en tu BDD
 
         if (resultado) {
-            return res.status(HTTP_OK).json({ message: 'Foto de perfil actualizada con éxito', url: fotoUrl });
+            return res.status(HTTP_OK).json({message: 'Foto de perfil actualizada con éxito', url: foto});
         } else {
-            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({ message: 'No se pudo actualizar la foto de perfil en la base de datos.' });
+            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({message: 'No se pudo actualizar la foto de perfil en la base de datos.'});
         }
     } catch (err) {
         console.error(err);

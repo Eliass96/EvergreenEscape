@@ -17,16 +17,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             outputPerfil.innerHTML = crearPerfil(datosUsuario);
 
             let cropper;
-
             const avatar = document.getElementById('avatar');
             const input = document.getElementById('avatarInput');
             const cropperImage = document.getElementById('cropperImage');
             const cropperModal = new bootstrap.Modal(document.getElementById('cropperModal'));
 
             avatar.addEventListener('click', () => input.click());
-
+            let file = null;
             input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
+                file = e.target.files[0];
                 if (!file) return;
 
                 const reader = new FileReader();
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     cropperModal.show();
 
                     setTimeout(() => {
-                        if (cropper) cropper.destroy();
+                        if (cropper) cropper.destroy();  // Destruir la instancia anterior
                         cropper = new Cropper(cropperImage, {
                             aspectRatio: 1,
                             viewMode: 1,
@@ -45,18 +44,24 @@ document.addEventListener('DOMContentLoaded', async function () {
                 reader.readAsDataURL(file);
             });
 
-            document.getElementById('cropImageBtn').addEventListener('click', () => {
+            document.getElementById('cropImageBtn').addEventListener('click', async () => {
                 if (cropper) {
+                    // Obtiene el canvas con la imagen recortada
                     const canvas = cropper.getCroppedCanvas({
                         width: 300,
                         height: 300,
                     });
 
-                    avatar.src = canvas.toDataURL();
+                    // Convierte el canvas a base64
+                    const base64 = canvas.toDataURL('image/png'); // O usa el formato que prefieras
+
+                    // Muestra la imagen recortada
+                    avatar.src = base64;
+
                     cropperModal.hide();
 
-                    // Aquí es donde hacemos la solicitud a la API después de que el cropper se haya cerrado.
-                    enviarFotoPerfil(canvas.toDataURL());
+                    // Enviar la imagen base64 al backend
+                    await enviarFotoPerfil(base64);
                 }
             });
         } else {
@@ -124,21 +129,23 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // Función que maneja la solicitud de la API después de que se haya cerrado el cropper
-    async function enviarFotoPerfil(dataUrl) {
+    async function enviarFotoPerfil(foto) {
         try {
-            const foto = document.querySelector('input[type="file"]').files[0];  // Obtenemos el archivo del input
-
-            const formData = new FormData();
-            formData.append('foto', foto);  // 'foto' es el nombre del campo en el backend
-            console.log(formData)
-
+            const dataFoto = {
+                foto: foto, // Enviar base64 como un campo en el JSON
+            };
+            console.log(dataFoto)
             // Realizar la solicitud POST para cambiar el avatar
             const response = await fetch('/usuarios/usuario/cambiarAvatar', {
                 method: 'POST',
-                body: formData,
+                headers: {
+                    'Content-Type': 'application/json', // Asegúrate de especificar que el contenido es JSON
+                },
+                body: JSON.stringify(dataFoto), // Convierte el objeto en una cadena JSON
             });
 
             const data = await response.json();
+            console.log(data)
             if (response.ok) {
                 Swal.fire({
                     icon: "success",
@@ -146,7 +153,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
-                })
+                });
                 console.log("URL de la nueva foto:", data.url);
                 // Actualizar la imagen del avatar en la interfaz de usuario
                 document.getElementById("avatar").src = data.url;
@@ -158,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
-                })
+                });
             }
         } catch (error) {
             console.error('Error al intentar cambiar la foto de perfil:', error);
@@ -168,7 +175,22 @@ document.addEventListener('DOMContentLoaded', async function () {
                 showConfirmButton: false,
                 timer: 1500,
                 timerProgressBar: true,
-            })
+            });
         }
+    }
+
+    function convertirImagenABase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result.split(',')[1]); // Extrae solo el base64 sin "data:image..."
+            reader.onerror = reject;
+            reader.readAsDataURL(file); // Convierte el archivo en base64
+        });
+    }
+
+    function mostrarImagen(base64) {
+        if (!base64) return "https://img.a.transfermarkt.technology/portrait/big/251896-1684241186.jpg?lm=1"; // Imagen por defecto
+
+        return `data:image/png;base64,${base64}`; // Devuelve la URL de la imagen en base64
     }
 });

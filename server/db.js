@@ -547,60 +547,27 @@ exports.getObjeto = async function (nombreObjeto) {
     }
 };
 
-exports.subirImagenAPostimages = async function (idUsuario, rutaImagen) {
-    const API_KEY = '442c1196f61793728f933be13f35cba416756a1598c5f5e1f97a0316c24db0ae';
+exports.actualizarFotoPerfil = async function (idUsuario, foto) {
     try {
-        if (!fs.existsSync(rutaImagen)) {
-            console.error('❌ Error: La imagen no existe en la ruta especificada.');
+        // Supongamos que tienes un modelo Usuario en tu base de datos
+        let usuario = await Usuario.findById(idUsuario);
+        if (!usuario) {
             return null;
         }
 
-        const formData = new FormData();
-        formData.append('source', fs.createReadStream(rutaImagen));
+        // Guardar la imagen en base64 en el campo del avatar
+        usuario.avatar = foto;
 
-        const response = await axios.post('https://postimage.me/api/1/upload', formData, {
-            headers: {
-                ...formData.getHeaders(),
-                'X-API-Key': API_KEY,
-            },
-        });
+        // Guardar los cambios en la base de datos
+        await usuario.save();
 
-        if (response.data.status_code === 200) {
-            console.log('✅ Imagen subida exitosamente en:', response.data.image.url);
-            let user = await Usuario.findById(idUsuario);
-            if (!user) {
-                return null;
-            }
-            user.avatar = response.data.image.url;
-            console.log('✅ Imagen cambiada exitosamente');
-        } else {
-            console.error('❌ Error al subir la imagen:', response.data.status_txt);
-            return null;
-        }
+        console.log('✅ Foto de perfil actualizada exitosamente');
+        return true;
     } catch (error) {
-        const errorMsg = error.response?.data || error.message;
-
-        if (errorMsg.error?.code === 101) {
-            console.warn('⚠️ La imagen ya fue subida previamente.');
-
-            // Intentamos obtener la URL del mensaje de error si está disponible
-            if (errorMsg.image?.url) {
-                console.log('📸 Imagen encontrada:', errorMsg.image.url);
-                return errorMsg.image.url;
-            }
-
-            // Si la API no proporciona la URL, podemos intentar buscar en Postimage (esto no es 100% garantizado)
-            const nombreArchivo = path.basename(rutaImagen);
-            const posibleUrl = `https://postimage.me/search?q=${encodeURIComponent(nombreArchivo)}`;
-            console.log(`🔍 Intenta buscar la imagen en: ${posibleUrl}`);
-            return posibleUrl;
-        } else {
-            console.error('❌ Error en la solicitud a Postimages:', errorMsg);
-        }
-
+        console.error('❌ Error al intentar actualizar la foto de perfil:', error);
         return null;
     }
-}
+};
 
 exports.conectar = async function () {
     try {
