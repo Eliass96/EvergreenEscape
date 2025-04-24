@@ -7,14 +7,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     let outputPerfil = document.getElementById("outputPerfil");
-
+    let datosUsuario
     try {
         let urlUsuario = '/usuarios/usuario';
         let resp = await fetch(urlUsuario);
         if (resp.ok) {
-            const datosUsuario = await resp.json();
+            datosUsuario = await resp.json();
             console.log(datosUsuario);
             outputPerfil.innerHTML = crearPerfil(datosUsuario);
+            console.log(arrayBufferToBase64(datosUsuario.avatar.binario.buffer))
+            document.getElementById('avatar').src = arrayBufferToBase64(datosUsuario.avatar.binario.buffer);
 
             let cropper;
             const avatar = document.getElementById('avatar');
@@ -46,24 +48,25 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             document.getElementById('cropImageBtn').addEventListener('click', async () => {
                 if (cropper) {
-                    // Obtiene el canvas con la imagen recortada
+                    // Obtener el canvas recortado
                     const canvas = cropper.getCroppedCanvas({
                         width: 300,
                         height: 300,
                     });
 
-                    // Convierte el canvas a base64
-                    const base64 = canvas.toDataURL('image/png'); // O usa el formato que prefieras
+                    canvas.toBlob(async (blob) => {
+                        // Aquí tienes el archivo binario (un Blob)
+                        const fileRecortado = new File([blob], 'avatar.png', { type: 'image/png' });
 
-                    // Muestra la imagen recortada
-                    avatar.src = base64;
+                        // Muestra la imagen recortada
+                        avatar.src = URL.createObjectURL(fileRecortado);
 
-                    cropperModal.hide();
-
-                    // Enviar la imagen base64 al backend
-                    await enviarFotoPerfil(base64);
+                        // Enviar el archivo binario al backend
+                        await enviarFotoPerfil(fileRecortado);
+                    }, 'image/png');
                 }
             });
+
         } else {
             Swal.fire({
                 icon: "warning",
@@ -83,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             timer: 1500,
             timerProgressBar: true,
         }).then(() => {
-            document.location.href = "/"
+           // document.location.href = "/"
         });
     }
 
@@ -128,24 +131,34 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    function arrayBufferToBase64(buffer) {
+        // Crear un array de bytes desde el ArrayBuffer
+        const uint8Array = new Uint8Array(buffer);
+
+        // Convertir el array de bytes a una cadena binaria
+        let binary = '';
+        uint8Array.forEach(byte => {
+            binary += String.fromCharCode(byte);
+        });
+
+        // Codificar la cadena binaria en base64
+        return 'data:image/jpeg;base64,' + btoa(binary);
+    }
+
+
     // Función que maneja la solicitud de la API después de que se haya cerrado el cropper
-    async function enviarFotoPerfil(foto) {
+    async function enviarFotoPerfil(file) {
         try {
-            const dataFoto = {
-                foto: foto, // Enviar base64 como un campo en el JSON
-            };
-            console.log(dataFoto)
-            // Realizar la solicitud POST para cambiar el avatar
+            const formData = new FormData();
+            formData.append('foto', file);
+
             const response = await fetch('/usuarios/usuario/cambiarAvatar', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // Asegúrate de especificar que el contenido es JSON
-                },
-                body: JSON.stringify(dataFoto), // Convierte el objeto en una cadena JSON
+                body: formData,
             });
 
             const data = await response.json();
-            console.log(data)
+
             if (response.ok) {
                 Swal.fire({
                     icon: "success",
@@ -154,9 +167,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timer: 1500,
                     timerProgressBar: true,
                 });
-                console.log("URL de la nueva foto:", data.url);
-                // Actualizar la imagen del avatar en la interfaz de usuario
-                document.getElementById("avatar").src = data.url;
+
+                console.log(data);  // Aquí se verá la respuesta, que contiene la imagen en Base64
+
+                // Asignar la imagen al avatar usando Base64
+                document.getElementById('avatar').src = data.fotoBase64;
+
             } else {
                 Swal.fire({
                     icon: "error",
@@ -179,18 +195,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    function convertirImagenABase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result.split(',')[1]); // Extrae solo el base64 sin "data:image..."
-            reader.onerror = reject;
-            reader.readAsDataURL(file); // Convierte el archivo en base64
-        });
-    }
 
-    function mostrarImagen(base64) {
-        if (!base64) return "https://img.a.transfermarkt.technology/portrait/big/251896-1684241186.jpg?lm=1"; // Imagen por defecto
 
-        return `data:image/png;base64,${base64}`; // Devuelve la URL de la imagen en base64
-    }
 });

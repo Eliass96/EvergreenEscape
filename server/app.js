@@ -10,6 +10,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const redis = require('redis');
 const {RedisStore} = require('connect-redis');
@@ -364,36 +366,41 @@ app.get("/usuarios/usuario", async function (req, res) { // funciona
 });
 
 // CAMBIAR FOTO DE PERFIL
-app.post("/usuarios/usuario/cambiarAvatar", async function (req, res) {
+// Endpoint para cambiar la foto de perfil
+app.post("/usuarios/usuario/cambiarAvatar", upload.single('foto'), async function (req, res) {
     try {
-        const idUsuario = req.session.usuario;  // Obtener ID del usuario desde la sesión
-        console.log(req.body)
-        const foto = req.body.foto;  // Obtener el base64 de la imagen desde el cuerpo de la solicitud
-        console.log(foto)
+        const idUsuario = req.session.usuario;
+        console.log('Archivo recibido:', req.file);
+
         if (!idUsuario) {
-            return res.status(HTTP_NOT_FOUND).json({message: 'No hay sesión iniciada para cambiar la foto.'});
+            return res.status(HTTP_NOT_FOUND).json({ message: 'No hay sesión iniciada para cambiar la foto.' });
         }
 
-        if (!foto) {
-            return res.status(HTTP_BAD_REQUEST).json({message: 'No se ha recibido ninguna imagen.'});
+        const archivo = req.file;
+
+        if (!archivo || !archivo.mimetype.startsWith('image/')) {
+            return res.status(HTTP_BAD_REQUEST).json({ message: 'No se ha recibido una imagen válida.' });
         }
 
-        // Verificar que el base64 tenga un formato válido
-        const regexBase64 = /^data:image\/(png|jpg|jpeg|webp|avif);base64,/;
-        if (!regexBase64.test(foto)) {
-            return res.status(HTTP_BAD_REQUEST).json({message: 'Formato de imagen no válido. Solo se permiten imágenes PNG, JPG, JPEG, WEBP y AVIF.'});
-        }
-
-        // Eliminar la cabecera de base64 para guardar solo los datos
-        //const imagenSinCabecera = foto.replace(regexBase64, '');
-
-        // Guardar la imagen en base64 directamente en la base de datos
-        const resultado = await db.actualizarFotoPerfil(idUsuario, foto);  // Cambia este método a uno que guarde en tu BDD
+        // Guardar el archivo en la base de datos (como ya lo tienes)
+        const resultado = await db.actualizarFotoPerfil(idUsuario, {
+            datos: archivo.buffer,  // Usamos el buffer de la imagen
+            tipoMime: archivo.mimetype,
+            nombreOriginal: archivo.originalname
+        });
 
         if (resultado) {
-            return res.status(HTTP_OK).json({message: 'Foto de perfil actualizada con éxito', url: foto});
+            // Convertir el buffer a Base64
+            const base64Image = archivo.buffer.toString('base64');
+            const mimeType = archivo.mimetype;
+
+            // Devolver la imagen en formato Base64 junto con el tipo MIME
+            return res.status(HTTP_OK).json({
+                message: 'Foto de perfil actualizada con éxito',
+                fotoBase64: `data:${mimeType};base64,${base64Image}`
+            });
         } else {
-            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({message: 'No se pudo actualizar la foto de perfil en la base de datos.'});
+            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({ message: 'No se pudo actualizar la foto de perfil.' });
         }
     } catch (err) {
         console.error(err);
@@ -403,6 +410,8 @@ app.post("/usuarios/usuario/cambiarAvatar", async function (req, res) {
         });
     }
 });
+
+
 
 // LISTAR LAS MEJORES PUNTUACIONES DEL USUARIO
 app.get("/usuarios/usuario/puntuaciones", async function (req, res) { // funciona

@@ -4,6 +4,7 @@ const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs"); // Solo si tienes la imagen en el sistema de archivos
 const path = require("path");
+const { Binary } = require('mongodb');
 
 //CREACION DEL ESQUEMA
 // USUARIO-≥ nombre required unique, contraseña required, nacionalidad required, array de puntuaciones vacio,
@@ -75,8 +76,10 @@ const UsuarioSchema = new mongoose.Schema(
             default: true
         },
         avatar: {
-            type: String,
-            default: 'https://i.postimg.cc/kBmMswvy/783ef2b4490ac1b28b793a8f53ae3ade.jpg\' border=\'0\' alt=\'783ef2b4490ac1b28b793a8f53ae3ade'
+            binario: { type: Buffer },  // Usamos Buffer para almacenar datos binarios
+            mime: { type: String },     // Tipo MIME de la imagen
+            nombre: { type: String },   // Nombre de la imagen
+            fecha: { type: Date }       // Fecha de la actualización de la imagen
         }
     }
 );
@@ -547,27 +550,24 @@ exports.getObjeto = async function (nombreObjeto) {
     }
 };
 
-exports.actualizarFotoPerfil = async function (idUsuario, foto) {
-    try {
-        // Supongamos que tienes un modelo Usuario en tu base de datos
-        let usuario = await Usuario.findById(idUsuario);
-        if (!usuario) {
-            return null;
+exports.actualizarFotoPerfil = async function(idUsuario, imagen) {
+    console.log(imagen)
+    const binario = Binary.createFromBase64(imagen.datos, 0);
+
+    return Usuario.updateOne(
+        { _id: idUsuario },
+        {
+            $set: {
+                avatar: {
+                    binario: binario,  // Guardamos el buffer de la imagen
+                    mime: imagen.tipoMime,  // Tipo MIME
+                    nombre: imagen.nombreOriginal,  // Nombre de la imagen
+                    fecha: new Date()  // Fecha actual
+                }
+            }
         }
-
-        // Guardar la imagen en base64 en el campo del avatar
-        usuario.avatar = foto;
-
-        // Guardar los cambios en la base de datos
-        await usuario.save();
-
-        console.log('✅ Foto de perfil actualizada exitosamente');
-        return true;
-    } catch (error) {
-        console.error('❌ Error al intentar actualizar la foto de perfil:', error);
-        return null;
-    }
-};
+    );
+}
 
 exports.conectar = async function () {
     try {
