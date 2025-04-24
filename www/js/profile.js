@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    document.getElementById('outputPerfil').addEventListener('change', accionesPerfil);
+    document.getElementById('outputPerfil').addEventListener('click', accionesPerfil);
     document.addEventListener('keyup', (event) => {
         if (event.key === 'Escape') {
             window.location = '/';
