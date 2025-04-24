@@ -15,8 +15,18 @@ document.addEventListener('DOMContentLoaded', async function () {
             datosUsuario = await resp.json();
             console.log(datosUsuario);
             outputPerfil.innerHTML = crearPerfil(datosUsuario);
-            console.log(arrayBufferToBase64(datosUsuario.avatar.binario.buffer))
-            document.getElementById('avatar').src = arrayBufferToBase64(datosUsuario.avatar.binario.buffer);
+            // Convierte el array binario a un Buffer
+            // const buffer = Buffer.from(datosUsuario.avatar.binario.data);
+            // const base64String = buffer.toString('base64');
+            //
+            // // Si el binario existe, lo usamos para mostrar la imagen
+            // if (base64String) {
+            //     console.log(base64String)
+            //     // Asignar la imagen a la etiqueta <img>
+            //     document.getElementById('avatar').src = `data:image/png;base64,${base64String}`;
+            // } else {
+            //     console.log('No se encontró la imagen en binario.');
+            // }
 
             let cropper;
             const avatar = document.getElementById('avatar');
@@ -56,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                     canvas.toBlob(async (blob) => {
                         // Aquí tienes el archivo binario (un Blob)
-                        const fileRecortado = new File([blob], 'avatar.png', { type: 'image/png' });
+                        const fileRecortado = new File([blob], 'avatar.png', {type: 'image/png'});
 
                         // Muestra la imagen recortada
                         avatar.src = URL.createObjectURL(fileRecortado);
@@ -86,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             timer: 1500,
             timerProgressBar: true,
         }).then(() => {
-           // document.location.href = "/"
+            // document.location.href = "/"
         });
     }
 
@@ -145,7 +155,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         return 'data:image/jpeg;base64,' + btoa(binary);
     }
 
-
     // Función que maneja la solicitud de la API después de que se haya cerrado el cropper
     async function enviarFotoPerfil(file) {
         try {
@@ -194,7 +203,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
     }
-
 
 
 });

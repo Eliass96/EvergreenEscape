@@ -11,7 +11,7 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({storage: storage});
 
 const redis = require('redis');
 const {RedisStore} = require('connect-redis');
@@ -356,6 +356,23 @@ app.get("/usuarios/usuario", async function (req, res) { // funciona
         const userId = req.session.usuario;
         if (userId) {
             let usuarioEncontrado = await db.getUsuario(userId);
+// Verifica que la propiedad avatar y el buffer de la imagen existan
+            console.log(usuarioEncontrado.avatar.binario.buffer);
+
+            if (usuarioEncontrado.avatar) {
+                // Convierte ArrayBuffer a un Array de bytes (Uint8Array)
+                const byteArray = new Uint8Array(usuarioEncontrado.avatar.binario.buffer);
+
+                // Convierte el array de bytes a una cadena Base64
+                const base64Image = Buffer.from(byteArray).toString('base64');
+
+                // Recupera el tipo MIME de la imagen
+                const mimeType = usuarioEncontrado.avatar.binario.mimetype;
+
+                // Crea la cadena de Base64 con el tipo MIME correspondiente
+                usuarioEncontrado.avatar = `data:${mimeType};base64,${base64Image}`;
+            }
+
             res.status(HTTP_OK).send(usuarioEncontrado);
         } else {
             res.status(HTTP_NOT_FOUND).json({message: 'No hay ninguna sesión iniciada.'})
@@ -373,13 +390,13 @@ app.post("/usuarios/usuario/cambiarAvatar", upload.single('foto'), async functio
         console.log('Archivo recibido:', req.file);
 
         if (!idUsuario) {
-            return res.status(HTTP_NOT_FOUND).json({ message: 'No hay sesión iniciada para cambiar la foto.' });
+            return res.status(HTTP_NOT_FOUND).json({message: 'No hay sesión iniciada para cambiar la foto.'});
         }
 
         const archivo = req.file;
 
         if (!archivo || !archivo.mimetype.startsWith('image/')) {
-            return res.status(HTTP_BAD_REQUEST).json({ message: 'No se ha recibido una imagen válida.' });
+            return res.status(HTTP_BAD_REQUEST).json({message: 'No se ha recibido una imagen válida.'});
         }
 
         // Guardar el archivo en la base de datos (como ya lo tienes)
@@ -400,7 +417,7 @@ app.post("/usuarios/usuario/cambiarAvatar", upload.single('foto'), async functio
                 fotoBase64: `data:${mimeType};base64,${base64Image}`
             });
         } else {
-            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({ message: 'No se pudo actualizar la foto de perfil.' });
+            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({message: 'No se pudo actualizar la foto de perfil.'});
         }
     } catch (err) {
         console.error(err);
@@ -410,7 +427,6 @@ app.post("/usuarios/usuario/cambiarAvatar", upload.single('foto'), async functio
         });
     }
 });
-
 
 
 // LISTAR LAS MEJORES PUNTUACIONES DEL USUARIO
