@@ -15,18 +15,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             datosUsuario = await resp.json();
             console.log(datosUsuario);
             outputPerfil.innerHTML = crearPerfil(datosUsuario);
-            // Convierte el array binario a un Buffer
-            // const buffer = Buffer.from(datosUsuario.avatar.binario.data);
-            // const base64String = buffer.toString('base64');
-            //
-            // // Si el binario existe, lo usamos para mostrar la imagen
-            // if (base64String) {
-            //     console.log(base64String)
-            //     // Asignar la imagen a la etiqueta <img>
-            //     document.getElementById('avatar').src = `data:image/png;base64,${base64String}`;
-            // } else {
-            //     console.log('No se encontró la imagen en binario.');
-            // }
+            console.log(document.getElementById('avatar'));
 
             let cropper;
             const avatar = document.getElementById('avatar');
@@ -141,20 +130,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    function arrayBufferToBase64(buffer) {
-        // Crear un array de bytes desde el ArrayBuffer
-        const uint8Array = new Uint8Array(buffer);
-
-        // Convertir el array de bytes a una cadena binaria
-        let binary = '';
-        uint8Array.forEach(byte => {
-            binary += String.fromCharCode(byte);
-        });
-
-        // Codificar la cadena binaria en base64
-        return 'data:image/jpeg;base64,' + btoa(binary);
-    }
-
     // Función que maneja la solicitud de la API después de que se haya cerrado el cropper
     async function enviarFotoPerfil(file) {
         try {
@@ -177,11 +152,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     timerProgressBar: true,
                 });
 
-                console.log(data);  // Aquí se verá la respuesta, que contiene la imagen en Base64
-
-                // Asignar la imagen al avatar usando Base64
-                document.getElementById('avatar').src = data.fotoBase64;
-
+                console.log(data);
+                document.getElementById('avatar').src = data.url;
             } else {
                 Swal.fire({
                     icon: "error",
@@ -203,6 +175,4 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
     }
-
-
 });

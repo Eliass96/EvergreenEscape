@@ -1,10 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const axios = require("axios");
-const FormData = require("form-data");
-const fs = require("fs"); // Solo si tienes la imagen en el sistema de archivos
-const path = require("path");
-const { Binary } = require('mongodb');
+
 
 //CREACION DEL ESQUEMA
 // USUARIO-≥ nombre required unique, contraseña required, nacionalidad required, array de puntuaciones vacio,
@@ -76,11 +72,10 @@ const UsuarioSchema = new mongoose.Schema(
             default: true
         },
         avatar: {
-            binario: { type: Buffer },  // Usamos Buffer para almacenar datos binarios
-            mime: { type: String },     // Tipo MIME de la imagen
-            nombre: { type: String },   // Nombre de la imagen
-            fecha: { type: Date }       // Fecha de la actualización de la imagen
+            type: String, // solo guardamos el nombre del archivo
+            default: "default.jpg" // o lo que uses como imagen por defecto
         }
+
     }
 );
 
@@ -550,24 +545,18 @@ exports.getObjeto = async function (nombreObjeto) {
     }
 };
 
-exports.actualizarFotoPerfil = async function(idUsuario, imagen) {
-    console.log(imagen)
-    const binario = Binary.createFromBase64(imagen.datos, 0);
+exports.actualizarFotoPerfil = async function(idUsuario, nombreArchivoImagen) {
+    try {
+        // Actualizar directamente el avatar
+        return await Usuario.updateOne(
+            {_id: idUsuario},
+            {$set: {avatar: nombreArchivoImagen}}
+        ); // Devuelve el resultado de la operación
+    } catch (error) {
+        throw new Error('Error al actualizar la foto de perfil: ' + error.message);
+    }
+};
 
-    return Usuario.updateOne(
-        { _id: idUsuario },
-        {
-            $set: {
-                avatar: {
-                    binario: binario,  // Guardamos el buffer de la imagen
-                    mime: imagen.tipoMime,  // Tipo MIME
-                    nombre: imagen.nombreOriginal,  // Nombre de la imagen
-                    fecha: new Date()  // Fecha actual
-                }
-            }
-        }
-    );
-}
 
 exports.conectar = async function () {
     try {

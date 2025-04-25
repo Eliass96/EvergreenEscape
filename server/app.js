@@ -10,8 +10,17 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
-const storage = multer.memoryStorage();
-const upload = multer({storage: storage});
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'www/uploads/');
+    },
+    filename: function (req, file, cb) {
+        const nombreUnico = Date.now() + '-' + file.originalname;
+        cb(null, nombreUnico);
+    }
+});
+const upload = multer({ storage: storage });
 
 const redis = require('redis');
 const {RedisStore} = require('connect-redis');
@@ -147,6 +156,9 @@ app.get("/friends", (req, res) => {
 // METODOS
 // GMAIL
 app.use(passport.initialize());
+
+app.use('/uploads', express.static('uploads'));
+
 
 passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
@@ -356,23 +368,6 @@ app.get("/usuarios/usuario", async function (req, res) { // funciona
         const userId = req.session.usuario;
         if (userId) {
             let usuarioEncontrado = await db.getUsuario(userId);
-// Verifica que la propiedad avatar y el buffer de la imagen existan
-            console.log(usuarioEncontrado.avatar.binario.buffer);
-
-            if (usuarioEncontrado.avatar) {
-                // Convierte ArrayBuffer a un Array de bytes (Uint8Array)
-                const byteArray = new Uint8Array(usuarioEncontrado.avatar.binario.buffer);
-
-                // Convierte el array de bytes a una cadena Base64
-                const base64Image = Buffer.from(byteArray).toString('base64');
-
-                // Recupera el tipo MIME de la imagen
-                const mimeType = usuarioEncontrado.avatar.binario.mimetype;
-
-                // Crea la cadena de Base64 con el tipo MIME correspondiente
-                usuarioEncontrado.avatar = `data:${mimeType};base64,${base64Image}`;
-            }
-
             res.status(HTTP_OK).send(usuarioEncontrado);
         } else {
             res.status(HTTP_NOT_FOUND).json({message: 'No hay ninguna sesión iniciada.'})
@@ -383,42 +378,45 @@ app.get("/usuarios/usuario", async function (req, res) { // funciona
 });
 
 // CAMBIAR FOTO DE PERFIL
-// Endpoint para cambiar la foto de perfil
 app.post("/usuarios/usuario/cambiarAvatar", upload.single('foto'), async function (req, res) {
     try {
         const idUsuario = req.session.usuario;
-        console.log('Archivo recibido:', req.file);
-
-        if (!idUsuario) {
-            return res.status(HTTP_NOT_FOUND).json({message: 'No hay sesión iniciada para cambiar la foto.'});
-        }
-
         const archivo = req.file;
 
-        if (!archivo || !archivo.mimetype.startsWith('image/')) {
-            return res.status(HTTP_BAD_REQUEST).json({message: 'No se ha recibido una imagen válida.'});
+        if (!idUsuario) {
+            return res.status(HTTP_NOT_FOUND).json({ message: 'No hay sesión iniciada para cambiar la foto.' });
         }
 
-        // Guardar el archivo en la base de datos (como ya lo tienes)
-        const resultado = await db.actualizarFotoPerfil(idUsuario, {
-            datos: archivo.buffer,  // Usamos el buffer de la imagen
-            tipoMime: archivo.mimetype,
-            nombreOriginal: archivo.originalname
-        });
+        if (!archivo || !archivo.mimetype.startsWith('image/')) {
+            return res.status(HTTP_BAD_REQUEST).json({ message: 'No se ha recibido una imagen válida.' });
+        }
 
-        if (resultado) {
-            // Convertir el buffer a Base64
-            const base64Image = archivo.buffer.toString('base64');
-            const mimeType = archivo.mimetype;
+        const usuario = await db.getUsuario(idUsuario);
+        const fotoAntigua = usuario?.avatar;
 
-            // Devolver la imagen en formato Base64 junto con el tipo MIME
+        if (fotoAntigua && fotoAntigua !== "default.jpg") {
+            const rutaAntigua = path.join('www', 'uploads', fotoAntigua);
+            fs.unlink(rutaAntigua, (err) => {
+                if (err) {
+                    console.error("Error al borrar la imagen antigua:", err.message);
+                } else {
+                    console.log(`Imagen antigua eliminada: ${fotoAntigua}`);
+                }
+            });
+        }
+
+        const resultado = await db.actualizarFotoPerfil(idUsuario, archivo.filename);
+
+        if (resultado.modifiedCount === 1) {
             return res.status(HTTP_OK).json({
                 message: 'Foto de perfil actualizada con éxito',
-                fotoBase64: `data:${mimeType};base64,${base64Image}`
+                nombreArchivo: archivo.filename,
+                url: `/uploads/${archivo.filename}`
             });
         } else {
-            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({message: 'No se pudo actualizar la foto de perfil.'});
+            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({ message: 'No se pudo actualizar la foto de perfil.' });
         }
+
     } catch (err) {
         console.error(err);
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({
@@ -427,7 +425,6 @@ app.post("/usuarios/usuario/cambiarAvatar", upload.single('foto'), async functio
         });
     }
 });
-
 
 // LISTAR LAS MEJORES PUNTUACIONES DEL USUARIO
 app.get("/usuarios/usuario/puntuaciones", async function (req, res) { // funciona
