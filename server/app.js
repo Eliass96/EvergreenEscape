@@ -11,17 +11,8 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'www/uploads/');
-    },
-    filename: function (req, file, cb) {
-        const nombreUnico = Date.now() + '-' + file.originalname;
-        cb(null, nombreUnico);
-    }
-});
-const upload = multer({ storage: storage });
 
+//PINGS
 const redis = require('redis');
 const {RedisStore} = require('connect-redis');
 const redisClient = redis.createClient({
@@ -41,6 +32,8 @@ setInterval(async () => {
     }
 }, 300000);
 
+
+//VARIABLES
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
 const HTTP_BAD_REQUEST = 400;
@@ -53,6 +46,10 @@ const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || 40000;
 const app = express();
 
+let datosGoogle = null;
+let isNewUser;
+let isRegister = true;
+
 app.use(session({
     store: new RedisStore({client: redisClient}),
     secret: 'EvergreenEscapeSecret',
@@ -63,6 +60,19 @@ app.use(session({
         maxAge: 86400000
     }
 }));
+
+//STORAGE DE IMÁGENES
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'www/uploads/');
+    },
+    filename: function (req, file, cb) {
+        const nombreUnico = Date.now() + '-' + file.originalname;
+        cb(null, nombreUnico);
+    }
+});
+const upload = multer({ storage: storage });
+
 
 function bloquearAccesoDirecto(req, res, next) {
     const referer = req.get('Referer');
@@ -78,6 +88,7 @@ function bloquearAccesoDirecto(req, res, next) {
     next();
 }
 
+//TODOS LOS USE
 app.use('/js', bloquearAccesoDirecto);
 app.use('/css', bloquearAccesoDirecto);
 app.use('/html', bloquearAccesoDirecto);
@@ -87,6 +98,9 @@ app.use('/img', bloquearAccesoDirecto);
 app.use('/apiPaises.json', bloquearAccesoDirecto);
 app.use('/apiPaisesTraducida.json', bloquearAccesoDirecto);
 app.use('/index.html', bloquearAccesoDirecto);
+
+app.use(passport.initialize());
+app.use('/uploads', express.static('uploads'));
 
 app.use(express.json());
 app.use(cors());
@@ -98,11 +112,6 @@ db.conectar().then(async () => {
     );
     await db.agregarObjetos();
 });
-
-// VARIABLES
-let datosGoogle = null;
-let isNewUser;
-let isRegister = true;
 
 // RUTAS
 app.get("/", (req, res) => {
@@ -155,11 +164,6 @@ app.get("/friends", (req, res) => {
 
 // METODOS
 // GMAIL
-app.use(passport.initialize());
-
-app.use('/uploads', express.static('uploads'));
-
-
 passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
