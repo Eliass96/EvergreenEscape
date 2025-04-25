@@ -50,17 +50,6 @@ let datosGoogle = null;
 let isNewUser;
 let isRegister = true;
 
-app.use(session({
-    store: new RedisStore({client: redisClient}),
-    secret: 'EvergreenEscapeSecret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false,
-        maxAge: 86400000
-    }
-}));
-
 //STORAGE DE IMÁGENES
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -89,6 +78,17 @@ function bloquearAccesoDirecto(req, res, next) {
 }
 
 //TODOS LOS USE
+app.use(session({
+    store: new RedisStore({client: redisClient}),
+    secret: 'EvergreenEscapeSecret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        maxAge: 86400000
+    }
+}));
+
 app.use('/js', bloquearAccesoDirecto);
 app.use('/css', bloquearAccesoDirecto);
 app.use('/html', bloquearAccesoDirecto);
