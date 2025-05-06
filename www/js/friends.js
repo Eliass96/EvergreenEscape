@@ -389,14 +389,18 @@ document.addEventListener('DOMContentLoaded', async function () {
                 // Limpia y vuelve a mostrar los mensajes
                 ul.innerHTML = '';
                 mensajes.forEach(mensaje => {
-                    const li = document.createElement("li");
-                    li.classList.add("d-flex", "align-items-start");
+                    // Determina si el mensaje es del usuario o del amigo
+                    const mensajeFromUser = (mensaje.from === datosUsuario.nombre) ? "mensaje-derecha" : "mensaje-izquierda";
 
+                    const li = document.createElement("li");
+                    li.classList.add("d-flex", "align-items-start", `${mensajeFromUser}`);
+
+                    // Crea el HTML con la clase correspondiente
                     li.innerHTML = `
-                    <div class="mensaje-contenido">
-                        <p>${mensaje.content}</p>
-                    </div>
-                `;
+                        <div class="mensaje-contenido">
+                            <p>${mensaje.content}</p>
+                        </div>
+                    `;
                     ul.appendChild(li);
                 });
 
@@ -405,7 +409,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             } catch (error) {
                 console.error("Error actualizando mensajes:", error);
             }
-        }, 100);
+        }, 50);
     }
-
 })

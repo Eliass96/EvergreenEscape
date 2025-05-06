@@ -50,6 +50,17 @@
     color: white;
 }
 
+/* Título del chat */
+.titulo_card_chat {
+    font-family: 'jackpot', sans-serif;
+    font-size: clamp(0.60em, 3.5vh, 1.1em);
+    padding-top: 1.25em;
+    padding-right: 1em;
+    text-align: center;
+    line-height: 1.75;
+    color: white;
+}
+
 .card-inner-friends {
     width: 35vw;
     background-color: rgba(0, 0, 0, .5);
