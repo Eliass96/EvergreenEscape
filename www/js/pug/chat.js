@@ -6,16 +6,16 @@ var pug_match_html=/["&<>]/;function chatFriends(locals) {var pug_html = "", pug
   if ('number' == typeof $$obj.length) {
       for (var pug_index0 = 0, $$l = $$obj.length; pug_index0 < $$l; pug_index0++) {
         var mensaje = $$obj[pug_index0];
-pug_html = pug_html + "\u003Cli class=\"d-flex align-items-start\"\u003E\u003Cdiv class=\"mensaje-emisor\"\u003E\u003Cp class=\"font-weight-bold\"\u003E" + (pug_escape(null == (pug_interp = mensaje.from) ? "" : pug_interp)) + "\u003C\u002Fp\u003E\u003C\u002Fdiv\u003E\u003Cdiv class=\"mensaje-contenido\"\u003E\u003Cp\u003E" + (pug_escape(null == (pug_interp = mensaje.content) ? "" : pug_interp)) + "\u003C\u002Fp\u003E\u003C\u002Fdiv\u003E\u003C\u002Fli\u003E";
+pug_html = pug_html + "\u003Cli class=\"d-flex align-items-start\"\u003E\u003Cdiv class=\"mensaje-contenido\"\u003E\u003Cp\u003E" + (pug_escape(null == (pug_interp = mensaje.content) ? "" : pug_interp)) + "\u003C\u002Fp\u003E\u003C\u002Fdiv\u003E\u003C\u002Fli\u003E";
       }
   } else {
     var $$l = 0;
     for (var pug_index0 in $$obj) {
       $$l++;
       var mensaje = $$obj[pug_index0];
-pug_html = pug_html + "\u003Cli class=\"d-flex align-items-start\"\u003E\u003Cdiv class=\"mensaje-emisor\"\u003E\u003Cp class=\"font-weight-bold\"\u003E" + (pug_escape(null == (pug_interp = mensaje.from) ? "" : pug_interp)) + "\u003C\u002Fp\u003E\u003C\u002Fdiv\u003E\u003Cdiv class=\"mensaje-contenido\"\u003E\u003Cp\u003E" + (pug_escape(null == (pug_interp = mensaje.content) ? "" : pug_interp)) + "\u003C\u002Fp\u003E\u003C\u002Fdiv\u003E\u003C\u002Fli\u003E";
+pug_html = pug_html + "\u003Cli class=\"d-flex align-items-start\"\u003E\u003Cdiv class=\"mensaje-contenido\"\u003E\u003Cp\u003E" + (pug_escape(null == (pug_interp = mensaje.content) ? "" : pug_interp)) + "\u003C\u002Fp\u003E\u003C\u002Fdiv\u003E\u003C\u002Fli\u003E";
     }
   }
 }).call(this);
 
-pug_html = pug_html + "\u003C\u002Ful\u003E\u003C!-- Formulario de mensajes--\u003E\u003Cform class=\"mt-3 px-3 d-flex\" id=\"formularioMensaje\"\u003E\u003Cinput class=\"form-control\" type=\"text\" id=\"mensajeInput\" placeholder=\"Escribe tu mensaje...\"\u002F\u003E\u003Cbutton class=\"btn btn-custom mx-2\" id=\"enviarMensaje\" type=\"submit\"\u003E➤\u003C\u002Fbutton\u003E\u003C\u002Fform\u003E\u003C\u002Fdiv\u003E\u003C\u002Foutput\u003E";}.call(this,"mensajes" in locals_for_with?locals_for_with.mensajes:typeof mensajes!=="undefined"?mensajes:undefined,"nombreUsuario" in locals_for_with?locals_for_with.nombreUsuario:typeof nombreUsuario!=="undefined"?nombreUsuario:undefined));;return pug_html;}
+pug_html = pug_html + "\u003C\u002Ful\u003E\u003C!-- Formulario de mensajes--\u003E\u003Cform class=\"mt-3 px-3 d-flex\" id=\"formularioMensaje\"\u003E\u003Cinput class=\"form-control\" type=\"text\" id=\"mensajeInput\" placeholder=\"Escribe tu mensaje...\"\u002F\u003E\u003Cbutton class=\"btn btn-custom mx-2\" id=\"enviarMensaje\" type=\"button\"\u003E➤\u003C\u002Fbutton\u003E\u003C\u002Fform\u003E\u003C\u002Fdiv\u003E\u003C\u002Foutput\u003E";}.call(this,"mensajes" in locals_for_with?locals_for_with.mensajes:typeof mensajes!=="undefined"?mensajes:undefined,"nombreUsuario" in locals_for_with?locals_for_with.nombreUsuario:typeof nombreUsuario!=="undefined"?nombreUsuario:undefined));;return pug_html;}

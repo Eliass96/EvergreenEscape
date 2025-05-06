@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     let datosUsuario;
     let usuarios;
+    let nombreAmigo;
 
     async function getUsuario() {
         try {
@@ -144,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         timer: 1500,
                         timerProgressBar: true,
                     }).then(() => {
-                        window.location.reload();
+                       window.location.reload();
                     });
                 } else {
                     Swal.fire({
@@ -178,7 +179,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         timer: 1500,
                         timerProgressBar: true,
                     }).then(() => {
-                        //window.location.reload();
+                        window.location.reload();
                     });
                 } else {
                     window.location.reload();
@@ -252,7 +253,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         timer: 1000,
                         timerProgressBar: true,
                     }).then(() => {
-                        window.location.reload();
+                       window.location.reload();
                     })
                 }
             }
@@ -282,7 +283,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         timer: 1500,
                         timerProgressBar: true,
                     }).then(() => {
-                        window.location.reload();
+                       window.location.reload();
                     });
                 } else {
                     Swal.fire({
@@ -303,15 +304,16 @@ document.addEventListener('DOMContentLoaded', async function () {
                                 timer: 1000,
                                 timerProgressBar: true,
                             }).then(() => {
-                                window.location.reload();
+                               window.location.reload();
                             })
                         }
 
                     });
                 }
             } else if (evt.target.classList.contains("boton_chatear")) {
+                iniciarActualizacionChat()
                 const li = evt.target.closest("li");
-                const nombreAmigo = li?.querySelector("p")?.textContent;
+                nombreAmigo = li?.querySelector("p")?.textContent;
                 console.log(nombreAmigo);
 
                 if (!nombreAmigo) return;
@@ -323,6 +325,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                     outputChatFriends.style.display = 'block'; // Cambiar el display a 'block' para hacerlo visible
                     outputFriendsList.style.display = 'none';
 
+                    document.getElementById("enviarMensaje").addEventListener('click', () => {
+                        let contenidoMensaje = document.getElementById("mensajeInput").value;
+                        console.log(contenidoMensaje)
+                         enviarMensaje(datosUsuario.nombre, nombreAmigo, contenidoMensaje);
+                        document.getElementById("mensajeInput").value="";
+                    })
+
                     document.getElementById("cerrarChat").addEventListener("click", function () {
                         outputChatFriends.style.display = 'none'; // Cambiar el display a 'block' para hacerlo visible
                         outputFriendsList.style.display = 'block';
@@ -330,7 +339,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 } catch (error) {
                     console.error("Error al obtener los mensajes:", error);
                 }
-
             }
         } catch (e) {
             console.log(e)
@@ -343,45 +351,61 @@ document.addEventListener('DOMContentLoaded', async function () {
         return await response.json();
     }
 
-
-    // Agregar el evento al formulario de mensaje (enviar mensaje)
-    const formularioMensaje = document.getElementById("formularioMensaje");
-    if (formularioMensaje) {
-        formularioMensaje.addEventListener('submit', async function (evt) {
-            evt.preventDefault();
-
-            const mensajeInput = document.getElementById("mensajeInput");
-            const mensaje = mensajeInput.value.trim();
-
-            if (!mensaje) return; // Si no hay mensaje, no hacer nada
-
-            try {
-                const respuesta = await enviarMensaje(datosUsuario.nombre, chatNombreUsuario.textContent, mensaje);
-
-                if (respuesta.success) {
-                    // Después de enviar, actualizar la lista de mensajes
-                    await obtenerConversacion(datosUsuario.nombre, chatNombreUsuario.textContent);
-                } else {
-                    alert(respuesta.message); // Si algo salió mal, mostrar el error
-                }
-            } catch (error) {
-                console.error("Error al enviar el mensaje:", error);
-            }
-
-            // Limpiar el campo de entrada
-            mensajeInput.value = '';
-        });
-    }
+    amigoActual = nombreAmigo;
 
     // Función para enviar el mensaje
     async function enviarMensaje(fromUser, toUser, contenidoMensaje) {
-        const response = await fetch('/api/mensajes/enviar', {
-            method: 'POST',
+        const response = await fetch('/usuarios/enviarMensaje', {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({fromUser, toUser, contenidoMensaje}),
         });
-        return await response.json(); // Retorna un JSON con el estado de la respuesta
+        return await response.json();
     }
+
+    let intervaloActualizacion;
+    let ultimoMensajeId = null; // Opcional: para evitar renders innecesarios
+
+    function iniciarActualizacionChat() {
+        if (intervaloActualizacion) clearInterval(intervaloActualizacion);
+
+        intervaloActualizacion = setInterval(async () => {
+            if (!nombreAmigo) return;
+
+            try {
+                const mensajes = await obtenerConversacion(datosUsuario.nombre, nombreAmigo);
+
+                const ul = document.getElementById("listaMensajes");
+                if (!ul) return;
+
+                // Verifica si el mensaje más reciente cambió
+                const idUltimo = mensajes[mensajes.length - 1]?.id || JSON.stringify(mensajes[mensajes.length - 1]);
+
+                if (idUltimo === ultimoMensajeId) return;
+                ultimoMensajeId = idUltimo;
+
+                // Limpia y vuelve a mostrar los mensajes
+                ul.innerHTML = '';
+                mensajes.forEach(mensaje => {
+                    const li = document.createElement("li");
+                    li.classList.add("d-flex", "align-items-start");
+
+                    li.innerHTML = `
+                    <div class="mensaje-contenido">
+                        <p>${mensaje.content}</p>
+                    </div>
+                `;
+                    ul.appendChild(li);
+                });
+
+                // Scroll automático al final
+                ul.scrollTop = ul.scrollHeight;
+            } catch (error) {
+                console.error("Error actualizando mensajes:", error);
+            }
+        }, 100);
+    }
+
 })

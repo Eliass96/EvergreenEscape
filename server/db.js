@@ -571,27 +571,33 @@ exports.actualizarFotoPerfil = async function(idUsuario, nombreArchivoImagen) {
 // ENVIAR MENSAJE DE UN USUARIO A OTRO
 exports.enviarMensaje = async function (fromUser, toUser, contenidoMensaje) {
     try {
-        // Verificamos que ambos usuarios existan
         const emisor = await Usuario.findOne({ nombre: fromUser });
         const receptor = await Usuario.findOne({ nombre: toUser });
+
+        console.log(emisor)
+        console.log(receptor)
 
         if (!emisor) throw new Error("El usuario emisor no existe");
         if (!receptor) throw new Error("El usuario receptor no existe");
 
-        // Creamos el mensaje
         const nuevoMensaje = new Mensaje({
             from: fromUser,
             to: toUser,
             content: contenidoMensaje
         });
 
-        await nuevoMensaje.save();
+        const mensajeGuardado = await nuevoMensaje.save();
 
-        return { success: true, message: "Mensaje enviado correctamente" };
+        return {
+            success: true,
+            message: "Mensaje enviado correctamente",
+            mensaje: mensajeGuardado
+        };
     } catch (error) {
         return { success: false, message: error.message };
     }
 };
+
 
 // LISTAR MENSAJES ENTRE DOS USUARIOS
 exports.obtenerConversacion = async function (usuarioA, usuarioB) {

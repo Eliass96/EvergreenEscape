@@ -9,13 +9,11 @@ output.cardChat#chatBox
         ul.lista_chat#listaMensajes
             each mensaje in mensajes
                 li.d-flex.align-items-start
-                    .mensaje-emisor
-                        p.font-weight-bold= mensaje.from
                     .mensaje-contenido
                         p= mensaje.content
 
         // Formulario de mensajes
         form#formularioMensaje.mt-3.px-3.d-flex
             input.form-control(type='text', id='mensajeInput', placeholder='Escribe tu mensaje...')
-            button.btn.btn-custom.mx-2#enviarMensaje(type='submit') ➤
+            button.btn.btn-custom.mx-2#enviarMensaje(type='button') ➤
 

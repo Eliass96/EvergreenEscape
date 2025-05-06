@@ -196,10 +196,12 @@ app.get('/passport/google/callback',
     }
 );
 
-app.post('/usuarios/enviarMensaje', async (req, res) => {
+app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const { fromUser, toUser, contenidoMensaje } = req.body;
+    console.log(req.body)
 
     if (!fromUser || !toUser || !contenidoMensaje) {
+        console.log("hola")
         return res.status(400).json({ success: false, message: 'Faltan parámetros necesarios' });
     }
 
@@ -217,10 +219,8 @@ app.post('/usuarios/enviarMensaje', async (req, res) => {
 
 app.get('/conversacion/:usuarioA/:usuarioB', async (req, res) => {
     const { usuarioA, usuarioB } = req.params;
-    console.log(usuarioA, usuarioB)
     try {
         const mensajes = await db.obtenerConversacion(usuarioA, usuarioB);
-        console.log(mensajes)
         return res.status(200).json(mensajes);
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
