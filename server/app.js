@@ -196,6 +196,37 @@ app.get('/passport/google/callback',
     }
 );
 
+app.post('/usuarios/enviarMensaje', async (req, res) => {
+    const { fromUser, toUser, contenidoMensaje } = req.body;
+
+    if (!fromUser || !toUser || !contenidoMensaje) {
+        return res.status(400).json({ success: false, message: 'Faltan parámetros necesarios' });
+    }
+
+    try {
+        const result = await db.enviarMensaje(fromUser, toUser, contenidoMensaje);
+        if (result.success) {
+            return res.status(200).json(result);
+        } else {
+            return res.status(400).json(result);
+        }
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+app.get('/conversacion/:usuarioA/:usuarioB', async (req, res) => {
+    const { usuarioA, usuarioB } = req.params;
+    console.log(usuarioA, usuarioB)
+    try {
+        const mensajes = await db.obtenerConversacion(usuarioA, usuarioB);
+        console.log(mensajes)
+        return res.status(200).json(mensajes);
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 // COMPROBACIÓN DE SESIÓN
 app.get('/usuarios/estado', async (req, res) => {
     try {

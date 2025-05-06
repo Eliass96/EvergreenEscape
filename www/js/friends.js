@@ -5,10 +5,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-
     document.getElementById('outputFriendsList').addEventListener('click', eliminarAmigo)
     document.getElementById('outputFriendsAddList').addEventListener('click', enviarSolicitud)
     document.getElementById('outputCardSolicitudes').addEventListener('click', gestionarSolicitudes)
+    document.getElementById('outputChatFriends').style.display = 'none';
+
     document.getElementById("but_solicitudes").addEventListener('click', async function () {
         // Ocultar los contenedores
         document.getElementById("outputFriendsList").classList.add('d-none');
@@ -263,6 +264,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     async function eliminarAmigo(evt) {
         try {
             if (evt.target.classList.contains("boton_eliminar")) {
+                console.log("eliminar")
                 let friendName = evt.target.parentElement.parentElement.querySelector("p").textContent
                 let resp = await fetch(`/usuarios/amigos/eliminar/${friendName}`, {
                     credentials: 'include',
@@ -307,9 +309,79 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                     });
                 }
+            } else if (evt.target.classList.contains("boton_chatear")) {
+                const li = evt.target.closest("li");
+                const nombreAmigo = li?.querySelector("p")?.textContent;
+                console.log(nombreAmigo);
+
+                if (!nombreAmigo) return;
+
+                try {
+                    const mensajes = await obtenerConversacion(datosUsuario.nombre, nombreAmigo);
+                    console.log(mensajes)
+                    outputChatFriends.innerHTML = chatFriends({nombreUsuario: nombreAmigo, mensajes: mensajes});
+                    outputChatFriends.style.display = 'block'; // Cambiar el display a 'block' para hacerlo visible
+                    outputFriendsList.style.display = 'none';
+
+                    document.getElementById("cerrarChat").addEventListener("click", function () {
+                        outputChatFriends.style.display = 'none'; // Cambiar el display a 'block' para hacerlo visible
+                        outputFriendsList.style.display = 'block';
+                    });
+                } catch (error) {
+                    console.error("Error al obtener los mensajes:", error);
+                }
+
             }
         } catch (e) {
             console.log(e)
         }
+    }
+
+    async function obtenerConversacion(usuarioA, usuarioB) {
+        const response = await fetch(`/conversacion/${usuarioA}/${usuarioB}`);
+        if (!response.ok) throw new Error("No se pudieron cargar los mensajes");
+        return await response.json();
+    }
+
+
+    // Agregar el evento al formulario de mensaje (enviar mensaje)
+    const formularioMensaje = document.getElementById("formularioMensaje");
+    if (formularioMensaje) {
+        formularioMensaje.addEventListener('submit', async function (evt) {
+            evt.preventDefault();
+
+            const mensajeInput = document.getElementById("mensajeInput");
+            const mensaje = mensajeInput.value.trim();
+
+            if (!mensaje) return; // Si no hay mensaje, no hacer nada
+
+            try {
+                const respuesta = await enviarMensaje(datosUsuario.nombre, chatNombreUsuario.textContent, mensaje);
+
+                if (respuesta.success) {
+                    // Después de enviar, actualizar la lista de mensajes
+                    await obtenerConversacion(datosUsuario.nombre, chatNombreUsuario.textContent);
+                } else {
+                    alert(respuesta.message); // Si algo salió mal, mostrar el error
+                }
+            } catch (error) {
+                console.error("Error al enviar el mensaje:", error);
+            }
+
+            // Limpiar el campo de entrada
+            mensajeInput.value = '';
+        });
+    }
+
+    // Función para enviar el mensaje
+    async function enviarMensaje(fromUser, toUser, contenidoMensaje) {
+        const response = await fetch('/api/mensajes/enviar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({fromUser, toUser, contenidoMensaje}),
+        });
+        return await response.json(); // Retorna un JSON con el estado de la respuesta
     }
 })

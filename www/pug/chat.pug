@@ -1,0 +1,21 @@
+output.cardChat#chatBox
+    .card-inner-chat
+        header.d-flex.align-items-center.justify-content-between.p-3
+            h2.titulo_card_chat Chat con
+                span#chatNombreUsuario= nombreUsuario
+            button.btn.btn-sm.btn-danger#cerrarChat Cerrar ✖️
+
+        // Lista de mensajes
+        ul.lista_chat#listaMensajes
+            each mensaje in mensajes
+                li.d-flex.align-items-start
+                    .mensaje-emisor
+                        p.font-weight-bold= mensaje.from
+                    .mensaje-contenido
+                        p= mensaje.content
+
+        // Formulario de mensajes
+        form#formularioMensaje.mt-3.px-3.d-flex
+            input.form-control(type='text', id='mensajeInput', placeholder='Escribe tu mensaje...')
+            button.btn.btn-custom.mx-2#enviarMensaje(type='submit') ➤
+

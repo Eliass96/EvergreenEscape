@@ -90,8 +90,19 @@ const ObjetoSchema = new mongoose.Schema({
     }
 });
 
+const MensajeSchema = new mongoose.Schema({
+    from: String,
+    to: String,
+    content: String,
+    timestamp: { type: Date, default: Date.now }
+});
+
+
+
+
 const Usuario = mongoose.model('Usuario', UsuarioSchema);
 const Objeto = mongoose.model('Objeto', ObjetoSchema);
+const Mensaje = mongoose.model('Mensaje', MensajeSchema);
 
 //METODOS DE USUARIO
 
@@ -554,6 +565,45 @@ exports.actualizarFotoPerfil = async function(idUsuario, nombreArchivoImagen) {
         ); // Devuelve el resultado de la operación
     } catch (error) {
         throw new Error('Error al actualizar la foto de perfil: ' + error.message);
+    }
+};
+
+// ENVIAR MENSAJE DE UN USUARIO A OTRO
+exports.enviarMensaje = async function (fromUser, toUser, contenidoMensaje) {
+    try {
+        // Verificamos que ambos usuarios existan
+        const emisor = await Usuario.findOne({ nombre: fromUser });
+        const receptor = await Usuario.findOne({ nombre: toUser });
+
+        if (!emisor) throw new Error("El usuario emisor no existe");
+        if (!receptor) throw new Error("El usuario receptor no existe");
+
+        // Creamos el mensaje
+        const nuevoMensaje = new Mensaje({
+            from: fromUser,
+            to: toUser,
+            content: contenidoMensaje
+        });
+
+        await nuevoMensaje.save();
+
+        return { success: true, message: "Mensaje enviado correctamente" };
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+};
+
+// LISTAR MENSAJES ENTRE DOS USUARIOS
+exports.obtenerConversacion = async function (usuarioA, usuarioB) {
+    try {
+        return await Mensaje.find({
+            $or: [
+                {from: usuarioA, to: usuarioB},
+                {from: usuarioB, to: usuarioA}
+            ]
+        }).sort({timestamp: 1});
+    } catch (error) {
+        throw new Error("Error al obtener la conversación: " + error.message);
     }
 };
 
