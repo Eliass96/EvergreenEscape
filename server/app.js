@@ -201,7 +201,6 @@ app.patch('/usuarios/enviarMensaje', async (req, res) => {
     console.log(req.body)
 
     if (!fromUser || !toUser || !contenidoMensaje) {
-        console.log("hola")
         return res.status(400).json({ success: false, message: 'Faltan parámetros necesarios' });
     }
 

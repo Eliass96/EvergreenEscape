@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     let datosUsuario;
     let usuarios;
     let nombreAmigo;
+    let intervaloActualizacion;
+    let ultimoMensajeId = null;
+    let bloqueandoClickChat = false;
 
     async function getUsuario() {
         try {
@@ -145,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         timer: 1500,
                         timerProgressBar: true,
                     }).then(() => {
-                       window.location.reload();
+                        window.location.reload();
                     });
                 } else {
                     Swal.fire({
@@ -253,7 +256,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         timer: 1000,
                         timerProgressBar: true,
                     }).then(() => {
-                       window.location.reload();
+                        window.location.reload();
                     })
                 }
             }
@@ -261,6 +264,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             console.log(e)
         }
     }
+
 
     async function eliminarAmigo(evt) {
         try {
@@ -283,7 +287,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         timer: 1500,
                         timerProgressBar: true,
                     }).then(() => {
-                       window.location.reload();
+                        window.location.reload();
                     });
                 } else {
                     Swal.fire({
@@ -304,46 +308,62 @@ document.addEventListener('DOMContentLoaded', async function () {
                                 timer: 1000,
                                 timerProgressBar: true,
                             }).then(() => {
-                               window.location.reload();
+                                window.location.reload();
                             })
                         }
 
                     });
                 }
             } else if (evt.target.classList.contains("boton_chatear")) {
-                iniciarActualizacionChat()
+
                 const li = evt.target.closest("li");
-                nombreAmigo = li?.querySelector("p")?.textContent;
-                console.log(nombreAmigo);
+                const nuevoNombreAmigo = li?.querySelector("p")?.textContent?.trim();
 
-                if (!nombreAmigo) return;
-
-                try {
-                    const mensajes = await obtenerConversacion(datosUsuario.nombre, nombreAmigo);
-                    console.log(mensajes)
-                    outputChatFriends.innerHTML = chatFriends({nombreUsuario: nombreAmigo, mensajes: mensajes});
-                    outputChatFriends.style.display = 'block'; // Cambiar el display a 'block' para hacerlo visible
-                    outputFriendsList.style.display = 'none';
-
-                    document.getElementById("enviarMensaje").addEventListener('click', () => {
-                        let contenidoMensaje = document.getElementById("mensajeInput").value;
-                        console.log(contenidoMensaje)
-                         enviarMensaje(datosUsuario.nombre, nombreAmigo, contenidoMensaje);
-                        document.getElementById("mensajeInput").value="";
-                    })
-
-                    document.getElementById("cerrarChat").addEventListener("click", function () {
-                        outputChatFriends.style.display = 'none'; // Cambiar el display a 'block' para hacerlo visible
-                        outputFriendsList.style.display = 'block';
-                    });
-                } catch (error) {
-                    console.error("Error al obtener los mensajes:", error);
+                if (!nuevoNombreAmigo) {
+                    bloqueandoClickChat = false;
+                    return;
                 }
+
+                if (nombreAmigo === nuevoNombreAmigo && outputChatFriends.style.display === 'block') {
+                    return;
+                }
+
+                nombreAmigo = nuevoNombreAmigo;
+
+                const ul = document.getElementById("listaMensajes");
+                if (ul) ul.innerHTML = "";
+
+                await actualizarChat();
+                iniciarActualizacionChat();
+                bloqueandoClickChat = false;
             }
         } catch (e) {
             console.log(e)
         }
     }
+
+    async function actualizarChat() {
+        try {
+            const mensajes = await obtenerConversacion(datosUsuario.nombre, nombreAmigo);
+            outputChatFriends.innerHTML = chatFriends({nombreUsuario: nombreAmigo, mensajes: mensajes});
+            outputChatFriends.style.display = 'block';
+            outputFriendsAddList.style.display = 'none';
+
+            document.getElementById("enviarMensaje").addEventListener('click', () => {
+                let contenidoMensaje = document.getElementById("mensajeInput").value;
+                enviarMensaje(datosUsuario.nombre, nombreAmigo, contenidoMensaje);
+                document.getElementById("mensajeInput").value = "";
+            });
+
+            document.getElementById("cerrarChat").addEventListener("click", function () {
+                outputChatFriends.style.display = 'none';
+                outputFriendsAddList.style.display = 'block';
+            });
+        } catch (error) {
+            console.error("Error al actualizar chat:", error);
+        }
+    }
+
 
     async function obtenerConversacion(usuarioA, usuarioB) {
         const response = await fetch(`/conversacion/${usuarioA}/${usuarioB}`);
@@ -365,8 +385,41 @@ document.addEventListener('DOMContentLoaded', async function () {
         return await response.json();
     }
 
-    let intervaloActualizacion;
-    let ultimoMensajeId = null; // Opcional: para evitar renders innecesarios
+    const form = document.getElementById("formularioMensaje");
+    const input = document.getElementById("mensajeInput");
+
+    // Evita el submit desde cualquier vía
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            console.warn("Submit bloqueado");
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    }
+
+    // Bloquea Enter dentro del input
+    if (input) {
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                console.warn("Enter bloqueado");
+                e.preventDefault();
+                e.stopPropagation();
+                // Simula el click si quieres enviar el mensaje
+                document.getElementById("enviarMensaje")?.click();
+            }
+        });
+    }
+
+    window.addEventListener("submit", (e) => {
+        let contenidoMensaje = document.getElementById("mensajeInput").value;
+        console.log("Submit global bloqueado");
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        enviarMensaje(datosUsuario.nombre, nombreAmigo, contenidoMensaje);
+        document.getElementById("mensajeInput").value = "";
+        return false;
+    }, true);
+
 
     function iniciarActualizacionChat() {
         if (intervaloActualizacion) clearInterval(intervaloActualizacion);
@@ -380,35 +433,38 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const ul = document.getElementById("listaMensajes");
                 if (!ul) return;
 
-                // Verifica si el mensaje más reciente cambió
                 const idUltimo = mensajes[mensajes.length - 1]?.id || JSON.stringify(mensajes[mensajes.length - 1]);
-
                 if (idUltimo === ultimoMensajeId) return;
                 ultimoMensajeId = idUltimo;
 
-                // Limpia y vuelve a mostrar los mensajes
+                ul.style.opacity = "0";
+
                 ul.innerHTML = '';
                 mensajes.forEach(mensaje => {
-                    // Determina si el mensaje es del usuario o del amigo
                     const mensajeFromUser = (mensaje.from === datosUsuario.nombre) ? "mensaje-derecha" : "mensaje-izquierda";
 
                     const li = document.createElement("li");
-                    li.classList.add("d-flex", "align-items-start", `${mensajeFromUser}`);
+                    li.classList.add("d-flex", "align-items-start", mensajeFromUser);
 
-                    // Crea el HTML con la clase correspondiente
                     li.innerHTML = `
-                        <div class="mensaje-contenido">
-                            <p>${mensaje.content}</p>
-                        </div>
-                    `;
+                    <div class="mensaje-contenido">
+                        <p>${mensaje.content}</p>
+                    </div>
+                `;
                     ul.appendChild(li);
                 });
 
-                // Scroll automático al final
                 ul.scrollTop = ul.scrollHeight;
+
+                setTimeout(() => {
+                    ul.style.opacity = "1";
+                }, 100);
+
             } catch (error) {
                 console.error("Error actualizando mensajes:", error);
             }
-        }, 50);
+        }, 500);
     }
+
+
 })

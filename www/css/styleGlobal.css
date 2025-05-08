@@ -114,6 +114,11 @@ footer p {
         min-width: 60px;
     }
 
+    .img_button_solicitudes {
+        width: 4vw !important;
+        min-width: 60px !important;
+    }
+
     .titulo_settings {
         max-width: 22vw;
         min-width: 240px;
@@ -185,6 +190,7 @@ footer p {
     }
 }
 
+
 @media screen and (max-height: 720px) and (min-height: 400px) {
     .img_button_ajustes_partida {
         max-width: 4vw;
@@ -254,6 +260,11 @@ footer p {
     .img_button_back {
         width: 4vw;
         min-width: 60px;
+    }
+
+    .img_button_solicitudes {
+        width: 4vw !important;
+        min-width: 60px !important;
     }
 
     .titulo_settings {
