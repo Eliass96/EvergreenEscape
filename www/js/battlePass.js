@@ -6,35 +6,41 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     let outputBattlePass=document.getElementById('outputBattlePass')
-    cargarPaseDeBatalla()
+
 
     async function cargarPaseDeBatalla() {
         try {
-            const resp = await fetch('/usuarios/usuario');
-            if (!resp.ok) throw new Error('No autorizado');
+            let datosUsuario;
 
-            const datosUsuario = await resp.json();
-
-            let experiencia = datosUsuario.experiencia;
-            let experienciaMaxima= 10000;
-
-            outputBattlePass.innerHTML = battlePass({
-                experiencia,
-                experienciaMaxima,
-                recompensa,
+            let resp = await fetch('/usuarios/usuario', {
+                credentials: 'include'
             });
+            console.log(resp);
+            if (resp.ok) {
+                datosUsuario = await resp.json();
+                console.log(datosUsuario);
+                let experiencia = datosUsuario.experiencia;
+                let experienciaMax= 10000;
+                const recompensas = [
+                    { nombre: 'monedas100', tipo: 'monedas', cantidad: 100 },
+                    { nombre: 'superSalto', tipo: 'superSalto', cantidad: 3 },
+                    { nombre: 'puntosBonus', tipo: 'puntuacionExtra', cantidad: 5},
+                    { nombre: 'inmunidadTotal', tipo: 'inmunidad', cantidad: 4 },
+                    { nombre: 'revivir', tipo: 'experiencia', cantidad: 1 },
+                ];
+                console.log(recompensas);
+                outputBattlePass.innerHTML = battlePass({
+                    experiencia,
+                    experienciaMax,
+                    recompensas,
+                });
+            }
 
             document.querySelectorAll('.btn-reclamar-recompensa').forEach((btn, index) => {
                 btn.addEventListener('click', async () => {
-                    const recompensasDefinidas = [
-                        { nombre: 'monedas100', tipo: 'monedas', cantidad: 100 },
-                        { nombre: 'superSalto', tipo: 'superSalto', cantidad: 3 },
-                        { nombre: 'puntosBonus', tipo: 'puntuacionExtra', cantidad: 5},
-                        { nombre: 'inmunidadTotal', tipo: 'inmunidad', cantidad: 4 },
-                        { nombre: 'revivir', tipo: 'experiencia', cantidad: 1 },
-                    ];
 
-                    const recompensa = recompensasDefinidas[index];
+
+                    const recompensa = recompensas[index];
 
                     try {
                         const res = await fetch('/reclamar-recompensa', {
@@ -42,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             headers: {
                                 'Content-Type': 'application/json'
                             },
+                            credentials: 'include',
                             body: JSON.stringify({
                                 userId: datosUsuario._id,
                                 recompensaNombre: recompensa.nombre,
@@ -73,5 +80,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
     }
+    cargarPaseDeBatalla()
 
 });
