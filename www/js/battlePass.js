@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-    let outputBattlePass=document.getElementById('outputBattlePass')
+    let outputBattlePass = document.getElementById('outputBattlePass')
 
 
     async function cargarPaseDeBatalla() {
@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', async function () {
                 datosUsuario = await resp.json();
                 console.log(datosUsuario);
                 let experiencia = datosUsuario.experiencia;
-                let experienciaMax= 10000;
+                let experienciaMax = 10000;
                 const recompensas = [
-                    { nombre: 'monedas100', tipo: 'monedas', cantidad: 100 },
-                    { nombre: 'superSalto', tipo: 'superSalto', cantidad: 3 },
-                    { nombre: 'puntosBonus', tipo: 'puntuacionExtra', cantidad: 5},
-                    { nombre: 'inmunidadTotal', tipo: 'inmunidad', cantidad: 4 },
-                    { nombre: 'revivir', tipo: 'experiencia', cantidad: 1 },
+                    {nombre: 'Monedas', tipo: 'monedas', cantidad: 100},
+                    {nombre: 'Super Salto', tipo: 'superSalto', cantidad: 3},
+                    {nombre: 'Puntos Extra', tipo: 'puntuacionExtra', cantidad: 5},
+                    {nombre: 'Inmunidad', tipo: 'inmunidad', cantidad: 4},
+                    {nombre: 'Revivir ', tipo: 'revivir', cantidad: 1},
                 ];
                 console.log(recompensas);
                 outputBattlePass.innerHTML = battlePass({
@@ -38,9 +38,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             document.querySelectorAll('.btn-reclamar-recompensa').forEach((btn, index) => {
                 btn.addEventListener('click', async () => {
-
-
                     const recompensa = recompensas[index];
+                    console.log(recompensa);
 
                     try {
                         const res = await fetch('/reclamar-recompensa', {
@@ -80,6 +79,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
     }
+
     cargarPaseDeBatalla()
 
 });

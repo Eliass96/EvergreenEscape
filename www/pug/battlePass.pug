@@ -21,6 +21,6 @@ output.cardBattlePass#battlePass
                 li.texto_friends.d-flex.align-items-center.justify-content-between
                     .d-flex.align-items-center.gap-3
                         img(src=recompensa.imagen, alt="Recompensa " + (index + 1), width="50", height="50")
-                        p.mb-0 Recompensa #{index + 1}
+                        p.mb-0 Recompensa #{recompensa.nombre + " x"+recompensa.cantidad}
                     button.btn.btn-custom.boton_reclamar#boton_reclamar(onclick=`reclamarRecompensa(${index})`, disabled=!recompensa.disponible)
                         = recompensa.reclamada ? '✅ Reclamado' : '🎁 Reclamar'
