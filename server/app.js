@@ -162,6 +162,10 @@ app.get("/friends", (req, res) => {
     res.sendFile(path.join(__dirname, "../www/html/friends.html"));
 });
 
+app.get("/battlePass", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/battlePass.html"));
+});
+
 // METODOS
 // GMAIL
 passport.use(new GoogleStrategy({
@@ -791,6 +795,58 @@ app.patch("/usuarios/amigos/eliminar/:amigoNombre", async (req, res) => {
         res.status(500).json({success: false, message: "Error interno del servidor"});
     }
 });
+
+//SUMAR EXPERIENCIA
+app.patch('/usuarios/usuario/sumarExperiencia', async (req, res) => {
+    try {
+        const userId = req.session.usuario;
+        const { experiencia } = req.body;
+        console.log(experiencia)
+
+        if (!userId) {
+            return res.status(HTTP_UNAUTHORIZED).json({ message: 'No hay sesión iniciada.' });
+        }
+
+        if (typeof experiencia !== 'number' || experiencia <= 0) {
+            return res.status(HTTP_BAD_REQUEST).json({ message: 'La experiencia debe ser un número positivo.' });
+        }
+
+        const resultado = await db.sumarExperiencia(userId, experiencia);
+
+        if (resultado) {
+            return res.status(HTTP_OK).json({ message: 'Experiencia sumada correctamente.' });
+        } else {
+            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({ message: 'No se pudo actualizar la experiencia.' });
+        }
+    } catch (err) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).json({
+            message: 'Error inesperado al sumar experiencia.',
+            error: err.message
+        });
+    }
+});
+
+app.post('/reclamar-recompensa', async (req, res) => {
+    const { userId, recompensaNombre, recompensaTipo, cantidad } = req.body;
+
+    if (!userId || !recompensaNombre || !recompensaTipo || typeof cantidad !== 'number') {
+        return res.status(400).json({
+            success: false,
+            message: 'Faltan datos requeridos o cantidad inválida'
+        });
+    }
+
+    try {
+        const resultado = await db.reclamarRecompensa(userId, recompensaNombre, recompensaTipo, cantidad);
+        res.status(resultado.success ? 200 : 400).json(resultado);
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Error interno del servidor: ' + err.message
+        });
+    }
+});
+
 
 // RUTA DE ERROR 404
 app.use((req, res, next) => {

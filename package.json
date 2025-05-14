@@ -19,7 +19,8 @@
     "comp-friendsList": "pug -c -D -n friendsList -o www/js/pug www/pug/friendsList.pug",
     "comp-friendsAddList": "pug -c -D -n friendsAddList -o www/js/pug www/pug/friendsAddList.pug",
     "comp-chatFriends": "pug -c -D -n chatFriends -o www/js/pug www/pug/chat.pug",
-    "comp-solicitudes": "pug -c -D -n friendsRequest -o www/js/pug www/pug/solicitudes.pug"
+    "comp-solicitudes": "pug -c -D -n friendsRequest -o www/js/pug www/pug/solicitudes.pug",
+    "comp-paseDeBatalla": "pug -c -D -n battlePass -o www/js/pug www/pug/battlePass.pug"
   },
   "keywords": [
     "ecosystem:cordova"

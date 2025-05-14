@@ -74,7 +74,15 @@ const UsuarioSchema = new mongoose.Schema(
         avatar: {
             type: String, // solo guardamos el nombre del archivo
             default: "default.jpg" // o lo que uses como imagen por defecto
-        }
+        },
+        experiencia: {
+            type: Number,
+            default: 0
+        },
+        recompensa: {
+            type: [String],
+            default: []
+        },
 
     }
 );
@@ -612,6 +620,74 @@ exports.obtenerConversacion = async function (usuarioA, usuarioB) {
         throw new Error("Error al obtener la conversación: " + error.message);
     }
 };
+
+//SUMAR EXPERIENCIA
+exports.sumarExperiencia = async function (userId, experienciaGanada) {
+    try {
+        const usuario = await Usuario.findById(userId);
+        if (!usuario) {
+            throw new Error('Usuario no encontrado');
+        }
+        usuario.experiencia += experienciaGanada;
+        await usuario.save();
+        return usuario;
+    } catch (error) {
+        throw new Error('Hubo un error al sumar experiencia: ' + error.message);
+    }
+};
+
+exports.reclamarRecompensa = async function (userId, recompensaNombre, recompensaTipo, cantidad) {
+    try {
+        const usuario = await Usuario.findById(userId);
+        if (!usuario) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        if (usuario.recompensa.includes(recompensaNombre)) {
+            return {
+                success: false,
+                message: 'Recompensa ya reclamada'
+            };
+        }
+
+        switch (recompensaTipo) {
+            case 'monedas':
+                usuario.monedas += cantidad;
+                break;
+            case 'superSalto':
+                usuario.superSalto += cantidad;
+                break;
+            case 'puntuacionExtra':
+                usuario.puntuacionExtra += cantidad;
+                break;
+            case 'inmunidad':
+                usuario.inmunidad += cantidad;
+                break;
+            case 'revivir':
+                usuario.revivir += cantidad;
+                break;
+            default:
+                throw new Error('Tipo de recompensa no válido');
+        }
+
+        usuario.recompensa.push(recompensaNombre);
+
+        await usuario.save();
+
+        return {
+            success: true,
+            message: `Recompensa "${recompensaNombre}" reclamada exitosamente`,
+            usuario
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: 'Error al reclamar la recompensa: ' + error.message
+        };
+    }
+};
+
+
 
 
 exports.conectar = async function () {

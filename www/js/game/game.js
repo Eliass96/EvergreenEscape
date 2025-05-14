@@ -94,3 +94,4 @@ let estaAntiObstaculosActivo;
 let estaX2Activo;
 let estaSuperSaltoActivo;
 
+

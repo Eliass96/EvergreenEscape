@@ -764,9 +764,12 @@ async function morir() {
         $('#modalSettings').modal('hide');
         $('#modalGameOver').modal({backdrop: 'static', keyboard: false}).modal('show');
 
+        let experiencia = Math.floor((puntos * 3) / 2);
+
         await actualizarPuntuacion(puntos);
         await actualizarMonedas(monedas);
         await actualizarItemsPostPartida();
+        await actualizarExperiencia(experiencia);
     }
 }
 
@@ -1122,7 +1125,6 @@ async function efectoDeItemRevivir() {
 
                 let x = 6;
                 while (x >= 0) {
-
                     if (x <= 3) contadorTiempoAntiObstaculos.style.color = "red"
                     contadorTiempoAntiObstaculos.textContent = x + "s";
                     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -1160,6 +1162,29 @@ async function actualizarItemsPostPartida() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
+        });
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error inesperado al actualizar los objetos... Pruebe a reiniciar el juego",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+        });
+    }
+}
+
+async function actualizarExperiencia(experiencia) {
+    try {
+
+        await fetch('/usuarios/usuario/sumarExperiencia', {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({experiencia})
         });
     } catch (error) {
         Swal.fire({
