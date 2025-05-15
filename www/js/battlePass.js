@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function cargarPaseDeBatalla() {
         try {
-            let experiencia = 10000;
+            let experiencia = datosUsuario.experiencia;
             let experienciaMax = 10000;
             const recompensas = [
                 {

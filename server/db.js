@@ -692,7 +692,7 @@ exports.conectar = async function () {
         const uri = process.env.MONGODB_URI;
         await mongoose.connect(uri);
         // 🕒 Iniciar cron aquí mismo después de conectar
-        // cron.schedule('* * * * *', async () => {
+        // cron.schedule('* * * * *', async () => { // Resetea cada minuto
         cron.schedule('0 0 1 * *', async () => {
             try {
                 console.log('⏳ Reseteando experiencia y recompensas de los usuarios...');
