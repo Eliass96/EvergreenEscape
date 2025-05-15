@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-
+const cron = require('node-cron');
 
 //CREACION DEL ESQUEMA
 // USUARIO-≥ nombre required unique, contraseña required, nacionalidad required, array de puntuaciones vacio,
@@ -691,6 +691,24 @@ exports.conectar = async function () {
     try {
         const uri = process.env.MONGODB_URI;
         await mongoose.connect(uri);
+        // 🕒 Iniciar cron aquí mismo después de conectar
+        // cron.schedule('* * * * *', async () => {
+        cron.schedule('0 0 1 * *', async () => {
+            try {
+                console.log('⏳ Reseteando experiencia y recompensas de los usuarios...');
+
+                const result = await Usuario.updateMany({}, {
+                    $set: {
+                        experiencia: 0,
+                        recompensa: []
+                    }
+                });
+
+                console.log(`✅ Experiencia reseteada para ${result.modifiedCount} usuarios.`);
+            } catch (error) {
+                console.error('❌ Error al resetear experiencia:', error);
+            }
+        });
     } catch (error) {
         console.error("Error al conectar a la base de datos:", error);
     }
