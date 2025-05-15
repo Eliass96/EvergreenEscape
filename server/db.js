@@ -687,9 +687,6 @@ exports.reclamarRecompensa = async function (userId, recompensaNombre, recompens
     }
 };
 
-
-
-
 exports.conectar = async function () {
     try {
         const uri = process.env.MONGODB_URI;

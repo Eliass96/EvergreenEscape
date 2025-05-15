@@ -7,40 +7,72 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     let outputBattlePass = document.getElementById('outputBattlePass')
 
+    let datosUsuario;
+    let urlUsuario = '/usuarios/usuario';
+    let resp = await fetch(urlUsuario);
+    if (resp.ok) {
+        datosUsuario = await resp.json();
+        console.log(datosUsuario);
+        await cargarPaseDeBatalla();
+    }
 
     async function cargarPaseDeBatalla() {
         try {
-            let datosUsuario;
+            let experiencia = 10000;
+            let experienciaMax = 10000;
+            const recompensas = [
+                {
+                    nombre: 'Monedas',
+                    tipo: 'monedas',
+                    cantidad: 100,
+                    imagen: '/img/shopItems/monedaShop.webp',
+                    disponible: (experiencia >= 1000),
+                    reclamada: (datosUsuario.recompensa.includes("Monedas"))
+                },
+                {
+                    nombre: 'Super Salto',
+                    tipo: 'superSalto',
+                    cantidad: 3,
+                    imagen: '/img/shopItems/supersalto.webp',
+                    disponible: (experiencia >= 2500),
+                    reclamada: (datosUsuario.recompensa.includes("Super Salto"))
+                },
+                {
+                    nombre: 'Puntos Extra',
+                    tipo: 'puntuacionExtra',
+                    cantidad: 5,
+                    imagen: '/img/shopItems/x2.png',
+                    disponible: (experiencia >= 5000),
+                    reclamada: (datosUsuario.recompensa.includes("Puntos Extra"))
+                },
+                {
+                    nombre: 'Inmunidad',
+                    tipo: 'inmunidad',
+                    cantidad: 4,
+                    imagen: '/img/shopItems/antiobstaculos.png',
+                    disponible: (experiencia >= 7500),
+                    reclamada: (datosUsuario.recompensa.includes("Inmunidad"))
+                },
+                {
+                    nombre: 'Revivir',
+                    tipo: 'revivir',
+                    cantidad: 1,
+                    imagen: '/img/shopItems/revivir.png',
+                    disponible: (experiencia >= 10000),
+                    reclamada: (datosUsuario.recompensa.includes("Revivir"))
+                },
+            ];
 
-            let resp = await fetch('/usuarios/usuario', {
-                credentials: 'include'
+            outputBattlePass.innerHTML = battlePass({
+                experiencia,
+                experienciaMax,
+                recompensas,
             });
-            console.log(resp);
-            if (resp.ok) {
-                datosUsuario = await resp.json();
-                console.log(datosUsuario);
-                let experiencia = datosUsuario.experiencia;
-                let experienciaMax = 10000;
-                const recompensas = [
-                    {nombre: 'Monedas', tipo: 'monedas', cantidad: 100},
-                    {nombre: 'Super Salto', tipo: 'superSalto', cantidad: 3},
-                    {nombre: 'Puntos Extra', tipo: 'puntuacionExtra', cantidad: 5},
-                    {nombre: 'Inmunidad', tipo: 'inmunidad', cantidad: 4},
-                    {nombre: 'Revivir ', tipo: 'revivir', cantidad: 1},
-                ];
-                console.log(recompensas);
-                outputBattlePass.innerHTML = battlePass({
-                    experiencia,
-                    experienciaMax,
-                    recompensas,
-                });
-            }
 
-            document.querySelectorAll('.btn-reclamar-recompensa').forEach((btn, index) => {
+            // IMPORTANTE: solo después de renderizar el HTML
+            document.querySelectorAll('.boton_reclamar').forEach((btn, index) => {
                 btn.addEventListener('click', async () => {
                     const recompensa = recompensas[index];
-                    console.log(recompensa);
-
                     try {
                         const res = await fetch('/reclamar-recompensa', {
                             method: 'POST',
@@ -58,17 +90,40 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                         const result = await res.json();
                         if (result.success) {
-                            Swal.fire('¡Recompensa reclamada!', result.message, 'success');
+                            Swal.fire({
+                                icon: "success",
+                                title: "¡Recompensa reclamada!",
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 1500,
+                                timerProgressBar: true
+                            }).then( () => {
+                                window.location.reload();
+                            });
                         } else {
-                            Swal.fire('Atención', result.message, 'info');
+                            Swal.fire({
+                                icon: "info",
+                                title: "¡Atención!",
+                                text: result.message,
+                                showConfirmButton: false,
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
                         }
                     } catch (error) {
-                        Swal.fire('Error', 'No se pudo reclamar la recompensa', 'error');
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: 'No se pudo reclamar la recompensa',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true
+                        });
                     }
                 });
             });
-
-        } catch (error) {
+        } catch
+            (error) {
             Swal.fire({
                 icon: "warning",
                 title: "No has iniciado sesión",
@@ -79,7 +134,4 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
     }
-
-    cargarPaseDeBatalla()
-
 });

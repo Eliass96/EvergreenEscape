@@ -847,7 +847,6 @@ app.post('/reclamar-recompensa', async (req, res) => {
     }
 });
 
-
 // RUTA DE ERROR 404
 app.use((req, res, next) => {
     res.status(404).sendFile(path.join(__dirname, "../www/html/errors/404.html"));
