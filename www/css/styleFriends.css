@@ -8,6 +8,13 @@
     transition: 0.3s;
 }
 
+@media (max-width: 968px) {
+    .btn-custom {
+        padding: 3px 8px;
+        font-size: 0.85em !important;
+    }
+}
+
 .btn-custom:hover {
     background: white;
     color: black;
@@ -92,13 +99,6 @@
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
 }
 
-/* Estilo general de texto en solicitudes */
-.texto_friends {
-    font-size: 1.25rem;
-    color: white;
-    margin-left: 1vw;
-    margin-right: 1vw;
-}
 
 .texto_battlePass {
     font-size: 0.9rem;
@@ -134,22 +134,20 @@
 .lista_friends,
 .lista_chat {
     list-style: none;
-    padding: 0;
     margin: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+    padding: 20px;
 }
 
-/* Estilo de cada mensaje */
 .lista_chat li {
     display: flex;
     align-items: flex-start;
     color: white;
 }
 
-/* Contenido de mensaje *//* Estilo base para el contenido de los mensajes */
 .mensaje-contenido {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 0.75em 1em;
@@ -157,20 +155,26 @@
     max-width: 80%;
     word-break: break-word;
     margin-inline: 1vw;
+    font-family: 'Turtles', sans-serif;
 }
 
-/* Alineación a la izquierda */
 .mensaje-izquierda {
-    justify-content: flex-start; /* Alinea a la izquierda */
+    justify-content: flex-start;
 }
 
-/* Alineación a la derecha */
 .mensaje-derecha {
-    justify-content: flex-end; /* Alinea a la derecha */
+    justify-content: flex-end;
 }
 
-/* Formulario de mensajes */
-/* Contenedor principal del chat */
+@media (max-width: 968px) {
+    .mensaje-contenido {
+        padding: 0.5em 0.75em;
+        font-size: 0.75em;
+        max-width: 90%;
+        border-radius: 8px;
+    }
+}
+
 .card-inner-chat {
     display: flex;
     flex-direction: column;
@@ -179,7 +183,7 @@
 
 /* Header del chat */
 .card-inner-chat header {
-    padding: 1em;
+    padding: 0;
     margin: 0;
 }
 

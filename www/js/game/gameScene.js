@@ -4,8 +4,8 @@ class gameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("fondoBosque", "../../assets/background/fondoBosque.jpg");
-        this.load.image("fondoBosqueNoche", "../../assets/background/fondoBosqueNoche.jpg");
+        this.load.image("fondoBosque", "../../assets/background/fondoBosque.webp");
+        this.load.image("fondoBosqueNoche", "../../assets/background/fondoBosqueNoche.webp");
         this.load.image("piedra", "../../assets/components/piedra.png");
         this.load.image("plataforma", "../../assets/components/plataforma.png");
         this.load.image("pincho", "../../assets/components/pinchos.png");

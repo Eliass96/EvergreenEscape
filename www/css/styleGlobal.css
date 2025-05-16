@@ -131,13 +131,13 @@ footer p {
 
     .img_button_ajustes_partida {
         max-width: 4vw;
-        min-width: 60px;
+        min-width: 45px;
         margin-left: 10px;
     }
 
     .bauble_box .bauble_label {
-        max-width: 60px;
-        min-width: 60px;
+        max-width: 50px;
+        min-width: 50px;
         height: 30px;
     }
 
