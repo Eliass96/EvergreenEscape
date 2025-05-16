@@ -10,6 +10,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(); // no pongas el clientId aquí
 
 
 //PINGS
@@ -199,6 +201,37 @@ app.get('/passport/google/callback',
         }
     }
 );
+
+app.post('/auth/google/android', async (req, res) => {
+    const { idToken } = req.body;
+
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken,
+            audience: [
+                '334334512703-n6347h33faudgbl868os6830pk5dr3s7.apps.googleusercontent.com', //android
+                '334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com' // web
+            ],
+        });
+
+        const payload = ticket.getPayload();
+        const email = payload.email;
+
+        // Aquí puedes buscar el usuario en tu DB o crearlo
+        // Luego generar un JWT propio si quieres mantener sesión
+
+        res.status(200).json({
+            success: true,
+            email,
+            name: payload.name,
+            picture: payload.picture,
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(401).json({ success: false, message: 'Token inválido' });
+    }
+});
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const { fromUser, toUser, contenidoMensaje } = req.body;
