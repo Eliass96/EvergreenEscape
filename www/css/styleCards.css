@@ -317,6 +317,18 @@
         padding-bottom: 5px;
         white-space: break-spaces;
     }
+
+    .titulo_card_users, .titulo_card_friends, .titulo_card_chat {
+        font-size: clamp(1.5em, 4vh, 1.7em);
+    }
+
+    .texto_users, .texto_friends, .mensaje-contenido{
+        font-size: clamp(1.3em, 3.5vh, 1.8em);
+    }
+
+    .btn-custom, .boton_cerrar {
+        font-size: clamp(1em, 2vh, 1em);
+    }
 }
 
 @media (min-width: 1700px) and (max-width: 2000px) {
@@ -350,6 +362,10 @@
         font-size: clamp(1em, 3vh, 1.5em);
         padding-bottom: 5px;
         white-space: break-spaces;
+    }
+
+    .titulo_card_users, .titulo_card_friends, .titulo_card_chat {
+        font-size: clamp(1.2em, 4vh, 1.7em);
     }
 }
 
@@ -391,6 +407,22 @@
     width: 6vw;
     max-width: 70px;
     min-width: 40px;
+}
+
+/*PASE BATALLA*/
+.card-inner-battlePass {
+    width: 45vw;
+    background-color: rgba(0, 0, 0, .5);
+    color: white;
+    overflow-y: auto;
+    height: 50vh;
+    min-height: 100px;
+    border-radius: 15px;
+}
+
+#boton_reclamar {
+    max-width: 10vw;
+    min-width: 10vw;
 }
 
 /*** PERFIL ***/
