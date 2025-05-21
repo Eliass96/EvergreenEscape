@@ -265,10 +265,91 @@
     min-width: 120px;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 801px) and (max-width: 950px) {
+    .items {
+        width: 3.25rem;
+        min-width: 100px;
+    }
+}
+
+@media (min-width: 651px) and (max-width: 800px) {
+    .items {
+        width: 2.5rem;
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 650px) {
     .items {
         width: 2rem;
         min-width: 50px;
+    }
+}
+
+
+@media (min-width: 2000px) {
+    .items {
+        width: 8rem;
+        min-width: 250px;
+    }
+
+    .titulo_card_ranking {
+        font-size: clamp(2em, 3vw, 2em);
+    }
+
+    .titulo_card_info {
+        font-family: 'jackpot', sans-serif;
+        font-size: clamp(2.2em, 5.2vw, 2.2em);
+        padding-top: 2em;
+        text-align: center;
+        line-height: 1.75;
+    }
+
+    .texto_info {
+        padding: 20px;
+        font-family: 'turtles', sans-serif;
+        font-size: clamp(2em, 4vh, 2em);
+    }
+
+    .texto_ranking {
+        font-family: 'turtles', sans-serif;
+        font-size: clamp(1.5em, 3vh, 2em);
+        padding-bottom: 5px;
+        white-space: break-spaces;
+    }
+}
+
+@media (min-width: 1700px) and (max-width: 2000px) {
+    .items {
+        width: 6rem;
+        min-width: 150px;
+    }
+
+    .titulo_card_ranking {
+
+        font-size: clamp(1.5em, 3vw, 1.5em);
+
+    }
+
+    .titulo_card_info {
+        font-family: 'jackpot', sans-serif;
+        font-size: clamp(2em, 3.2vh, 2em) !important;
+        padding-top: 2em;
+        text-align: center;
+        line-height: 1.75;
+    }
+
+    .texto_info {
+        padding: 20px;
+        font-family: 'turtles', sans-serif;
+        font-size: clamp(1.5em, 2.8vh, 1.5em) !important;
+    }
+
+    .texto_ranking {
+        font-family: 'turtles', sans-serif;
+        font-size: clamp(1em, 3vh, 1.5em);
+        padding-bottom: 5px;
+        white-space: break-spaces;
     }
 }
 
