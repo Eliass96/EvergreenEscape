@@ -5,8 +5,12 @@ output.cardChat#chatBox
                 span#chatNombreUsuario= nombreUsuario
             button.btn.btn-custom.boton_cerrar#cerrarChat ❌
 
+        // Spinner en lugar de la lista de mensajes al principio
+        #spinner(style='display: none; text-align: center; padding: 2rem;')
+            .loader
+
         // Lista de mensajes
-        ul.lista_chat#listaMensajes
+        ul.lista_chat#listaMensajes(style='display: none;')
             each mensaje in mensajes
                 li.d-flex.align-items-start
                     .mensaje-contenido
@@ -16,4 +20,3 @@ output.cardChat#chatBox
         form#formularioMensaje.mt-3.px-3.d-flex
             input.form-control(type='text', id='mensajeInput', placeholder='Escribe tu mensaje...')
             button.btn.btn-custom.mx-2#enviarMensaje(type='button') ➤
-

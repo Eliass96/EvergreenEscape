@@ -424,20 +424,21 @@ document.addEventListener('DOMContentLoaded', async function () {
     function iniciarActualizacionChat() {
         if (intervaloActualizacion) clearInterval(intervaloActualizacion);
 
-        intervaloActualizacion = setInterval(async () => {
+        const ul = document.getElementById("listaMensajes");
+        const spinner = document.getElementById("spinner");
+
+        // Mostrar solo el spinner
+        spinner.style.display = 'block';
+        ul.style.display = 'none';
+
+        // Esperar 2 segundos para mostrar contenido
+        setTimeout(async () => {
             if (!nombreAmigo) return;
 
             try {
                 const mensajes = await obtenerConversacion(datosUsuario.nombre, nombreAmigo);
 
-                const ul = document.getElementById("listaMensajes");
                 if (!ul) return;
-
-                const idUltimo = mensajes[mensajes.length - 1]?.id || JSON.stringify(mensajes[mensajes.length - 1]);
-                if (idUltimo === ultimoMensajeId) return;
-                ultimoMensajeId = idUltimo;
-
-                ul.style.opacity = "0";
 
                 ul.innerHTML = '';
                 mensajes.forEach(mensaje => {
@@ -454,17 +455,60 @@ document.addEventListener('DOMContentLoaded', async function () {
                     ul.appendChild(li);
                 });
 
-                ul.scrollTop = ul.scrollHeight;
+                requestAnimationFrame(() => {
+                    ul.scrollTop = ul.scrollHeight;
+                });
 
-                setTimeout(() => {
-                    ul.style.opacity = "1";
-                }, 100);
+                // Mostrar mensajes, ocultar spinner
+                spinner.style.display = 'none';
+                ul.style.display = 'block';
+
+                // Activar actualizaciones periódicas después de mostrar contenido
+                intervaloActualizacion = setInterval(async () => {
+                    if (!nombreAmigo) return;
+
+                    try {
+                        const nuevosMensajes = await obtenerConversacion(datosUsuario.nombre, nombreAmigo);
+
+                        const idUltimo = nuevosMensajes[nuevosMensajes.length - 1]?.id || JSON.stringify(nuevosMensajes[nuevosMensajes.length - 1]);
+                        if (idUltimo === ultimoMensajeId) return;
+                        ultimoMensajeId = idUltimo;
+
+                        ul.innerHTML = '';
+                        nuevosMensajes.forEach(mensaje => {
+                            const mensajeFromUser = (mensaje.from === datosUsuario.nombre) ? "mensaje-derecha" : "mensaje-izquierda";
+
+                            const li = document.createElement("li");
+                            li.classList.add("d-flex", "align-items-start", mensajeFromUser);
+
+                            li.innerHTML = `
+                            <div class="mensaje-contenido">
+                                <p>${mensaje.content}</p>
+                            </div>
+                        `;
+                            ul.appendChild(li);
+                        });
+
+                        requestAnimationFrame(() => {
+                            ul.scrollTop = ul.scrollHeight;
+                        });
+
+                    } catch (error) {
+                        console.error("Error actualizando mensajes:", error);
+                    }
+                }, 500);
 
             } catch (error) {
-                console.error("Error actualizando mensajes:", error);
+                console.error("Error obteniendo mensajes iniciales:", error);
             }
-        }, 500);
+        }, 2000);
     }
+
+
+
+
+
+
 
 
 })
