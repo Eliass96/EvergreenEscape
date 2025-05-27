@@ -26,6 +26,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 50vh;
+    max-height: 80vh;
+}
+
+.modalPause .titulo_game_over {
+    margin-bottom: 8rem;
+}
+
+.titulo_game_over {
+    width: 30vw;
 }
 
 .modalSettings {
