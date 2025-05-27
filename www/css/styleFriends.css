@@ -130,6 +130,69 @@
     margin-left: 1rem;
 }
 
+.loader {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    margin: 20px auto;
+}
+
+.loader::before,
+.loader::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    border: 6px solid transparent;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    animation: spin 1.2s linear infinite;
+}
+
+.loader::before {
+    border-top-color: lightgreen;
+    border-left-color: lawngreen;
+    width: 48px;
+    height: 48px;
+    animation-direction: normal;
+}
+
+.loader::after {
+    border-bottom-color: white;
+    border-right-color: whitesmoke;
+    width: 36px;
+    height: 36px;
+    animation-direction: reverse;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.card-inner-chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* O la altura que quieras para el chat */
+}
+
+#spinner, #listaMensajes {
+    flex-grow: 1;          /* Ocupan todo el espacio disponible */
+    overflow-y: auto; /* Scroll solo en esta área */
+}
+
+#formularioMensaje {
+    flex-shrink: 0;        /* No se encoge, siempre abajo */
+}
+
+
 /* Lista de amigos o mensajes */
 .lista_friends,
 .lista_chat {
@@ -156,6 +219,7 @@
     word-break: break-word;
     margin-inline: 1vw;
     font-family: 'Turtles', sans-serif;
+    margin-top: .5rem !important;
 }
 
 .mensaje-izquierda {
