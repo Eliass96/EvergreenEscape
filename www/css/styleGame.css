@@ -5,7 +5,7 @@
     justify-content: center;
     background-color: rgba(0, 0, 0, .4);
     border: none;
-    width: 70vw;
+    width: 80vw;
     border-radius: 15px;
     max-height: 80vh;
     min-height: 60vh;
@@ -114,7 +114,7 @@
 
 .img_buttonGameOver {
     margin-inline: 15px;
-    width: 5.5vw;
+    width: 4.5vw;
 }
 
 .titulo_game_over {
