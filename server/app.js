@@ -12,6 +12,7 @@ const fs = require('fs');
 const multer = require('multer');
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(); // no pongas el clientId aquí
+const jwtDecode = require('jwt-decode');
 
 
 //PINGS
@@ -185,14 +186,10 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-// Inicio login para web (abre la pantalla de login Google en navegador)
-app.get("/auth/google", passport.authenticate('google', { scope: ["profile", "email"] }));
-
-// Callback para web, donde Passport maneja la sesión o lógica
+app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "email"]}));
 app.get('/passport/google/callback',
-    passport.authenticate("google", { session: false }),
+    passport.authenticate("google", {session: false}),
     (req, res) => {
-        // Aquí controla flujo de usuario nuevo, registrado, etc.
         if (isNewUser) {
             res.redirect("/completeData");
         } else {
@@ -206,7 +203,6 @@ app.get('/passport/google/callback',
     }
 );
 
-// Endpoint para Android que recibe idToken de Flutter y verifica con Google
 app.post('/auth/google/android', async (req, res) => {
     const { idToken } = req.body;
 
@@ -214,15 +210,19 @@ app.post('/auth/google/android', async (req, res) => {
         const ticket = await client.verifyIdToken({
             idToken,
             audience: [
-                '334334512703-n6347h33faudgbl868os6830pk5dr3s7.apps.googleusercontent.com', // Android Client ID
-                '334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com' // Web Client ID
+                '334334512703-n6347h33faudgbl868os6830pk5dr3s7.apps.googleusercontent.com', //android
+                '334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com' // web
             ],
         });
 
         const payload = ticket.getPayload();
         const email = payload.email;
 
-        // Aquí validar o crear usuario y generar tu JWT si usas sesiones propias
+        const decodedPayload = jwtDecode(idToken);
+        console.log('Audience (aud):', decodedPayload.aud);
+
+        // Aquí puedes buscar el usuario en tu DB o crearlo
+        // Luego generar un JWT propio si quieres mantener sesión
 
         res.status(200).json({
             success: true,
@@ -236,7 +236,6 @@ app.post('/auth/google/android', async (req, res) => {
         res.status(401).json({ success: false, message: 'Token inválido' });
     }
 });
-
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const { fromUser, toUser, contenidoMensaje } = req.body;
