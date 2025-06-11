@@ -105,15 +105,11 @@ const MensajeSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now }
 });
 
-
-
-
 const Usuario = mongoose.model('Usuario', UsuarioSchema);
 const Objeto = mongoose.model('Objeto', ObjetoSchema);
 const Mensaje = mongoose.model('Mensaje', MensajeSchema);
 
 //METODOS DE USUARIO
-
 //AÑADIR AMIGO
 exports.agregarAmigo = async (userId, amigoNombre) => {
     try {

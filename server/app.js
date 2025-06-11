@@ -13,7 +13,6 @@ const multer = require('multer');
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(); // no pongas el clientId aquí
 
-
 //PINGS
 const redis = require('redis');
 const {RedisStore} = require('connect-redis');
