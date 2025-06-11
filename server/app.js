@@ -231,6 +231,14 @@ app.post('/auth/google/android', async (req, res) => {
         const payload = ticket.getPayload();
         const email = payload.email;
 
+        // Detectar origen
+        const isFromAndroid = aud === process.env.GOOGLE_ANDROID_CLIENT_ID;
+        const isFromWeb = aud === process.env.GOOGLE_WEB_CLIENT_ID;
+
+        if (!isFromAndroid && !isFromWeb) {
+            return res.status(403).json({ success: false, message: "Origen de token no permitido" });
+        }
+
         // Decodificar el idToken para obtener detalles adicionales, como el clientId
         const decodedPayload = jwtDecode(idToken);
         console.log('Audience (aud):', decodedPayload.aud);
@@ -244,7 +252,7 @@ app.post('/auth/google/android', async (req, res) => {
             email,
             name: payload.name,
             picture: payload.picture,
-            clientId: clientId, // Incluir clientId en la respuesta si es necesario
+            origin: isFromAndroid ? "android" : "web"
         });
 
     } catch (err) {
@@ -252,7 +260,6 @@ app.post('/auth/google/android', async (req, res) => {
         res.status(401).json({ success: false, message: 'Token inválido o clientId incorrecto' });
     }
 });
-
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const { fromUser, toUser, contenidoMensaje } = req.body;
