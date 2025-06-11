@@ -192,7 +192,7 @@ app.get('/passport/google/callback',
     (req, res) => {
         console.log("Body: " + JSON.stringify(req.body));
         console.log("Query: " + JSON.stringify(req.query));
-        const clientId = req.query?.clientId || (req.body?.clientId) || process.env.GOOGLE_CLIENT_ID;// Obtener clientId
+        const clientId = req.query?.clientId || (req.body?.clientId) || process.env.GOOGLE_ANDROID_CLIENT_ID;// Obtener clientId
         console.log("Client ID: " + clientId);
 
         if (!clientId) {
