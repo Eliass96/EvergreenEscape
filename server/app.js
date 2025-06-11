@@ -190,8 +190,8 @@ app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "ema
 app.get('/passport/google/callback',
     passport.authenticate("google", {session: false}),
     (req, res) => {
-        console.log("Body: " + req.body);
-        console.log("Query: " + req.query);
+        console.log("Body: " + JSON.stringify(req.body));
+        console.log("Query: " + JSON.stringify(req.query));
         const clientId = req.query.clientId || req.body.clientId || process.env.GOOGLE_CLIENT_ID; // Obtener clientId
         console.log("Client ID: " + clientId);
 
