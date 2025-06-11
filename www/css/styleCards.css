@@ -212,7 +212,12 @@
 .texto_info {
     padding: 20px;
     font-family: 'turtles', sans-serif;
-    font-size: clamp(0.75em, 3vh, 1em);
+    font-size: clamp(0.7em, 2.6vh, 0.9em);
+    letter-spacing: 1px;
+}
+
+.texto_info strong {
+    letter-spacing: 1px; /* Puedes ajustar el valor según lo que necesites */
 }
 
 .img_button_rrss {
