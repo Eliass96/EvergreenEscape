@@ -190,10 +190,10 @@ app.get("/auth/google", passport.authenticate('google', { scope: ["profile", "em
 app.get('/passport/google/callback',
     passport.authenticate("google", { session: false }),
     (req, res) => {
-        let clientId = req.query.clientId || req.body.clientId; // Obtener clientId
+        const clientId = req.query.clientId || req.body.clientId || process.env.GOOGLE_CLIENT_ID; // Obtener clientId
 
         if (!clientId) {
-            clientId = process.env.GOOGLE_CLIENT_ID;
+            return res.status(400).json({ success: false, message: 'ClientId no proporcionado' });
         }
 
         // Si el clientId coincide con alguno de los registrados, procedemos con el flujo
