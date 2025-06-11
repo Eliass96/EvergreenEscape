@@ -12,6 +12,7 @@ const fs = require('fs');
 const multer = require('multer');
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(); // no pongas el clientId aquí
+const jwtDecode = require('jwt-decode');
 
 //PINGS
 const redis = require('redis');
@@ -184,10 +185,18 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "email"]}));
+app.get("/auth/google", passport.authenticate('google', { scope: ["profile", "email"] }));
+
 app.get('/passport/google/callback',
-    passport.authenticate("google", {session: false}),
+    passport.authenticate("google", { session: false }),
     (req, res) => {
+        const clientId = req.query.clientId || req.body.clientId; // Obtener clientId
+
+        // if (!clientId) {
+        //     return res.status(400).json({ success: false, message: 'ClientId no proporcionado' });
+        // }
+
+        // Si el clientId coincide con alguno de los registrados, procedemos con el flujo
         if (isNewUser) {
             res.redirect("/completeData");
         } else {
@@ -201,36 +210,49 @@ app.get('/passport/google/callback',
     }
 );
 
+// Ruta POST para Android, recibe el idToken y el clientId
 app.post('/auth/google/android', async (req, res) => {
-    const { idToken } = req.body;
+    const { idToken, clientId } = req.body;
+
+    // Verificar que el clientId sea proporcionado
+    if (!clientId) {
+        return res.status(400).json({ success: false, message: 'ClientId no proporcionado' });
+    }
 
     try {
         const ticket = await client.verifyIdToken({
             idToken,
             audience: [
-                '334334512703-n6347h33faudgbl868os6830pk5dr3s7.apps.googleusercontent.com', //android
-                '334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com' // web
+                '334334512703-n6347h33faudgbl868os6830pk5dr3s7.apps.googleusercontent.com', // Android Client ID
+                '334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com'  // Web Client ID
             ],
         });
 
         const payload = ticket.getPayload();
         const email = payload.email;
 
-        // Aquí puedes buscar el usuario en tu DB o crearlo
-        // Luego generar un JWT propio si quieres mantener sesión
+        // Decodificar el idToken para obtener detalles adicionales, como el clientId
+        const decodedPayload = jwtDecode(idToken);
+        console.log('Audience (aud):', decodedPayload.aud);
+
+        // Aquí puedes buscar al usuario en tu base de datos usando el correo electrónico y la información
+        // Si el usuario es nuevo, puedes crear una cuenta
+        // Luego generar un JWT para la sesión del usuario
 
         res.status(200).json({
             success: true,
             email,
             name: payload.name,
             picture: payload.picture,
+            clientId: clientId, // Incluir clientId en la respuesta si es necesario
         });
 
     } catch (err) {
         console.error(err);
-        res.status(401).json({ success: false, message: 'Token inválido' });
+        res.status(401).json({ success: false, message: 'Token inválido o clientId incorrecto' });
     }
 });
+
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const { fromUser, toUser, contenidoMensaje } = req.body;

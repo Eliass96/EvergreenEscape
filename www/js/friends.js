@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             } catch (error) {
                 console.error("Error obteniendo mensajes iniciales:", error);
             }
-        }, 2000);
+        }, 1000);
     }
 
 
