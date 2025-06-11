@@ -17,3 +17,24 @@
     font-family: 'turtles', serif;
     font-size: clamp(3em, 4vw, 4em);
 }
+
+.but_error {
+    padding: 5px;
+    background: transparent;
+    border: none;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.img_button_error {
+    width: 10vw;
+    min-width: 100px;
+}
+
+.titulo_error {
+    font-family: 'jackpot', sans-serif;
+    font-size: clamp(1.25rem, 3vw, 5rem);
+    text-align: center;
+    line-height: 1.5;
+    margin-top: 3rem;
+}

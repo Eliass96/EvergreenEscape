@@ -76,6 +76,11 @@
     padding: 20px;
     font-family: 'turtles', sans-serif;
     font-size: 1.1em;
+    width: 100% !important;
+}
+
+.cardSolicitudes {
+    width: 100% !important;
 }
 
 .texto_friends {
@@ -83,6 +88,10 @@
     font-size: clamp(0.75em, 3vh, 1em);
     padding-bottom: 5px;
     white-space: break-spaces;
+}
+
+.nombre_solicitud {
+    color: white !important;
 }
 
 .titulo_card_users {

@@ -108,11 +108,12 @@
 }
 
 .texto_exp {
-    font-size: 0.85rem;
+    font-size: clamp(0.85rem, 1.25vw, 2rem);
     color: white;
     margin-left: 1vw;
     margin-right: 1vw;
     font-family: 'Turtles', sans-serif;
+    margin-bottom: 1.5rem;
 }
 
 .img_exp {

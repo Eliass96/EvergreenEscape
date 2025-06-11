@@ -1,11 +1,11 @@
 output.cardSolicitudes#friendRequestsList
     if solicitudes.length > 0
         .d-flex.align-items-center.justify-content-center
-            ul.lista_friends
+            ul.lista_friends.w-100
                 each solicitud in solicitudes
                     li.texto_friends.d-flex.align-items-center.justify-content-between
-                        p= solicitud
-                        .d-flex.gap-2
+                        p.nombre_solicitud.mb-0= solicitud
+                        .d-flex.gap-2.ms-auto
                             button.btn.btn-custom.boton_aceptar#aceptar_solicitud ✅
                             button.btn.btn-custom.boton_rechazar#rechazar_solicitud ❌
     else
