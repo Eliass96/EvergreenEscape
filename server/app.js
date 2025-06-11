@@ -10,7 +10,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
-const { OAuth2Client } = require('google-auth-library');
+const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(); // no pongas el clientId aquí
 const jwtDecode = require('jwt-decode');
 
@@ -62,7 +62,7 @@ const storage = multer.diskStorage({
         cb(null, nombreUnico);
     }
 });
-const upload = multer({ storage: storage });
+const upload = multer({storage: storage});
 
 
 function bloquearAccesoDirecto(req, res, next) {
@@ -185,16 +185,18 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-app.get("/auth/google", passport.authenticate('google', { scope: ["profile", "email"] }));
+app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "email"]}));
 
 app.get('/passport/google/callback',
-    passport.authenticate("google", { session: false }),
+    passport.authenticate("google", {session: false}),
     (req, res) => {
-    console.log(req.body);
+        console.log("Body: " + req.body);
+        console.log("Query: " + req.query);
         const clientId = req.query.clientId || req.body.clientId || process.env.GOOGLE_CLIENT_ID; // Obtener clientId
+        console.log("Client ID: " + clientId);
 
         if (!clientId) {
-            return res.status(400).json({ success: false, message: 'ClientId no proporcionado' });
+            return res.status(400).json({success: false, message: 'ClientId no proporcionado'});
         }
 
         // Si el clientId coincide con alguno de los registrados, procedemos con el flujo
@@ -213,11 +215,11 @@ app.get('/passport/google/callback',
 
 // Ruta POST para Android, recibe el idToken y el clientId
 app.post('/auth/google/android', async (req, res) => {
-    const { idToken, clientId } = req.body;
+    const {idToken, clientId} = req.body;
 
     // Verificar que el clientId sea proporcionado
     if (!clientId) {
-        return res.status(400).json({ success: false, message: 'ClientId no proporcionado' });
+        return res.status(400).json({success: false, message: 'ClientId no proporcionado'});
     }
 
     try {
@@ -237,7 +239,7 @@ app.post('/auth/google/android', async (req, res) => {
         const isFromWeb = aud === process.env.GOOGLE_WEB_CLIENT_ID;
 
         if (!isFromAndroid && !isFromWeb) {
-            return res.status(403).json({ success: false, message: "Origen de token no permitido" });
+            return res.status(403).json({success: false, message: "Origen de token no permitido"});
         }
 
         // Decodificar el idToken para obtener detalles adicionales, como el clientId
@@ -258,16 +260,16 @@ app.post('/auth/google/android', async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.status(401).json({ success: false, message: 'Token inválido o clientId incorrecto' });
+        res.status(401).json({success: false, message: 'Token inválido o clientId incorrecto'});
     }
 });
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
-    const { fromUser, toUser, contenidoMensaje } = req.body;
+    const {fromUser, toUser, contenidoMensaje} = req.body;
     console.log(req.body)
 
     if (!fromUser || !toUser || !contenidoMensaje) {
-        return res.status(400).json({ success: false, message: 'Faltan parámetros necesarios' });
+        return res.status(400).json({success: false, message: 'Faltan parámetros necesarios'});
     }
 
     try {
@@ -278,17 +280,17 @@ app.patch('/usuarios/enviarMensaje', async (req, res) => {
             return res.status(400).json(result);
         }
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({success: false, message: error.message});
     }
 });
 
 app.get('/conversacion/:usuarioA/:usuarioB', async (req, res) => {
-    const { usuarioA, usuarioB } = req.params;
+    const {usuarioA, usuarioB} = req.params;
     try {
         const mensajes = await db.obtenerConversacion(usuarioA, usuarioB);
         return res.status(200).json(mensajes);
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({success: false, message: error.message});
     }
 });
 
@@ -484,11 +486,11 @@ app.post("/usuarios/usuario/cambiarAvatar", upload.single('foto'), async functio
         const archivo = req.file;
 
         if (!idUsuario) {
-            return res.status(HTTP_NOT_FOUND).json({ message: 'No hay sesión iniciada para cambiar la foto.' });
+            return res.status(HTTP_NOT_FOUND).json({message: 'No hay sesión iniciada para cambiar la foto.'});
         }
 
         if (!archivo || !archivo.mimetype.startsWith('image/')) {
-            return res.status(HTTP_BAD_REQUEST).json({ message: 'No se ha recibido una imagen válida.' });
+            return res.status(HTTP_BAD_REQUEST).json({message: 'No se ha recibido una imagen válida.'});
         }
 
         const usuario = await db.getUsuario(idUsuario);
@@ -514,7 +516,7 @@ app.post("/usuarios/usuario/cambiarAvatar", upload.single('foto'), async functio
                 url: `/uploads/${archivo.filename}`
             });
         } else {
-            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({ message: 'No se pudo actualizar la foto de perfil.' });
+            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({message: 'No se pudo actualizar la foto de perfil.'});
         }
 
     } catch (err) {
@@ -862,23 +864,23 @@ app.patch("/usuarios/amigos/eliminar/:amigoNombre", async (req, res) => {
 app.patch('/usuarios/usuario/sumarExperiencia', async (req, res) => {
     try {
         const userId = req.session.usuario;
-        const { experiencia } = req.body;
+        const {experiencia} = req.body;
         console.log(experiencia)
 
         if (!userId) {
-            return res.status(HTTP_UNAUTHORIZED).json({ message: 'No hay sesión iniciada.' });
+            return res.status(HTTP_UNAUTHORIZED).json({message: 'No hay sesión iniciada.'});
         }
 
         if (typeof experiencia !== 'number' || experiencia <= 0) {
-            return res.status(HTTP_BAD_REQUEST).json({ message: 'La experiencia debe ser un número positivo.' });
+            return res.status(HTTP_BAD_REQUEST).json({message: 'La experiencia debe ser un número positivo.'});
         }
 
         const resultado = await db.sumarExperiencia(userId, experiencia);
 
         if (resultado) {
-            return res.status(HTTP_OK).json({ message: 'Experiencia sumada correctamente.' });
+            return res.status(HTTP_OK).json({message: 'Experiencia sumada correctamente.'});
         } else {
-            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({ message: 'No se pudo actualizar la experiencia.' });
+            return res.status(HTTP_INTERNAL_SERVER_ERROR).json({message: 'No se pudo actualizar la experiencia.'});
         }
     } catch (err) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({
@@ -889,7 +891,7 @@ app.patch('/usuarios/usuario/sumarExperiencia', async (req, res) => {
 });
 
 app.post('/reclamar-recompensa', async (req, res) => {
-    const { userId, recompensaNombre, recompensaTipo, cantidad } = req.body;
+    const {userId, recompensaNombre, recompensaTipo, cantidad} = req.body;
 
     if (!userId || !recompensaNombre || !recompensaTipo || typeof cantidad !== 'number') {
         return res.status(400).json({
