@@ -171,7 +171,7 @@ app.get("/battlePass", (req, res) => {
 // METODOS
 // GMAIL
 passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientID: process.env.GOOGLE_WEB_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
@@ -192,9 +192,9 @@ app.get('/passport/google/callback',
     (req, res) => {
         const clientId = req.query.clientId || req.body.clientId; // Obtener clientId
 
-        // if (!clientId) {
-        //     return res.status(400).json({ success: false, message: 'ClientId no proporcionado' });
-        // }
+        if (!clientId) {
+            return res.status(400).json({ success: false, message: 'ClientId no proporcionado' });
+        }
 
         // Si el clientId coincide con alguno de los registrados, procedemos con el flujo
         if (isNewUser) {
@@ -223,8 +223,8 @@ app.post('/auth/google/android', async (req, res) => {
         const ticket = await client.verifyIdToken({
             idToken,
             audience: [
-                '334334512703-n6347h33faudgbl868os6830pk5dr3s7.apps.googleusercontent.com', // Android Client ID
-                '334334512703-j8nndfmflrriiadtc2iuil9kbnvmktse.apps.googleusercontent.com'  // Web Client ID
+                process.env.GOOGLE_ANDROID_CLIENT_ID // Android Client ID
+                // process.env.GOOGLE_WEB_CLIENT_ID  // Web Client ID
             ],
         });
 
