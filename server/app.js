@@ -225,10 +225,7 @@ app.post('/auth/google/android', async (req, res) => {
     try {
         const ticket = await client.verifyIdToken({
             idToken,
-            audience: [
-                process.env.GOOGLE_ANDROID_CLIENT_ID // Android Client ID
-                // process.env.GOOGLE_WEB_CLIENT_ID  // Web Client ID
-            ],
+            audience: [process.env.GOOGLE_ANDROID_CLIENT_ID],
         });
 
         const payload = ticket.getPayload();
@@ -263,6 +260,29 @@ app.post('/auth/google/android', async (req, res) => {
         res.status(401).json({success: false, message: 'Token inválido o clientId incorrecto'});
     }
 });
+
+app.get('/passport/google/android/callback',
+    passport.authenticate("google", {session: false}),
+    (req, res) => {
+        const clientId = req.query?.clientId || (req.body?.clientId) || process.env.GOOGLE_ANDROID_CLIENT_ID;// Obtener clientId
+
+        if (!clientId) {
+            return res.status(400).json({success: false, message: 'ClientId no proporcionado'});
+        }
+
+        // Si el clientId coincide con alguno de los registrados, procedemos con el flujo
+        if (isNewUser) {
+            res.redirect("/completeData");
+        } else {
+            if (!isRegister) {
+                res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
+            } else {
+                isRegister = true;
+                res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
+            }
+        }
+    }
+);
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const {fromUser, toUser, contenidoMensaje} = req.body;
