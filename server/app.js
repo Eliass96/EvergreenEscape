@@ -186,9 +186,9 @@ passport.use('google', new GoogleStrategy({
     }));
 
 const authenticateGoogle = (req, res, next) => {
-    passport.authenticate('google', { session: false }, (err, user) => {
+    passport.authenticate('google', {session: false}, (err, user) => {
         if (err || !user) {
-            return res.status(403).json({ success: false, message: 'Autenticación fallida' });
+            return res.status(403).json({success: false, message: 'Autenticación fallida'});
         }
         req.user = user;
         return next();
@@ -196,7 +196,7 @@ const authenticateGoogle = (req, res, next) => {
 };
 
 // RUTA PARA INICIAR AUTENTICACIÓN (Web)
-app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+app.get("/auth/google", passport.authenticate("google", {scope: ["profile", "email"]}));
 
 // CALLBACK AUTENTICACIÓN GOOGLE
 app.get('/passport/google/callback',
@@ -215,16 +215,17 @@ app.get('/passport/google/callback',
     }
 );
 
-// AUTENTICACIÓN UNIFICADA (Android y Web)
+const path = require('path');
+
 app.post('/auth/google', async (req, res) => {
-    const { idToken } = req.body;
+    const {idToken} = req.body;
 
     if (!idToken) {
-        return res.status(400).json({ success: false, message: 'Falta idToken' });
+        return res.status(400).json({success: false, message: 'Falta idToken'});
     }
 
     try {
-        // Verificar el idToken y validar la audiencia para Android y Web
+        // Verificar el idToken y validar audiencia
         const ticket = await client.verifyIdToken({
             idToken,
             audience: [
@@ -235,7 +236,7 @@ app.post('/auth/google', async (req, res) => {
 
         const payload = ticket.getPayload();
 
-        // Decodificar sin verificar solo para obtener el aud (audiencia)
+        // Decodificar sin verificar para obtener aud
         const decodedPayload = jwt.decode(idToken);
         const aud = decodedPayload.aud;
 
@@ -246,36 +247,81 @@ app.post('/auth/google', async (req, res) => {
         const isFromWeb = aud === process.env.GOOGLE_WEB_CLIENT_ID;
 
         if (!isFromAndroid && !isFromWeb) {
-            return res.status(403).json({ success: false, message: "Origen de token no permitido" });
+            return res.status(403).json({success: false, message: "Origen de token no permitido"});
         }
 
-        // Crear token JWT propio para la sesión (ajusta claims y secret a tu necesidad)
-        const sessionToken = jwt.sign(
-            {
-                email: payload.email,
-                name: payload.name,
-                picture: payload.picture,
-                origin: isFromAndroid ? "android" : "web"
-            },
-            process.env.JWT_SECRET, // Debes definir esta variable de entorno con una clave secreta segura
-            { expiresIn: '1h' }
-        );
+        // Aquí pondrías tu lógica real para saber si el usuario es nuevo o está registrado
+        // Por ejemplo, buscar el email en la base de datos:
+        let isNewUser = false; // placeholder
+        let isRegister = false; // placeholder
 
-        // Responder con datos y token de sesión
-        res.status(200).json({
-            success: true,
-            email: payload.email,
-            name: payload.name,
-            picture: payload.picture,
-            origin: isFromAndroid ? "android" : "web",
-            token: sessionToken
-        });
+        // Simulación o llamada a tu DB
+        // const user = await db.findUserByEmail(payload.email);
+        // if (!user) isNewUser = true;
+        // else isRegister = user.isRegistered;
+
+        // Ajusta la lógica según tu sistema:
+        if (isNewUser) {
+            if (isFromWeb) {
+                return res.redirect("/completeData");
+            } else {
+                // Para Android/webview podrías responder con un JSON indicando nextStep
+                return res.status(200).json({
+                    success: true,
+                    nextStep: "completeData",
+                    email: payload.email,
+                    name: payload.name,
+                    picture: payload.picture,
+                    origin: isFromAndroid ? "android" : "web"
+                });
+            }
+        } else if (!isRegister) {
+            if (isFromWeb) {
+                return res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
+            } else {
+                return res.status(200).json({
+                    success: true,
+                    nextStep: "register",
+                    email: payload.email,
+                    name: payload.name,
+                    picture: payload.picture,
+                    origin: isFromAndroid ? "android" : "web"
+                });
+            }
+        } else {
+            isRegister = true;
+            if (isFromWeb) {
+                return res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
+            } else {
+                // Generar token JWT para sesión
+                const sessionToken = jwt.sign(
+                    {
+                        email: payload.email,
+                        name: payload.name,
+                        picture: payload.picture,
+                        origin: isFromAndroid ? "android" : "web"
+                    },
+                    process.env.JWT_SECRET,
+                    {expiresIn: '1h'}
+                );
+
+                return res.status(200).json({
+                    success: true,
+                    email: payload.email,
+                    name: payload.name,
+                    picture: payload.picture,
+                    origin: isFromAndroid ? "android" : "web",
+                    token: sessionToken
+                });
+            }
+        }
 
     } catch (err) {
         console.error("❌ Error verificando idToken:", err);
-        res.status(401).json({ success: false, message: 'Token inválido o clientId incorrecto' });
+        res.status(401).json({success: false, message: 'Token inválido o clientId incorrecto'});
     }
 });
+
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const {fromUser, toUser, contenidoMensaje} = req.body;
