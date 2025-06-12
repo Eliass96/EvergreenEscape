@@ -443,7 +443,7 @@ class gameScene extends Phaser.Scene {
             // Factor de tiempo (segundos) para escalado por frame
             let t;
             if (isMobile) {
-                t = delta / 25;
+                t = delta / 20;
             } else {
                 t = delta / 15;
             }
