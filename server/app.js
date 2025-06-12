@@ -265,16 +265,6 @@ app.post('/auth/google', async (req, res) => {
 
         // Ajusta la lógica según tu sistema:
         if (isNewUser) {
-            // Para Android/webview podrías responder con un JSON indicando nextStep
-            return res.status(200).json({
-                success: true,
-                nextStep: "completeData",
-                email: payload.email,
-                name: payload.name,
-                picture: payload.picture,
-                origin: isFromAndroid ? "android" : "web"
-            });
-        } else if (!isRegister) {
             return res.status(200).json({
                 success: true,
                 nextStep: "register",
@@ -295,7 +285,6 @@ app.post('/auth/google', async (req, res) => {
                 process.env.JWT_SECRET,
                 {expiresIn: '1h'}
             );
-
             return res.status(200).json({
                 success: true,
                 nextStep: "login",
