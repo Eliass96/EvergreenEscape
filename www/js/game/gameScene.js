@@ -1115,6 +1115,7 @@ async function efectoDeItemRevivir() {
                 $('#modalGameOver').modal('hide');
                 estaAntiObstaculosActivo=true;
                 jugador.anims.play('revivir');
+                fondoSound.play();
                 jugador.once('animationcomplete', async () => {
                     jugador.anims.play('run');
                     puedeMorir = false;
