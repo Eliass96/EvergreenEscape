@@ -438,8 +438,14 @@ class gameScene extends Phaser.Scene {
             txtHightScore.setText("Mejor puntuación: " + hightScore);
             txtMonedas.setText("Monedas: " + monedas);
 
+            const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
+
             // Factor de tiempo (segundos) para escalado por frame
-            const t = delta / 15;
+            if (isMobile) {
+                const t = delta / 10;
+            } else {
+                const t = delta / 15;
+            }
 
             /*** Movimiento del fondo con velocidad constante ***/
             fondo.tilePositionX += velocidad * t;
