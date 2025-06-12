@@ -217,29 +217,31 @@ app.get('/passport/google/callback',
 
 // AUTENTICACIÓN UNIFICADA (Android y Web)
 app.post('/auth/google', async (req, res) => {
-    const { idToken } = req.body;  // Solo necesitamos el idToken para ambos
+    const { idToken } = req.body;
 
     if (!idToken) {
         return res.status(400).json({ success: false, message: 'Falta idToken' });
     }
 
     try {
-        // Verificar el idToken y validar la audiencia (aud) para distinguir entre Android y Web
+        // Verificar el idToken y validar la audiencia para Android y Web
         const ticket = await client.verifyIdToken({
             idToken,
             audience: [
                 process.env.GOOGLE_WEB_CLIENT_ID,
                 process.env.GOOGLE_ANDROID_CLIENT_ID
-            ], // Audiencia para Web y Android
+            ],
         });
 
         const payload = ticket.getPayload();
+
+        // Decodificar sin verificar solo para obtener el aud (audiencia)
         const decodedPayload = jwt.decode(idToken);
-        const aud = decodedPayload.aud; // Extraemos el 'aud' (audiencia) para validar el origen
+        const aud = decodedPayload.aud;
 
         console.log("🔍 AUDIENCE (aud) del idToken:", aud);
 
-        // Determinar si el token es de Android o Web según el aud
+        // Validar origen
         const isFromAndroid = aud === process.env.GOOGLE_ANDROID_CLIENT_ID || aud === process.env.GOOGLE_ANDROID_CLIENT_ID_ALT;
         const isFromWeb = aud === process.env.GOOGLE_WEB_CLIENT_ID;
 
@@ -247,12 +249,26 @@ app.post('/auth/google', async (req, res) => {
             return res.status(403).json({ success: false, message: "Origen de token no permitido" });
         }
 
+        // Crear token JWT propio para la sesión (ajusta claims y secret a tu necesidad)
+        const sessionToken = jwt.sign(
+            {
+                email: payload.email,
+                name: payload.name,
+                picture: payload.picture,
+                origin: isFromAndroid ? "android" : "web"
+            },
+            process.env.JWT_SECRET, // Debes definir esta variable de entorno con una clave secreta segura
+            { expiresIn: '1h' }
+        );
+
+        // Responder con datos y token de sesión
         res.status(200).json({
             success: true,
             email: payload.email,
             name: payload.name,
             picture: payload.picture,
-            origin: isFromAndroid ? "android" : "web"
+            origin: isFromAndroid ? "android" : "web",
+            token: sessionToken
         });
 
     } catch (err) {
