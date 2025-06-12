@@ -161,6 +161,14 @@ app.get("/completeData", (req, res) => {
     res.sendFile(path.join(__dirname, "../www/html/completeData.html"));
 });
 
+app.get("/redirectLogin", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/redirectLogin.html"));
+});
+
+app.get("/redirectRegister", (req, res) => {
+    res.sendFile(path.join(__dirname, "../www/html/redirectRegister.html"));
+});
+
 app.get("/friends", (req, res) => {
     res.sendFile(path.join(__dirname, "../www/html/friends.html"));
 });
@@ -207,10 +215,10 @@ app.get('/passport/google/callback',
         if (isNewUser) {
             return res.redirect("/completeData");
         } else if (!isRegister) {
-            return res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
+            return res.redirect("/redirectRegister");
         } else {
             isRegister = true;
-            return res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
+            return res.redirect("/redirectLogin");
         }
     }
 );
