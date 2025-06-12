@@ -439,17 +439,14 @@ class gameScene extends Phaser.Scene {
             txtMonedas.setText("Monedas: " + monedas);
 
             const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
+            const speedMultiplier = isMobile ? 1.3 : 1;
 
             // Factor de tiempo (segundos) para escalado por frame
-            let t;
-            if (isMobile) {
-                t = delta / 20;
-            } else {
-                t = delta / 15;
-            }
+            const frameTime = Math.max(16.67, delta); // mínimo 16.67 ms
+            const t = frameTime / 16.67;
 
             /*** Movimiento del fondo con velocidad constante ***/
-            fondo.tilePositionX += velocidad * t;
+            fondo.tilePositionX += velocidad * t * speedMultiplier;
 
             /*** Movimiento de disparo de flecha ***/
             if (disparando) {
@@ -457,12 +454,12 @@ class gameScene extends Phaser.Scene {
             }
 
             /*** Movimiento de objetos escalado por delta ***/
-            monedero.forEach(moneda => moneda.x -= (velocidad / 2) * t);
-            enemigos.forEach(orco => orco.x -= (velocidad / 1.36) * t);
-            orcosVerdes.forEach(orco => orco.x -= (velocidad / 1.36) * t);
-            piedras.forEach(piedra => piedra.x -= (velocidad / 2) * t);
-            plataformas.forEach(plataforma => plataforma.x -= (velocidad / 2) * t);
-            pinchos.forEach(pincho => pincho.x -= (velocidad / 2) * t);
+            monedero.forEach(moneda => moneda.x -= (velocidad / 2) * t * speedMultiplier);
+            enemigos.forEach(orco => orco.x -= (velocidad / 1.36) * t * speedMultiplier);
+            orcosVerdes.forEach(orco => orco.x -= (velocidad / 1.36) * t * speedMultiplier);
+            piedras.forEach(piedra => piedra.x -= (velocidad / 2) * t * speedMultiplier);
+            plataformas.forEach(plataforma => plataforma.x -= (velocidad / 2) * t * speedMultiplier);
+            pinchos.forEach(pincho => pincho.x -= (velocidad / 2) * t * speedMultiplier);
 
             /*** Movimiento y control de flechas del jugador ***/
             flechasJugador.forEach(flecha => {
