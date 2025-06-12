@@ -258,13 +258,10 @@ app.post('/auth/google', async (req, res) => {
 
         // Aquí pondrías tu lógica real para saber si el usuario es nuevo o está registrado
         // Por ejemplo, buscar el email en la base de datos:
-        let isNewUser = false; // placeholder
-        let isRegister = false; // placeholder
 
         // Simulación o llamada a tu DB
-        // const user = await db.findUserByEmail(payload.email);
-        // if (!user) isNewUser = true;
-        // else isRegister = user.isRegistered;
+        const user = await db.getUsuarioByEmail(payload.email)
+        if (!user) isNewUser = true;
 
         // Ajusta la lógica según tu sistema:
         if (isNewUser) {
@@ -287,7 +284,6 @@ app.post('/auth/google', async (req, res) => {
                 origin: isFromAndroid ? "android" : "web"
             });
         } else {
-            isRegister = true;
             // Generar token JWT para sesión
             const sessionToken = jwt.sign(
                 {

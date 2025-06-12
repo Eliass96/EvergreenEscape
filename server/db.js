@@ -224,6 +224,14 @@ exports.getUsuarioByName = async function (userName) {
     }
 };
 
+exports.getUsuarioByEmail = async function (email) {
+    try {
+        return await Usuario.findOne({email: email});
+    } catch (error) {
+        throw new Error('Error al buscar el usuario por email: ' + error.message);
+    }
+};
+
 // EXISTE USUARIO
 exports.existeUsuario = async function (email, nombre) {
     try {
