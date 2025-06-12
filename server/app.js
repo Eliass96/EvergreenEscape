@@ -13,6 +13,7 @@ const multer = require('multer');
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(); // no pongas el clientId aquí
 const jwtDecode = require('jwt-decode');
+const jwt = require('jsonwebtoken');
 
 //PINGS
 const redis = require('redis');
@@ -233,7 +234,7 @@ app.post('/auth/google', async (req, res) => {
         });
 
         const payload = ticket.getPayload();
-        const decodedPayload = jwtDecode(idToken);
+        const decodedPayload = jwt.decode(idToken);
         const aud = decodedPayload.aud; // Extraemos el 'aud' (audiencia) para validar el origen
 
         console.log("🔍 AUDIENCE (aud) del idToken:", aud);
