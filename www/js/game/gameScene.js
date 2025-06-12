@@ -426,44 +426,48 @@ class gameScene extends Phaser.Scene {
         });
     }
 
-    update() {
+    update(time, delta) {
         if (canMove && estaVivo) {
             textoSuperSalto.textContent = cantidadSuperSalto.toString();
             textoPuntuacionx2.textContent = cantidadPuntuacionx2.toString();
             textoAntiObstaculos.textContent = cantidadAntiObstaculos.toString();
             textoRevivir.textContent = cantidadRevivir.toString();
 
-            txtPuntos.setText("Puntos: " + puntos)
-            if (puntos >= hightScore) hightScore = puntos
-            txtHightScore.setText("Mejor puntuación: " + hightScore)
-            txtMonedas.setText("Monedas: " + monedas)
-            /***/
-            const screenRatio = this.scale.width / 1920; // 1920 ancho base que usas para diseño
-            const velocidadAjustada = velocidad * screenRatio;
-            fondo.tilePositionX += velocidadAjustada * (delta / 1000);
-            /***/
-            if (disparando) flechaJugador.enableBody(true, jugador.x + 30, jugador.y + 60, true, true);
-            monedero.forEach(function (moneda) {
-                moneda.x -= velocidad / 2;
-            });
-            enemigos.forEach(function (orco) {
-                orco.x -= velocidad / 1.36;
-            });
-            orcosVerdes.forEach(function (orco) {
-                orco.x -= velocidad / 1.36;
-            });
-            piedras.forEach(function (piedra) {
-                piedra.x -= velocidad / 2;
-            });
-            plataformas.forEach(function (plataforma) {
-                plataforma.x -= velocidad / 2;
-            });
-            pinchos.forEach(function (pincho) {
-                pincho.x -= velocidad / 2;
-            });
-            flechasJugador.forEach(function (flecha) {
-                if (!disparando && jugador.x >= flecha.body.velocity.x < 700) flecha.body.setVelocityX(900);
-                if (flecha.x >= 1850) flecha.disableBody(true, true);
+            txtPuntos.setText("Puntos: " + puntos);
+            if (puntos >= hightScore) hightScore = puntos;
+            txtHightScore.setText("Mejor puntuación: " + hightScore);
+            txtMonedas.setText("Monedas: " + monedas);
+
+            // Factor de tiempo (segundos) para escalado por frame
+            const t = delta / 15;
+
+            /*** Movimiento del fondo con velocidad constante ***/
+            fondo.tilePositionX += velocidad * t;
+
+            /*** Movimiento de disparo de flecha ***/
+            if (disparando) {
+                flechaJugador.enableBody(true, jugador.x + 30, jugador.y + 60, true, true);
+            }
+
+            /*** Movimiento de objetos escalado por delta ***/
+            monedero.forEach(moneda => moneda.x -= (velocidad / 2) * t);
+            enemigos.forEach(orco => orco.x -= (velocidad / 1.36) * t);
+            orcosVerdes.forEach(orco => orco.x -= (velocidad / 1.36) * t);
+            piedras.forEach(piedra => piedra.x -= (velocidad / 2) * t);
+            plataformas.forEach(plataforma => plataforma.x -= (velocidad / 2) * t);
+            pinchos.forEach(pincho => pincho.x -= (velocidad / 2) * t);
+
+            /*** Movimiento y control de flechas del jugador ***/
+            flechasJugador.forEach(flecha => {
+                // Establece velocidad si aún no ha sido disparada
+                if (!disparando && flecha.body.velocity.x < 700) {
+                    flecha.body.setVelocityX(900);
+                }
+
+                // Desactiva si sale de pantalla
+                if (flecha.x >= 1850) {
+                    flecha.disableBody(true, true);
+                }
             });
         }
     }
