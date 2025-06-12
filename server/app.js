@@ -170,7 +170,7 @@ app.get("/battlePass", (req, res) => {
 
 // METODOS
 // ESTRATEGIA GMAIL
-passport.use('google-web', new GoogleStrategy({
+passport.use('google', new GoogleStrategy({
         clientID: process.env.GOOGLE_WEB_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: process.env.GOOGLE_CALLBACK_URL,
@@ -184,44 +184,22 @@ passport.use('google-web', new GoogleStrategy({
         cb(null, profile);
     }));
 
-passport.use('google-android', new GoogleStrategy({
-        clientID: process.env.GOOGLE_ANDROID_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK_URL,
-    },
-    function (accessToken, refreshToken, profile, cb) {
-        datosGoogle = {
-            email: profile._json.email,
-            password: profile._json.sub,
-            provider: profile.provider
-        };
-        cb(null, profile);
-    }));
-
-const dualGoogleAuthenticate = (req, res, next) => {
-    passport.authenticate('google-web', { session: false }, (err, user) => {
+const authenticateGoogle = (req, res, next) => {
+    passport.authenticate('google', { session: false }, (err, user) => {
         if (err || !user) {
-            console.log("❌ Web falló, probando con Android...");
-            passport.authenticate('google-android', { session: false }, (err2, user2) => {
-                if (err2 || !user2) {
-                    return res.status(403).json({ success: false, message: 'Autenticación fallida con ambos clientId' });
-                }
-                req.user = user2;
-                return next();
-            })(req, res, next);
-        } else {
-            req.user = user;
-            return next();
+            return res.status(403).json({ success: false, message: 'Autenticación fallida' });
         }
+        req.user = user;
+        return next();
     })(req, res, next);
 };
 
 // RUTA PARA INICIAR AUTENTICACIÓN (Web)
-app.get("/auth/google", passport.authenticate("google-web", { scope: ["profile", "email"] }));
+app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 // CALLBACK AUTENTICACIÓN GOOGLE
 app.get('/passport/google/callback',
-    dualGoogleAuthenticate,
+    authenticateGoogle,
     (req, res) => {
         console.log("✅ Autenticado como:", req.user.displayName);
 
@@ -236,29 +214,37 @@ app.get('/passport/google/callback',
     }
 );
 
-// AUTENTICACIÓN PARA ANDROID - POST
-app.post('/auth/google/android', async (req, res) => {
-    const {idToken, clientId} = req.body;
+// AUTENTICACIÓN UNIFICADA (Android y Web)
+app.post('/auth/google', async (req, res) => {
+    const { idToken } = req.body;  // Solo necesitamos el idToken para ambos
 
-    if (!clientId || !idToken) {
-        return res.status(400).json({success: false, message: 'Faltan clientId o idToken'});
+    if (!idToken) {
+        return res.status(400).json({ success: false, message: 'Falta idToken' });
     }
 
     try {
+        // Verificar el idToken y validar la audiencia (aud) para distinguir entre Android y Web
         const ticket = await client.verifyIdToken({
             idToken,
-            audience: [process.env.GOOGLE_ANDROID_CLIENT_ID, process.env.GOOGLE_ANDROID_CLIENT_ID_ALT],
+            audience: [
+                process.env.GOOGLE_WEB_CLIENT_ID,
+                process.env.GOOGLE_ANDROID_CLIENT_ID,
+                process.env.GOOGLE_ANDROID_CLIENT_ID_ALT
+            ], // Audiencia para Web y Android
         });
 
         const payload = ticket.getPayload();
         const decodedPayload = jwtDecode(idToken);
-        const aud = decodedPayload.aud;
+        const aud = decodedPayload.aud; // Extraemos el 'aud' (audiencia) para validar el origen
 
+        console.log("🔍 AUDIENCE (aud) del idToken:", aud);
+
+        // Determinar si el token es de Android o Web según el aud
         const isFromAndroid = aud === process.env.GOOGLE_ANDROID_CLIENT_ID || aud === process.env.GOOGLE_ANDROID_CLIENT_ID_ALT;
         const isFromWeb = aud === process.env.GOOGLE_WEB_CLIENT_ID;
 
         if (!isFromAndroid && !isFromWeb) {
-            return res.status(403).json({success: false, message: "Origen de token no permitido"});
+            return res.status(403).json({ success: false, message: "Origen de token no permitido" });
         }
 
         res.status(200).json({
@@ -271,7 +257,7 @@ app.post('/auth/google/android', async (req, res) => {
 
     } catch (err) {
         console.error("❌ Error verificando idToken:", err);
-        res.status(401).json({success: false, message: 'Token inválido o clientId incorrecto'});
+        res.status(401).json({ success: false, message: 'Token inválido o clientId incorrecto' });
     }
 });
 
