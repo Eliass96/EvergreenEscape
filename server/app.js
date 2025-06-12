@@ -199,7 +199,7 @@ const tryAuthenticateGoogle = (clientIdOverride = null, retried = false) => {
             if (err || !user) {
                 if (!retried) {
                     console.log("❌ Primer intento fallido, reintentando con clientId alternativo...");
-                    return tryAuthenticateGoogle(process.env.GOOGLE_ANDROID_CLIENT_ID_ALT, true)(req, res, next);
+                    return tryAuthenticateGoogle(process.env.GOOGLE_ANDROID_CLIENT_ID, true)(req, res, next);
                 }
                 return res.status(403).json({ success: false, message: "Autenticación fallida con ambos clientId" });
             }
