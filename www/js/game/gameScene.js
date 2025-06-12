@@ -437,7 +437,11 @@ class gameScene extends Phaser.Scene {
             if (puntos >= hightScore) hightScore = puntos
             txtHightScore.setText("Mejor puntuación: " + hightScore)
             txtMonedas.setText("Monedas: " + monedas)
-            fondo.tilePositionX += velocidad;
+            /***/
+            const screenRatio = this.scale.width / 1920; // 1920 ancho base que usas para diseño
+            const velocidadAjustada = velocidad * screenRatio;
+            fondo.tilePositionX += velocidadAjustada * (delta / 1000);
+            /***/
             if (disparando) flechaJugador.enableBody(true, jugador.x + 30, jugador.y + 60, true, true);
             monedero.forEach(function (moneda) {
                 moneda.x -= velocidad / 2;
