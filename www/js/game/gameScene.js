@@ -1036,7 +1036,7 @@ async function cargarAjustes() {
 
 async function efectoDeItemX2() {
     if (cantidadPuntuacionx2 > 0) {
-        estaX2Activo=true;
+        estaX2Activo = true;
         cantidadPuntuacionx2--;
         puntosASumar = 2;
         let x = 15;
@@ -1113,9 +1113,11 @@ async function efectoDeItemRevivir() {
             if (result.isConfirmed) {
                 cantidadRevivir--;
                 $('#modalGameOver').modal('hide');
-                estaAntiObstaculosActivo=true;
+                estaAntiObstaculosActivo = true;
                 jugador.anims.play('revivir');
-                fondoSound.play();
+                if (musicaActiva) {
+                    fondoSound.play();
+                }
                 jugador.once('animationcomplete', async () => {
                     jugador.anims.play('run');
                     puedeMorir = false;
@@ -1133,7 +1135,7 @@ async function efectoDeItemRevivir() {
                 }
                 contadorTiempoAntiObstaculos.textContent = "";
                 puedeMorir = true;
-                estaAntiObstaculosActivo=false;
+                estaAntiObstaculosActivo = false;
                 contadorTiempoAntiObstaculos.style.color = "white";
             }
         });
