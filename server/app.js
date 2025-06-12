@@ -228,8 +228,7 @@ app.post('/auth/google', async (req, res) => {
             idToken,
             audience: [
                 process.env.GOOGLE_WEB_CLIENT_ID,
-                process.env.GOOGLE_ANDROID_CLIENT_ID,
-                process.env.GOOGLE_ANDROID_CLIENT_ID_ALT
+                process.env.GOOGLE_ANDROID_CLIENT_ID
             ], // Audiencia para Web y Android
         });
 
