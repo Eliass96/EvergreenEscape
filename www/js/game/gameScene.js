@@ -4,8 +4,14 @@ class gameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("fondoBosque", "../../assets/background/fondoBosque.webp");
-        this.load.image("fondoBosqueNoche", "../../assets/background/fondoBosqueNoche.webp");
+        const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
+        if (isMobile) {
+            this.load.image("fondoBosque", "../../assets/background/fondoBosqueMobile.jpg");
+            this.load.image("fondoBosqueNoche", "../../assets/background/fondoBosqueNocheMobile.jpg");
+        } else {
+            this.load.image("fondoBosque", "../../assets/background/fondoBosquePC.webp");
+            this.load.image("fondoBosqueNoche", "../../assets/background/fondoBosqueNochePC.webp");
+        }
         this.load.image("piedra", "../../assets/components/piedra.png");
         this.load.image("plataforma", "../../assets/components/plataforma.png");
         this.load.image("pincho", "../../assets/components/pinchos.png");
