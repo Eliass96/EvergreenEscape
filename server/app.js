@@ -428,6 +428,8 @@ app.post("/usuarios/logueo", async (req, res) => {
         let password;
         let provider;
 
+        console.log("datosGoogle: " + datosGoogle)
+
         if (datosGoogle) {
             email = datosGoogle.email;
             password = datosGoogle.password;
