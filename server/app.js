@@ -169,7 +169,7 @@ app.get("/battlePass", (req, res) => {
 });
 
 // METODOS
-// GMAIL
+// ESTRATEGIA GMAIL
 passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_WEB_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -182,107 +182,98 @@ passport.use(new GoogleStrategy({
             password: profile._json.sub,
             provider: profile.provider
         };
-    }
-));
+    }));
 
+// RUTA PARA INICIAR AUTENTICACIÓN (Web)
 app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "email"]}));
 
+// FUNCIÓN: Autenticación con intento alternativo si falla
+const tryAuthenticateGoogle = (clientIdOverride = null, retried = false) => {
+    return (req, res, next) => {
+        if (clientIdOverride) {
+            req.query.clientId = clientIdOverride;
+            req.body.clientId = clientIdOverride;
+        }
+
+        passport.authenticate("google", { session: false }, (err, user, info) => {
+            if (err || !user) {
+                if (!retried) {
+                    console.log("❌ Primer intento fallido, reintentando con clientId alternativo...");
+                    return tryAuthenticateGoogle(process.env.GOOGLE_ANDROID_CLIENT_ID_ALT, true)(req, res, next);
+                }
+                return res.status(403).json({ success: false, message: "Autenticación fallida con ambos clientId" });
+            }
+
+            req.user = user;
+            next();
+        })(req, res, next);
+    };
+};
+
+// CALLBACK AUTENTICACIÓN GOOGLE
 app.get('/passport/google/callback',
-    passport.authenticate("google", {session: false}),
+    tryAuthenticateGoogle(),
     (req, res) => {
-        console.log("Body: " + JSON.stringify(req.body));
-        console.log("Query: " + JSON.stringify(req.query));
-        const clientId = req.query?.clientId || (req.body?.clientId) || process.env.GOOGLE_ANDROID_CLIENT_ID;// Obtener clientId
-        console.log("Client ID: " + clientId);
+        console.log("Body:", JSON.stringify(req.body));
+        console.log("Query:", JSON.stringify(req.query));
+
+        const clientId = req.query?.clientId || req.body?.clientId || process.env.GOOGLE_WEB_CLIENT_ID;
+        console.log("✅ Client ID usado:", clientId);
 
         if (!clientId) {
             return res.status(400).json({success: false, message: 'ClientId no proporcionado'});
         }
 
-        // Si el clientId coincide con alguno de los registrados, procedemos con el flujo
+        // FLUJO DE USUARIO
         if (isNewUser) {
             res.redirect("/completeData");
+        } else if (!isRegister) {
+            res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
         } else {
-            if (!isRegister) {
-                res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
-            } else {
-                isRegister = true;
-                res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
-            }
+            isRegister = true;
+            res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
         }
     }
 );
 
-// Ruta POST para Android, recibe el idToken y el clientId
+// AUTENTICACIÓN PARA ANDROID - POST
 app.post('/auth/google/android', async (req, res) => {
     const {idToken, clientId} = req.body;
 
-    // Verificar que el clientId sea proporcionado
-    if (!clientId) {
-        return res.status(400).json({success: false, message: 'ClientId no proporcionado'});
+    if (!clientId || !idToken) {
+        return res.status(400).json({success: false, message: 'Faltan clientId o idToken'});
     }
 
     try {
         const ticket = await client.verifyIdToken({
             idToken,
-            audience: [process.env.GOOGLE_ANDROID_CLIENT_ID],
+            audience: [process.env.GOOGLE_ANDROID_CLIENT_ID, process.env.GOOGLE_ANDROID_CLIENT_ID_ALT],
         });
 
         const payload = ticket.getPayload();
-        const email = payload.email;
+        const decodedPayload = jwtDecode(idToken);
+        const aud = decodedPayload.aud;
 
-        // Detectar origen
-        const isFromAndroid = aud === process.env.GOOGLE_ANDROID_CLIENT_ID;
+        const isFromAndroid = aud === process.env.GOOGLE_ANDROID_CLIENT_ID || aud === process.env.GOOGLE_ANDROID_CLIENT_ID_ALT;
         const isFromWeb = aud === process.env.GOOGLE_WEB_CLIENT_ID;
 
         if (!isFromAndroid && !isFromWeb) {
             return res.status(403).json({success: false, message: "Origen de token no permitido"});
         }
 
-        // Decodificar el idToken para obtener detalles adicionales, como el clientId
-        const decodedPayload = jwtDecode(idToken);
-        console.log('Audience (aud):', decodedPayload.aud);
-
-        // Aquí puedes buscar al usuario en tu base de datos usando el correo electrónico y la información
-        // Si el usuario es nuevo, puedes crear una cuenta
-        // Luego generar un JWT para la sesión del usuario
-
         res.status(200).json({
             success: true,
-            email,
+            email: payload.email,
             name: payload.name,
             picture: payload.picture,
             origin: isFromAndroid ? "android" : "web"
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("❌ Error verificando idToken:", err);
         res.status(401).json({success: false, message: 'Token inválido o clientId incorrecto'});
     }
 });
-
-app.get('/passport/google/android/callback',
-    passport.authenticate("google", {session: false}),
-    (req, res) => {
-        const clientId = req.query?.clientId || (req.body?.clientId) || process.env.GOOGLE_ANDROID_CLIENT_ID;// Obtener clientId
-
-        if (!clientId) {
-            return res.status(400).json({success: false, message: 'ClientId no proporcionado'});
-        }
-
-        // Si el clientId coincide con alguno de los registrados, procedemos con el flujo
-        if (isNewUser) {
-            res.redirect("/completeData");
-        } else {
-            if (!isRegister) {
-                res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
-            } else {
-                isRegister = true;
-                res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
-            }
-        }
-    }
-);
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const {fromUser, toUser, contenidoMensaje} = req.body;
