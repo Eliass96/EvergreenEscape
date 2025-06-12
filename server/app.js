@@ -170,68 +170,68 @@ app.get("/battlePass", (req, res) => {
 
 // METODOS
 // ESTRATEGIA GMAIL
-passport.use(new GoogleStrategy({
+passport.use('google-web', new GoogleStrategy({
         clientID: process.env.GOOGLE_WEB_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     function (accessToken, refreshToken, profile, cb) {
-        cb(null, profile);
         datosGoogle = {
             email: profile._json.email,
             password: profile._json.sub,
             provider: profile.provider
         };
+        cb(null, profile);
     }));
 
-// RUTA PARA INICIAR AUTENTICACIÓN (Web)
-app.get("/auth/google", passport.authenticate('google', {scope: ["profile", "email"]}));
+passport.use('google-android', new GoogleStrategy({
+        clientID: process.env.GOOGLE_ANDROID_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    },
+    function (accessToken, refreshToken, profile, cb) {
+        datosGoogle = {
+            email: profile._json.email,
+            password: profile._json.sub,
+            provider: profile.provider
+        };
+        cb(null, profile);
+    }));
 
-// FUNCIÓN: Autenticación con intento alternativo si falla
-const tryAuthenticateGoogle = (clientIdOverride = null, retried = false) => {
-    return (req, res, next) => {
-        if (clientIdOverride) {
-            req.query.clientId = clientIdOverride;
-            req.body.clientId = clientIdOverride;
-        }
-
-        passport.authenticate("google", { session: false }, (err, user, info) => {
-            if (err || !user) {
-                if (!retried) {
-                    console.log("❌ Primer intento fallido, reintentando con clientId alternativo...");
-                    return tryAuthenticateGoogle(process.env.GOOGLE_ANDROID_CLIENT_ID, true)(req, res, next);
+const dualGoogleAuthenticate = (req, res, next) => {
+    passport.authenticate('google-web', { session: false }, (err, user) => {
+        if (err || !user) {
+            console.log("❌ Web falló, probando con Android...");
+            passport.authenticate('google-android', { session: false }, (err2, user2) => {
+                if (err2 || !user2) {
+                    return res.status(403).json({ success: false, message: 'Autenticación fallida con ambos clientId' });
                 }
-                return res.status(403).json({ success: false, message: "Autenticación fallida con ambos clientId" });
-            }
-
+                req.user = user2;
+                return next();
+            })(req, res, next);
+        } else {
             req.user = user;
-            next();
-        })(req, res, next);
-    };
+            return next();
+        }
+    })(req, res, next);
 };
+
+// RUTA PARA INICIAR AUTENTICACIÓN (Web)
+app.get("/auth/google", passport.authenticate("google-web", { scope: ["profile", "email"] }));
 
 // CALLBACK AUTENTICACIÓN GOOGLE
 app.get('/passport/google/callback',
-    tryAuthenticateGoogle(),
+    dualGoogleAuthenticate,
     (req, res) => {
-        console.log("Body:", JSON.stringify(req.body));
-        console.log("Query:", JSON.stringify(req.query));
+        console.log("✅ Autenticado como:", req.user.displayName);
 
-        const clientId = req.query?.clientId || req.body?.clientId || process.env.GOOGLE_WEB_CLIENT_ID;
-        console.log("✅ Client ID usado:", clientId);
-
-        if (!clientId) {
-            return res.status(400).json({success: false, message: 'ClientId no proporcionado'});
-        }
-
-        // FLUJO DE USUARIO
         if (isNewUser) {
-            res.redirect("/completeData");
+            return res.redirect("/completeData");
         } else if (!isRegister) {
-            res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
+            return res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
         } else {
             isRegister = true;
-            res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
+            return res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
         }
     }
 );
