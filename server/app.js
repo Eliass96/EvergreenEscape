@@ -260,66 +260,52 @@ app.post('/auth/google', async (req, res) => {
 
         // Ajusta la lógica según tu sistema:
         if (isNewUser) {
-            if (isFromWeb) {
-                return res.redirect("/completeData");
-            } else {
-                // Para Android/webview podrías responder con un JSON indicando nextStep
-                return res.status(200).json({
-                    success: true,
-                    nextStep: "completeData",
-                    email: payload.email,
-                    name: payload.name,
-                    picture: payload.picture,
-                    origin: isFromAndroid ? "android" : "web"
-                });
-            }
+            // Para Android/webview podrías responder con un JSON indicando nextStep
+            return res.status(200).json({
+                success: true,
+                nextStep: "completeData",
+                email: payload.email,
+                name: payload.name,
+                picture: payload.picture,
+                origin: isFromAndroid ? "android" : "web"
+            });
         } else if (!isRegister) {
-            if (isFromWeb) {
-                return res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectRegister.html'));
-            } else {
-                return res.status(200).json({
-                    success: true,
-                    nextStep: "register",
-                    email: payload.email,
-                    name: payload.name,
-                    picture: payload.picture,
-                    origin: isFromAndroid ? "android" : "web"
-                });
-            }
+            return res.status(200).json({
+                success: true,
+                nextStep: "register",
+                email: payload.email,
+                name: payload.name,
+                picture: payload.picture,
+                origin: isFromAndroid ? "android" : "web"
+            });
         } else {
             isRegister = true;
-            if (isFromWeb) {
-                return res.sendFile(path.join(__dirname, '..', 'www', 'html', 'redirectLogin.html'));
-            } else {
-                // Generar token JWT para sesión
-                const sessionToken = jwt.sign(
-                    {
-                        email: payload.email,
-                        name: payload.name,
-                        picture: payload.picture,
-                        origin: isFromAndroid ? "android" : "web"
-                    },
-                    process.env.JWT_SECRET,
-                    {expiresIn: '1h'}
-                );
-
-                return res.status(200).json({
-                    success: true,
+            // Generar token JWT para sesión
+            const sessionToken = jwt.sign(
+                {
                     email: payload.email,
                     name: payload.name,
                     picture: payload.picture,
-                    origin: isFromAndroid ? "android" : "web",
-                    token: sessionToken
-                });
-            }
-        }
+                    origin: isFromAndroid ? "android" : "web"
+                },
+                process.env.JWT_SECRET,
+                {expiresIn: '1h'}
+            );
 
+            return res.status(200).json({
+                success: true,
+                email: payload.email,
+                name: payload.name,
+                picture: payload.picture,
+                origin: isFromAndroid ? "android" : "web",
+                token: sessionToken
+            });
+        }
     } catch (err) {
         console.error("❌ Error verificando idToken:", err);
         res.status(401).json({success: false, message: 'Token inválido o clientId incorrecto'});
     }
 });
-
 
 app.patch('/usuarios/enviarMensaje', async (req, res) => {
     const {fromUser, toUser, contenidoMensaje} = req.body;
