@@ -446,7 +446,7 @@ class gameScene extends Phaser.Scene {
             const t = frameTime / 16.67;
 
             /*** Movimiento del fondo con velocidad constante ***/
-            fondo.tilePositionX += velocidad * t * speedMultiplier;
+            fondo.tilePositionX += velocidad * t;
 
             /*** Movimiento de disparo de flecha ***/
             if (disparando) {
