@@ -248,6 +248,12 @@ app.post('/auth/google', async (req, res) => {
 
         console.log("🔍 AUDIENCE (aud) del idToken:", aud);
 
+        datosGoogle = {
+            email: payload.email,
+            password: payload.sub,
+            provider: "google"
+        };
+
         // Validar origen
         const isFromAndroid = aud === process.env.GOOGLE_ANDROID_CLIENT_ID || aud === process.env.GOOGLE_ANDROID_CLIENT_ID_ALT;
         const isFromWeb = aud === process.env.GOOGLE_WEB_CLIENT_ID;
