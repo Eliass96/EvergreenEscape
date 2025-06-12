@@ -441,10 +441,11 @@ class gameScene extends Phaser.Scene {
             const isMobile = this.sys.game.device.os.android || this.sys.game.device.os.iOS;
 
             // Factor de tiempo (segundos) para escalado por frame
+            let t;
             if (isMobile) {
-                const t = delta / 10;
+                t = delta / 10;
             } else {
-                const t = delta / 15;
+                t = delta / 15;
             }
 
             /*** Movimiento del fondo con velocidad constante ***/
