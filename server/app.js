@@ -215,8 +215,6 @@ app.get('/passport/google/callback',
     }
 );
 
-const path = require('path');
-
 app.post('/auth/google', async (req, res) => {
     const {idToken} = req.body;
 
