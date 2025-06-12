@@ -302,6 +302,7 @@ app.post('/auth/google', async (req, res) => {
 
             return res.status(200).json({
                 success: true,
+                nextStep: "login",
                 email: payload.email,
                 name: payload.name,
                 picture: payload.picture,
