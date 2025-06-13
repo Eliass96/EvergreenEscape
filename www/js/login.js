@@ -6,9 +6,23 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('keyup', async (event) => {
             if (event.key === 'Escape') {
                 window.location = '/';
+                return;
             }
+
             if (event.key === 'Enter') {
-                await formularioLogin();
+                const activeElement = document.activeElement;
+
+                if (activeElement.tagName === 'INPUT') {
+                    const inputType = activeElement.getAttribute('type');
+                    if (inputType === 'checkbox') {
+                        activeElement.checked = !activeElement.checked;
+                        verpasswordLogin();
+                    } else {
+                        await formularioLogin();
+                    }
+                } else {
+                    await formularioLogin();
+                }
             }
         });
 
@@ -101,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         resp.json().then(data => {
                             const provider = data.provider;
                             console.log(provider);
-                            if (provider==="normal") {
+                            if (provider === "normal") {
                                 Swal.fire({
                                     position: "center",
                                     icon: "error",
@@ -110,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     confirmButtonText: "De acuerdo",
                                     confirmButtonColor: "lightgreen"
                                 });
-                            } else if (provider==="google") {
+                            } else if (provider === "google") {
                                 Swal.fire({
                                     position: "center",
                                     icon: "error",

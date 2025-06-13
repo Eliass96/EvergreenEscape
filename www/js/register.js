@@ -2,13 +2,26 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('registerButton').addEventListener('click', formularioRegister);
     document.getElementById('checkboxRegister').addEventListener('click', verpasswordRegister);
     document.getElementById('registerButtonGoogle').addEventListener('click', registerGoogle);
-
     document.addEventListener('keyup', async (event) => {
         if (event.key === 'Escape') {
             window.location = '/';
+            return;
         }
+
         if (event.key === 'Enter') {
-            await formularioRegister();
+            const activeElement = document.activeElement;
+
+            if (activeElement.tagName === 'INPUT') {
+                const inputType = activeElement.getAttribute('type');
+                if (inputType === 'checkbox') {
+                    activeElement.checked = !activeElement.checked;
+                    verpasswordRegister();
+                } else {
+                    await formularioRegister();
+                }
+            } else {
+                await formularioRegister();
+            }
         }
     });
 

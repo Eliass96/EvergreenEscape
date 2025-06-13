@@ -1,12 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('confirmDataButton').addEventListener('click', formularioRegister);
-
     document.addEventListener('keyup', async (event) => {
         if (event.key === 'Escape') {
             window.location = '/';
+            return;
         }
+
         if (event.key === 'Enter') {
-            await formularioRegister();
+            const activeElement = document.activeElement;
+            if (activeElement.tagName === 'INPUT') {
+                const inputType = activeElement.getAttribute('type');
+                if (inputType === 'text') {
+                    await formularioRegister();
+                }
+            } else {
+                await formularioRegister();
+            }
         }
     });
 
