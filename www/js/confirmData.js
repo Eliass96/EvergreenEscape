@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('confirmDataButton').addEventListener('click', formularioRegister);
 
-    document.addEventListener('keyup', (event) => {
+    document.addEventListener('keyup', async (event) => {
         if (event.key === 'Escape') {
             window.location = '/';
+        }
+        if (event.key === 'Enter') {
+            await formularioRegister();
         }
     });
 

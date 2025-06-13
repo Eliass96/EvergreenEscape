@@ -3,9 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('loginButton').addEventListener('click', formularioLogin);
         document.getElementById('checkboxLogin').addEventListener('click', verpasswordLogin);
         document.getElementById('loginButtonGoogle').addEventListener('click', loginGoogle);
-        document.addEventListener('keyup', (event) => {
+        document.addEventListener('keyup', async (event) => {
             if (event.key === 'Escape') {
                 window.location = '/';
+            }
+            if (event.key === 'Enter') {
+                await formularioLogin();
             }
         });
 
@@ -29,9 +32,16 @@ document.addEventListener('DOMContentLoaded', function () {
             let txtUsuarioLogin = document.getElementById('txtFaltanDatosUsuarioLogin');
             let txtPasswordLogin = document.getElementById('txtFaltanDatosPasswordLogin');
 
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;  // Regex para email válido
+
             if (usuario.value.trim() === '') {
                 event.preventDefault();
                 txtUsuarioLogin.style.visibility = 'visible';
+                usuario.classList.add('error');
+            } else if (!emailRegex.test(usuario.value.trim())) {
+                event.preventDefault();
+                txtUsuarioLogin.style.visibility = 'visible';
+                txtUsuarioLogin.textContent = "Correo electrónico inválido";
                 usuario.classList.add('error');
             } else {
                 txtUsuarioLogin.style.visibility = 'hidden';

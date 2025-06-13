@@ -3,9 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('checkboxRegister').addEventListener('click', verpasswordRegister);
     document.getElementById('registerButtonGoogle').addEventListener('click', registerGoogle);
 
-    document.addEventListener('keyup', (event) => {
+    document.addEventListener('keyup', async (event) => {
         if (event.key === 'Escape') {
             window.location = '/';
+        }
+        if (event.key === 'Enter') {
+            await formularioRegister();
         }
     });
 
@@ -36,15 +39,24 @@ document.addEventListener('DOMContentLoaded', function () {
         let txtPassword = document.getElementById('txtFaltanDatosPassword');
         let txtPasswordRep = document.getElementById('txtFaltanDatosPasswordRep');
 
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;  // Regex para email válido
+
+        // Validación de Email
         if (email.value.trim() === '') {
             event.preventDefault();
             txtEmail.style.visibility = 'visible';
+            email.classList.add('error');
+        } else if (!emailRegex.test(email.value.trim())) {
+            event.preventDefault();
+            txtEmail.style.visibility = 'visible';
+            txtEmail.textContent = "Correo electrónico inválido";
             email.classList.add('error');
         } else {
             txtEmail.style.visibility = 'hidden';
             email.classList.remove('error');
         }
 
+        // Validación de Usuario
         if (usuario.value.trim() === '') {
             event.preventDefault();
             txtUsuario.style.visibility = 'visible';
@@ -54,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
             usuario.classList.remove('error');
         }
 
+        // Validación de Nacionalidad
         if (dropdownMenuButton.textContent.trim() === '') {
             event.preventDefault();
             txtNacionalidad.style.visibility = 'visible';
@@ -63,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dropdownMenuButton.classList.remove('error');
         }
 
+        // Validación de Contraseña
         if (password.value.trim() === '') {
             event.preventDefault();
             txtPassword.style.visibility = 'visible';
@@ -72,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
             password.classList.remove('error');
         }
 
+        // Validación de Repetición de Contraseña
         if (passwordRep.value.trim() === '') {
             event.preventDefault();
             txtPasswordRep.style.visibility = 'visible';
@@ -91,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        // Eventos de Input
         usuario.addEventListener('input', function () {
             if (usuario.value.trim() !== '') {
                 txtUsuario.style.visibility = 'hidden';
@@ -99,9 +115,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         email.addEventListener('input', function () {
-            if (email.value.trim() !== '') {
+            if (email.value.trim() !== '' && emailRegex.test(email.value.trim())) {
                 txtEmail.style.visibility = 'hidden';
                 email.classList.remove('error');
+            } else if (email.value.trim() !== '' && !emailRegex.test(email.value.trim())) {
+                txtEmail.style.visibility = 'visible';
+                txtEmail.textContent = "Correo electrónico inválido";
+                email.classList.add('error');
             }
         });
 
@@ -119,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        // Verificación final y envío
         if (!usuario.classList.contains('error')
             && !email.classList.contains('error')
             && !dropdownMenuButton.classList.contains('error')
@@ -130,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 email: email.value.trim(),
                 password: password.value.trim(),
                 nacionalidad: getSelectedNacionalidad()
-            }
+            };
 
             const resp = await fetch("/usuarios/registro", {
                 method: "POST",
@@ -147,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         showConfirmButton: true,
                         confirmButtonText: "De acuerdo",
                         confirmButtonColor: "lightgreen"
-                    })
+                    });
                 } else if (resp.status === 409) {
                     Swal.fire({
                         position: "center",
@@ -156,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         showConfirmButton: true,
                         confirmButtonText: "De acuerdo",
                         confirmButtonColor: "lightgreen"
-                    })
+                    });
                 } else {
                     Swal.fire({
                         position: "center",
@@ -165,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         showConfirmButton: false,
                         timer: 1000,
                         timerProgressBar: true,
-                    })
+                    });
                 }
             } else {
                 Swal.fire({
@@ -187,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify(dataLogin)
-                        })
+                        });
                         if (!respLogin.ok) {
                             throw new Error("Error en la solicitud");
                         }
